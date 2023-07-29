@@ -1,0 +1,153 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Calculus}
+
+\subsection{Differentiation}
+
+\subsubsection{Notation}
+
+The following notations are equivalent:
+
+\begin{itemize}
+  \item Newton's notation: $f'(x) = y'$
+  \item Leibniz' notation: $\frac{df}{dx} = \frac{dy}{dx} = \frac{d}{dx}f = \frac{d}{dx}y$
+  \item Other (not sure what it is called): $Df(x) = Dy$
+\end{itemize}
+
+Similarly, for derivatives of higher order:
+
+\begin{itemize}
+  \item $f''(x) = f^{(2)}(x) = y'' = \frac{d^2y}{dx^2} = \frac{d^2}{dx^2}f(x) = D^2y$
+  \item $f'''(x) = f^{(3)}(x) = y''' = \frac{d^3y}{dx^3} = \frac{d^3}{dx^3}f(x) = D^3y$
+  \item and so on
+\end{itemize}
+
+\subsubsection{Derivative of Polynomials}
+
+$$
+  \frac{d}{dx}x^n = nx^{n-1}
+$$
+
+\subsubsection{Rules}
+
+\paragraph{Constant Coefficient}
+
+$$
+  (cu)' = cu'
+$$
+
+"Derivative of a constant times a function is equal to the constant times the derivative of the function."
+
+\paragraph{Sum of Functions}
+
+$$
+  (u + v)' = u' + v'
+$$
+
+"Derivative of the sum of two functions is the sum of the individual derivatives."
+
+\paragraph{Difference of Functions}
+
+$$
+  (u - v)' = u' - v'
+$$
+
+"Derivative of the difference of two functions is the difference of the individual derivatives."
+
+\paragraph{Product of Functions}
+
+$$
+  (uv)' = u'v + uv'
+$$
+
+\paragraph{Quotient of Functions}
+
+$$
+  (\frac{u}{v})' = \frac{u'v - uv'}{v^2}
+$$
+
+\paragraph{Composite Functions}
+
+$$
+  \frac{d}{dx}f(g(x))=f'(g(x))\times g'(x)
+$$
+
+\paragraph{Chain Rule}
+
+Let $y=f(u)$ where $u=g(x)$.
+
+$$
+  \frac{dy}{dx}=\frac{dy}{du}\times \frac{du}{dx}
+$$
+
+\paragraph{Power Rule}
+
+Let $u$ be any differentiable function.
+
+$$
+  (u^n)' = nu^{n-1}\times u'
+$$
+
+\paragraph{Trigonometric Functions}
+
+$$
+  (\sin{x})'=\cos{x}
+$$
+
+$$
+  (\cos{x})'=-\sin{x}
+$$
+
+$$
+  (\tan{x})'=-\sec^2{x}
+$$
+
+$$
+  (\sin^{-1}{x})'=\frac{1}{\sqrt{1-x^2}}
+$$
+
+$$
+  (\tan^{-1}{x})'=\frac{1}{1+x^2}
+$$
+
+\paragraph{Exponentials and Logarithms}
+
+$$
+  (\ln{x})'=\frac{1}{x}
+$$
+
+$$
+  (a^x)'=\ln{a}\times a^x
+$$
+
+since $\ln{e}=1$:
+
+$$
+  (e^x)'=e^x
+$$
+
+\paragraph{Derivatives of Higher Order}
+
+Given $f(x)=x^n$ and $n>0$ and $k>0$:
+
+$$
+  f^{(k)}(x)=
+  \begin{cases}
+    nx^{n-1} & \text{if}\ k=1\\
+    \frac{n!}{(n-k)!}x^{n-k} & \text{if}\ 1<k<n\\
+    n! & \text{if}\ k=n\\
+    0 & \text{if}\ k > n
+  \end{cases}
+$$
+
+Note: Values for $k=1$ and $k=n$ are obtained by pluggin in $1$ resp.
+$n$ in $\frac{n!}{(n-k)!}x^{n-k}$ and simplifying.
+
+Given $f(x)=\frac{1}{x^n}=x^{-n}$ and $n>0$ and $k>0$:
+
+$$
+f^{(k)}(x)=(-1)^kk!x^{-(k+n)}
+$$
+
+\end{document}

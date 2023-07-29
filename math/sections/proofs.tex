@@ -1,0 +1,159 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Proofs}
+
+Link to MIT OCW: \href{https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/}{6.042 -- Mathematics for Computer Science (2010)}
+
+\subsection{Terminology}
+
+\begin{tabular}{ p{2.5cm} p{13cm} }
+  \textbf{Proposition} & a statement that is either true or false \\
+  \textbf{Predicate}  & a proposition whose truth depends on one or more
+  variables e.g. "n is a perfect square" depends on the value of n \\
+  \textbf{Axiom} & a proposition that is universially accepted as true, base
+  for further proofs \\
+  \textbf{Theorem} & an important true proposition \\
+  \textbf{Lemma} & a preliminary proposition useful for proving later proposition \\
+  \textbf{Corollary} & a proposition that follows in just a few logical steps
+  from a theorem \\
+\end{tabular}
+
+\subsection{Notation}
+
+\begin{tabular}{ p{2cm} p{8cm} p{4cm} }
+  \textbf{Notation} & \textbf{Read as} & \textbf{Example} \\
+  $\forall$ & "for all" & $\forall{n}\in\mathbb{N}.\ f(n)$ is prime. \\
+  $\exists$ & "there exists" & $\exists{n}\in\mathbb{N}.\ n > 10.$ \\
+  $\frac{\text{antecedents}}{\text{consequent}}$ & "if antecedents are proved, then the consequent (or conclusion) is also proved" & $\frac{P,\ P \implies Q}{Q}$ \\
+\end{tabular}
+
+\subsection{Propositions}
+
+\subsubsection{Validity}
+
+A proposition is \textit{valid} if it is always true (for any possible assignment of true and false to individual propositional variables).
+
+Example:
+
+$$
+P \lor \neg P
+$$
+
+Both possible assignments result in the proposition being true, thus it is valid.
+
+On the other hand:
+
+$$
+P \lor Q
+$$
+
+This proposition is false if both $P$ and $Q$ are false, thus it is not valid.
+
+\subsubsection{Satisfiability}
+
+A proposition is \textit{satisfiable} if there is an assignment of truth values to its individual propositional variables, such that the proposition is true.
+
+Example:
+
+$$
+P \lor Q
+$$
+
+This proposition is true if either $P$ or $Q$ is true, thus it is satisfiable.
+
+On the other hand:
+
+$$
+P \land \neg P
+$$
+
+There exists no assignment such that the proposition is true, thus it is not satisfiable.
+
+\subsection{Logical Deductions (or Inference Rules)}
+
+This inference rule is called \textit{modus ponens}:
+
+$$
+\frac{P,\ P \implies Q}{Q}
+$$
+
+There are also other inference rules:
+
+$$
+\frac
+{P \implies Q,\ Q \implies R}
+{P \implies R}
+$$
+
+$$
+\frac{\neg P \implies \neg Q}{Q \implies P}
+$$
+
+\subsection{Patterns of Proof}
+
+Proofs typically start with the word "Proof" and end with either "QED" or $\blacksquare$.
+
+\subsubsection{Proving an Implication}
+\label{sec:prove_implication}
+
+\paragraph{Method 1}
+
+In order to prove that this is a pretty long text and it will take more than one line. jk, maybe now it will be long enough:
+
+\begin{enumerate}
+  \item Write, "Assume $P$."
+  \item Show that $Q$ logically follows.
+\end{enumerate}
+
+\paragraph{Method 2: Contrapositive}
+The implication $P \implies Q$ is equivalent to its \textit{contrapositive} $\neg Q \implies \neg P$.
+
+\begin{enumerate}
+  \item Write, "We prove the contrapositive:" and then state the contrapositive.
+  \item Proceed as in method 1.
+\end{enumerate}
+
+\subsubsection{Proving an "If and Only If"}
+
+\paragraph{Method 1}
+
+$P \iff Q$ is equivalent to the two statements $P \implies Q$ and $Q \implies P$.
+
+\begin{enumerate}
+  \item Write, "We prove $P \implies Q$ and vice-versa."
+  \item Write, "First, we show $P \implies Q$." Do this by one of the methods in Section~\ref{sec:prove_implication}.
+  \item Write, "Now, we show $Q \implies P$." Again, do this by one of the methods in Section~\ref{sec:prove_implication}.
+\end{enumerate}
+
+\paragraph{Method 2}
+
+\begin{enumerate}
+  \item Write, "We construct a chain of if-and-only-if implications."
+  \item Prove $P$ is equivalent to a second statement which is equivalent to a third statement and so on until you reach $Q$.
+\end{enumerate}
+
+\subsubsection{Proof by Cases}
+
+A complicated proof can be divided into multiple cases in order to prove each case separately. It's important to also show that the proof covers all the cases.
+
+\begin{enumerate}
+  \item Write, "This proof is by case analysis."
+  \item Prove each case individually (split further into subcases if necessary).
+  \item Show that all the cases are covered and conclude that the initial proposition holds if all the cases hold.
+\end{enumerate}
+
+\subsubsection{Proof by Contradiction}
+
+Also called \textit{indirect proof}. This approach is always viable, however, direct proofs are generally preferable when they are available.
+
+In order to prove a proposition $P$ by contradiction:
+
+\begin{enumerate}
+  \item Write, "We use proof by contradiction."
+  \item Write, "Suppose $P$ is false."
+  \item Deduce something known to be false (a logical contradiction).
+  \item Write, "This is a contradiction. Therefore, $P$ must be true."
+\end{enumerate}
+
+\end{document}

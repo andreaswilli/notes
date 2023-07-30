@@ -81,6 +81,10 @@ $$
 There are also other inference rules:
 
 $$
+\frac{P \implies Q,\ \neg Q}{\neg P}
+$$
+
+$$
 \frac
 {P \implies Q,\ Q \implies R}
 {P \implies R}
@@ -97,7 +101,7 @@ Proofs typically start with the word "Proof" and end with either "QED" or $\blac
 \subsubsection{Proving an Implication}
 \label{sec:prove_implication}
 
-\paragraph{Method 1}
+\paragraph{Method 1: Assume P is true}
 
 In order to prove that this is a pretty long text and it will take more than one line. jk, maybe now it will be long enough:
 
@@ -106,7 +110,7 @@ In order to prove that this is a pretty long text and it will take more than one
   \item Show that $Q$ logically follows.
 \end{enumerate}
 
-\paragraph{Method 2: Contrapositive}
+\paragraph{Method 2: Prove the Contrapositive}
 The implication $P \implies Q$ is equivalent to its \textit{contrapositive} $\neg Q \implies \neg P$.
 
 \begin{enumerate}

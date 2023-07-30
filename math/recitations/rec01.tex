@@ -1,0 +1,76 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 1}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 1}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+\question The staff consists of \{Oscar, Stav, Darren, Patrice, David, Nick, Martyna, Marten, Tom\}, while a subset of these is the cabal. Translate each statement below into English and deduce who is in the cabal.
+
+\begin{parts}
+
+\part $\exists x\ \exists y\ \exists z\ (x \not= y \land x \not= z \land y \not= z \land incabal(x) \land incabal(y) \land incabal(z))$
+\label{part:a}
+\begin{solution}
+  There are at least 3 different people in the cabal.
+\end{solution}
+
+\part $\neg (incabal(\text{Stav}) \land incabal(\text{David}))$
+\label{part:b}
+\begin{solution}
+  Either Stav or David is in the cabal, or neither of them (but not both).
+\end{solution}
+
+\part $(incabal(\text{Martyna}) \lor incabal(\text{Patrice})) \implies \forall x\ incabal(x)$
+\label{part:c}
+\begin{solution}
+  If at least one of \{Martyna, Patrice\} is in the cabal, then everyone is in the cabal.
+\end{solution}
+
+\part $incabal(\text{Stav}) \implies incabal(\text{David})$
+\label{part:d}
+\begin{solution}
+  If Stav is in the cabal, then so is David.
+\end{solution}
+
+\part $incabal(\text{Darren}) \implies incabal(\text{Martyna})$
+\label{part:e}
+\begin{solution}
+  If Darren is in the cabal, then so is Martyna.
+\end{solution}
+
+\part $(incabal(\text{Oscar}) \lor incabal(\text{Nick})) \implies \neg incabal(\text{Tom})$
+\label{part:f}
+\begin{solution}
+  If at least one of \{Oscal, Nick\} is in the cabal, then Tom is not.
+\end{solution}
+
+\part $(incabal(\text{Oscar}) \lor incabal(\text{David})) \implies \neg incabal(\text{Marten})$
+\label{part:g}
+\begin{solution}
+  If at least one of \{Oscar, David\} is in the cabal, then Marten is not.
+\end{solution}
+
+\end{parts}
+
+\begin{solution}
+
+Stav: Not in the cabal, otherwise \ref{part:b} and \ref{part:d} would contradict.
+
+Patrice: Not in the cabal, because Stav cannot be in the cabal, which would contradict \ref{part:c}.
+
+Martyna: Not in the cabal, because Stav cannot be in the cabal, which would contradict \ref{part:c}.
+
+Darren: Not in the cabal, because Martyna cannot be in the cabal, and it would contradict the contrapositive of \ref{part:e}.
+
+Tom: Not in the cabal, because otherwise Oscar and Nick could not be in the cabal by \ref{part:f}. Other than Tom, this would only leave David and Marten as candidates. However, by \ref{part:f}, Marten cannot be in the cabal if David is. This would only leave Tom and David, which contradicts \ref{part:a}.
+
+Oscar: Not in the cabal, same reason as Tom.
+
+Since the cabal has at least 3 members by \ref{part:a}, we conclude that it consists of \{David, Nick, Marten\}.
+
+\end{solution}
+
+\end{questions}
+\end{document}

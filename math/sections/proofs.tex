@@ -160,4 +160,21 @@ In order to prove a proposition $P$ by contradiction:
   \item Write, "This is a contradiction. Therefore, $P$ must be true."
 \end{enumerate}
 
+\subsection{Induction}
+
+Proofs using the \textit{Well Ordering Principle}, \textit{Induction} and \textit{Strong Induction} are equivalent. This means, that a proof using any of these methods can be transformed into any of the other methods. One method might be easier or more natural than the other ones depending on the problem.
+
+\subsubsection{Well Ordering Principle}
+
+"Every \textit{nonempty} set of \textit{nonnegative integers} has a smallest element." However, this is not true for sets like $\emptyset$, $\mathbb{Z}^-$ and $\mathbb{R}$.
+
+The following template can be used for a Well Ordering Proof:
+
+\begin{enumerate}
+  \item Define the set, $C$, of counterexamples to $P$ being true. $C ::= \{n \in \mathbb{N}\ |\ P(n)\ \text{is false}\}$.
+  \item Use a proof by contradiction and assume that $P$ is nonempty.
+  \item Reach a contradiction (somehow)---often by showing how to use $n$ to find another member of $C$ that is smaller than $n$.
+  \item Conclude that $C$ must be empty, that is, no counterexamples exist.
+\end{enumerate}
+
 \end{document}

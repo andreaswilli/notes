@@ -177,4 +177,40 @@ The following template can be used for a Well Ordering Proof:
   \item Conclude that $C$ must be empty, that is, no counterexamples exist.
 \end{enumerate}
 
+\subsubsection{Ordinary Induction}
+\label{sec:ordinary_induction}
+
+To use the Induction Principle for a proof, follow these steps:
+
+\begin{enumerate}
+  \item State that the proof uses induction.
+  \item Define the predicate $P(n)$, also called the \textit{induction hypothesis}. It often follows directly from the proposition we want to prove. If the induction hypothesis includes multiple variables, we need to define which variable serves as $n$.
+  \item Prove that $P(0)$ is true. This is called the \textit{base case}.
+  \item Prove that $P(n) \implies P(n+1)$ for every nonnegative integer $n$. This is called the \textit{inductive step}. To prove this, assume $P(n)$ and show that $P(n+1)$ follows (see section \ref{sec:prove_implication}).
+  \item Conclude that $P(n)$ is true for all nonnegative $n$.
+\end{enumerate}
+
+\subsubsection{Invariants}
+
+The Induction Principle can be applied in the form of \textit{invariants}. An invariant is a property that is preserved for every possible state in a state machine. This is often used in computer science to prove that a program maintains a desired property.
+
+In order to construct an invariant proof, follow these steps:
+
+\begin{enumerate}
+  \item Define $P(t)$ to be the predicate that some property \textsc{nice} holds after step $t$.
+  \item Show that $P(0)$ is true, namely that \textsc{nice} holds for the start state.
+  \item Show that $\forall t \in \mathbb{N}.\ P(t) \implies P(t+1)$, namely, that for any $t \ge 0$, if \textsc{nice} holds after step $t$, it must also hold after the following step.
+\end{enumerate}
+
+\subsubsection{Strong Induction}
+
+The steps for using strong induction are mostly the same as the ones for ordinary induction listed in section \ref{sec:ordinary_induction}.
+
+The only differences are:
+
+\begin{itemize}
+  \item It should be stated that the proof uses strong induction.
+  \item $P(0),\ P(1),\ ...,\ P(n)$ can all be assumed to be true instead of only $P(n)$ during the inductive step.
+\end{itemize}
+
 \end{document}

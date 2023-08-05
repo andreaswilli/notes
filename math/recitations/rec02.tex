@@ -1,0 +1,73 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 2}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 2}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+\question Prove the formula $1 + r + r^2 + r^3 + ... + r^n = \frac{1-r^{n+1}}{1-r}$ for all real values $r\not=1$ using the well ordering principle and induction.
+\begin{solution}
+
+  \textbf{Proof by contradiction and well ordering}.
+  Define $P(n)$ to be the proposition that the following equation holds for all $r\not=1$:
+
+  $$
+  1 + r + r^2 + r^3 + ... + r^n = \frac{1-r^{n+1}}{1-r}
+  $$
+
+  Let $C$ be the set of counterexamples:
+
+  $$
+  C ::= \{n \in \mathbb{N}\ |\ P(n)\ \text{is false}\}
+  $$
+
+  By the assumption that there are counterexamples and by well ordering, there is a smallest counterexample $c \in C$. The equation holds for $n=0$ so it must be that $c > 0$. Since $c$ is the smallest counterexample, we know that P(c) does not hold, but $P(c-1)$ does. So this holds:
+
+  $$
+  1 + r + r^2 + r^3 + ... + r^{c-1} = \frac{1-r^{c}}{1-r}
+  $$
+
+  but adding $r^c$ to both sides leads to $P(c)$:
+
+  $$
+  1 + r + r^2 + r^3 + ... + r^{c-1} + r^c = \frac{1-r^{c}}{1-r} + r^c
+  $$
+  $$
+  = \frac{1-r^c+r^c-r^{c+1}}{1-r}
+  $$
+  $$
+  = \frac{1-r^{c+1}}{1-r}
+  $$
+
+  which shows, that $P(c)$ also holds. This is a contradiction. Thus, $c$ cannot exist and $C$ must be empty, meaning that $P(n)$ must hold for every $n \in \mathbb{N}$. $\blacksquare$
+
+  \textbf{Proof by induction}.
+  Define $P(n)$ to be the proposition that the following equation holds for all $r\not=1$:
+
+  $$
+  1 + r + r^2 + r^3 + ... + r^n = \frac{1-r^{n+1}}{1-r}
+  $$
+
+  Base case: $P(0)$ is true, since both sides of the equation are $1$.
+
+  Inductive step: We assume $P(n)$ and show that $P(n+1)$ follows:
+
+  $$
+  1 + r + r^2 + r^3 + ... + r^n + r^{n+1} = \frac{1-r^{n+1}}{1-r} + r^{n+1}
+  $$
+  $$
+  = \frac{1-r^{n+1}+(1-r)r^{n+1}}{1-r}
+  $$
+  $$
+  = \frac{1-r^{n+1}+r^{n+1}-r^{n+2}}{1-r}
+  $$
+  $$
+  = \frac{1-r^{n+2}}{1-r}
+  $$
+
+  which proves $P(n+1)$ and we conclude by induction, that $P(n)$ holds for all $n \ge 0$. $\blacksquare$
+\end{solution}
+\end{questions}
+
+\end{document}

@@ -1,0 +1,158 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Problem Set 1}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Problem Set 1}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+\question Translate from English into predicate logic.
+\begin{parts}
+  \part There are people who have taken 6.042 and have gotten A's in 6.042
+  \begin{solution}
+    $\exists x \in X.\ S(x) \land A(x).$
+  \end{solution}
+
+  \part All people who are 6.042 TA's and have taken 6.042 got A's in 6.042
+  \begin{solution}
+    $\forall x \in X.\ (T(x) \land S(x)) \implies A(x)$
+  \end{solution}
+
+  \part There are no people who are 6.042 TA's who did not get A's in 6.042
+  \begin{solution}
+    $\forall x \in X.\ T(x) \implies A(x)$
+  \end{solution}
+
+  \part There are at least three people who are TA's in 6.042 and have not taken 6.042
+  \begin{solution}
+    $\exists x,y,z \in X.\ \neg E(x,y) \land \neg E(y,z) \land T(x) \land T(y) \land T(z) \land \neg S(x) \land \neg S(y) \land \neg S(z)$
+  \end{solution}
+\end{parts}
+
+\question Use a truth table to prove or disprove the following statements:
+\begin{parts}
+  \part $\neg (P \lor (Q \land R)) = \neg P \land (\neg Q \lor \neg R)$
+  \begin{solution}
+
+    \begin{tabular}{c | c | c | c | c}
+      P & Q & R & $\neg (P \lor (Q \land R))$ & $\neg P \land (\neg Q \lor \neg R)$ \\
+      \hline
+      T & T & T & F & F \\
+      T & T & F & F & F \\
+      T & F & T & F & F \\
+      T & F & F & F & F \\
+      F & T & T & F & F \\
+      F & T & F & T & T \\
+      F & F & T & T & T \\
+      F & F & F & T & T \\
+    \end{tabular}
+
+    They're the same in every case, thus the statement holds.
+  \end{solution}
+
+  \part $\neg (P \land (Q \lor R)) = \neg P \lor (\neg Q \lor \neg R)$
+  \begin{solution}
+
+    \begin{tabular}{c | c | c | c | c}
+      P & Q & R & $\neg (P \land (Q \lor R))$ & $\neg P \lor (\neg Q \lor \neg R)$ \\
+      \hline
+      T & T & T & F & F \\
+      T & T & F & \textbf{F} & \textbf{T} \\
+      T & F & T & \textbf{F} & \textbf{T} \\
+      T & F & F & T & T \\
+      F & T & T & T & T \\
+      F & T & F & T & T \\
+      F & F & T & T & T \\
+      F & F & F & T & T \\
+    \end{tabular}
+
+    They're not the same in every case, thus the statement does not hold.
+  \end{solution}
+\end{parts}
+
+\question \textit{nand} Operator:
+\begin{parts}
+  \part Write these expressions using only \textit{nand} and $\neg$ (not):
+  \begin{subparts}
+    \subpart $A \land B$
+    \begin{solution}
+      $\neg (A\ \text{nand}\ B)$
+    \end{solution}
+
+    \subpart $A \lor B$
+    \begin{solution}
+      $\neg A\ \text{nand}\ \neg B$
+    \end{solution}
+
+    \subpart $A \implies B$
+    \begin{solution}
+      $A\ \text{nand}\ \neg B$
+    \end{solution}
+  \end{subparts}
+
+  \part Find an equivalent expression for $\neg A$ using only nand and grouping parentheses.
+  \begin{solution}
+    $A\ \text{nand}\ A$
+  \end{solution}
+
+  \part The constants true and false themselves may be expressed using only nand.
+Construct an expression using an arbitrary statement A and nand that evaluates to true regardless of whether A is true or false. Construct a second expression that always evaluates to false. Do not use the constants true and false themselves in your statements.
+  \begin{solution}
+
+    true $= A\ \text{nand}\ (A\ \text{nand}\ A)$
+
+    false $= (A\ \text{nand}\ (A\ \text{nand}\ A))\ \text{nand}\ (A\ \text{nand}\ (A\ \text{nand}\ A))$
+  \end{solution}
+\end{parts}
+
+\question You have 12 coins and a balance scale, one of which is fake. All the real coins weigh the same, but the fake coin weighs less than the rest. All the coins visually appear the same, and the difference in weight is imperceptible to your senses. In at most 3 weighings, give a strategy that detects the fake coin. 
+\begin{solution}
+
+  1. weighing: Split the coins in two piles of 6. The fake coin must be among the lighter pile. Discard the heavier pile.
+
+  2. weighing: Split the remaining coins in two piles of 3. The fake coin must be among the lighter pile. Discard the heavier pile.
+
+  3. weighing: Now only 3 candidates remain. Randomly choose two coins and put one on either side of the scale. If one side weighs less, that side contains the fake coin. If the coins on the scale are the same weight, the fake coin is the third one (that is not on the scale).
+\end{solution}
+
+\question Prove the following statement by proving its contrapositive: if $r$ is irrational, then $r^{1/5}$ is irrational.
+\begin{solution}
+
+  Contrapositive: $r^{1/5}$ is rational $\implies r$ is rational
+
+  Proof. We assume "$r^{1/5}$ is rational" and show that "$r$ is rational" follows. Since $r^{1/5}$ is rational, it can be represented by the quotient of two integers $a$ and $b$:
+
+  $$
+  r^{1/5} = \frac{a}{b}
+  $$
+
+  By raising both sides to the power of 5 we get:
+
+  $$
+  r = \frac{a^5}{b^5}
+  $$
+
+  Since $a$ is integer, $a^5$ must be integer as well. Same for $b^5$. Thus, $r$ can also be represented by the quotient of two integers which means it is rational. $\blacksquare$
+\end{solution}
+
+\question Suppose that $w^2 + x^2 + y^2 = z^2$, where $w, x, y$, and $z$ always denote positive integers. Prove the proposition: $z$ is even if and only if $w, x$, and $y$ are even. Do this by considering all the cases of $w, x, y$ being odd or even.
+\begin{solution}
+
+  Let $E(n)$ be the predicate that $n$ is even.
+
+  We can write the above proposition as: $E(z) \iff E(w) \land E(x) \land E(y)$
+
+  Proof. We use case analysis. Note that the square of an even number $(2i)^2 = 4i^2$ is a multiple of 4. Similarly, the square of an odd number $(2j + 1)^2 = 4j^2 + 4j + 1$ is one more that a multiple of 4.
+
+  Case 1: $w, x, y$ are all even. This means that $z^2 = w^2 + x^2 + y^2 = 4i + 4j + 4k$ which is a multiple of 4 which means $z$ is even.
+
+  Case 2: Exactly one of $w, x, y$ is odd. This means that $z^2 = w^2 + x^2 + y^2 = 4i + 4j + 4k + 1$ which is one more than a multiple of 4 which means $z$ is odd.
+
+  Case 3: Exactly two of $w, x, y$ are odd. This means that $z^2 = w^2 + x^2 + y^2 = 4i + 4j + 1 + 4k + 1$ which is two more than a multiple of 4 which means $z$ is even. However, $4i + 2 = z^2$ does not have an integer solution which means that $z$ does not exist in this case.
+
+  Case 4: $w, x, y$ are all odd. This means that $z^2 = w^2 + x^2 + y^2 = 4i + 1 + 4j + 1 + 4k + 1$ which is three more than a multiple of 4 which means $z$ is odd.
+
+  $z$ is even only in case 1, where $w,x,y$ are all even. $\blacksquare$
+\end{solution}
+\end{questions}
+\end{document}

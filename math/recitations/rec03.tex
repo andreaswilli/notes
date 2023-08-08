@@ -1,0 +1,36 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 3}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 3}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question Breaking a chocolate bar
+  \begin{solution}
+    Proof. By strong induction. Let the induction hypothesis $P(n)$ for $n \ge 1$ be that any chocolate bar with area $n$ can be broken into its $n$ individual squares in $n-1$ splits.
+
+    Base case: $P(1)$ is true, since it is already a single $1 \times 1$ square, thus 0 splits are needed.
+
+    Inductive step: Assume $P(m)$ for $1 \le m \le n$ to show $P(n+1)$ follows. The chocolate bar with area $n+1$ can be split once into pieces of area $\frac{n+1}{w}*k$ and $\frac{n+1}{w}*(w-k)$, where $w$ is the width of the bar and $k$ is the position of the split. So by the induction hypothesis, the total amount of splits is:
+
+    $$
+    \frac{n+1}{w}*k-1 + \frac{n+1}{w}*(w-k)-1 + 1
+    $$
+    $$
+    = \frac{nk+k+nw-nk+w-k}{w} - 1
+    $$
+    $$
+    = \frac{nw+w}{w} - 1
+    $$
+    $$
+    = n
+    $$
+
+    This shows that $P(n+1)$ holds. By strong induction we conclude, that $P(n)$ holds for every $n \ge 1$. We can also see that the number of splits does not depend on the position of the split $k$ (and neither on the shape of the bar, $w$). $\blacksquare$
+  \end{solution}
+
+  \question The Temple of Forever
+
+\end{questions}
+\end{document}

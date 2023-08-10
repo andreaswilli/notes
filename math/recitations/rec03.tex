@@ -31,6 +31,88 @@
   \end{solution}
 
   \question The Temple of Forever
+  \begin{solution}
+
+    State: $(r, g)$
+
+    Transitions:
+    \begin{itemize}
+      \item Exchange: $(r, g) \rightarrow (r-3,\ g+2)$
+      \item Swap: $(r, g) \rightarrow (g, r)$
+    \end{itemize}
+
+    \textbf{Theorem 1.} The state $(5, 5)$ cannot be reached from $(15, 12)$ by \textit{exchanging} and \textit{swapping}.
+
+    Proof. We use induction on the number of gong rings. Let $P(n)$ be the proposition that after $n$ gong rings, the number of red beads $r$ minus the number of green beads $g$ is equal to $5k + 2$ or $5k + 3$ for some integer $k$.
+
+    Base case: $P(0)$ is true, because for $(15, 12)$ the difference is $15-12 = 3 = 5*0+3$.
+
+    Inductive step: Assume $P(n)$ to show that $P(n+1)$ follows. We look each transition case by case:
+
+    Case 1 - exchange: The exchange transition decreases $r-g$ by $5$. Thus $r-g=5k+2$ or $r-g=5k+3$ will still be true after the transition.
+
+    Case 2 - swap: The swap transition inverts the sign of $r-g$. We look at two subcases:
+
+    Case 2.1 - $r-g=5k+2$: After the swap the sign will be inverted:
+
+    $$
+    g-r = -5k-2
+    $$
+    $$
+    = -5k-5-2+5
+    $$
+    $$
+    = 5(-k-1)+3
+    $$
+
+    If $k$ is an integer, $-k-1$ is still an integer and the proposition still holds.
+
+    Case 2.2 - $r-g=5k+3$: Similarly:
+
+    $$
+    g-r = -5k-3
+    $$
+    $$
+    = -5k-5-3+5
+    $$
+    $$
+    = 5(-k-1)+2
+    $$
+
+    We can use the same argument as for case 2.1 to conclude that the proposition still holds.
+
+    By induction we conclude, that P(n) holds for any $n \ge 0$. However, it does not hold for the state $(5, 5)$, because $5k = -2$ and $5k = -3$ do not have integer solutions. Thus, $(5, 5)$ cannot be reached by \textit{exchanging} and \textit{swapping}. $\blacksquare$
+
+    \textbf{Theorem 2.} There is a finite number of reachable states in the Temple of Forever machine.
+
+    Proof. We use induction on the number of gong rings. Let $P(n)$ be the proposition that after $n$ rings, the sum of beads $r+g$ is at most 27.
+
+    Base case: P(0) holds because $15+12 = 27$.
+
+    Inductive step: Assume $P(n)$ to show $P(n+1)$ follows. We look at the two cases:
+
+    Case 1 - exchange:
+
+    $$
+    r-3+g+2 = r-g-1 < r-g \le 27
+    $$
+
+    The exchange reduces the sum by 1, thus it is still less than 27.
+
+    Case 2 - swap: The swap does not change the sum, thus it is still less than 27.
+
+    By induction $P(n)$ holds for any $n \ge 0$. This puts an upper bound on the number of reachable states, which means there is a finite number of reachable states. $\blacksquare$
+
+    \textbf{Theorem 4.} It is not possible to visit 108 unique states in the Temple of Forever machine.
+
+    Proof. The proof is by contradiction. Assume 108 unique states are reachable from $(15, 12)$ by transitioning using \textit{exchange} and \textit{swap}, since these are the only possible transitions.
+
+    First we look at exchanges: In order to exchange, we need to have at least 3 red beads. At the same time $r-3+g+2 = r+g-1$ which means every exchange decreases the sum of beads by 1. We start with 27 beads, so exchanges can be performed at most 25 times.
+
+    Now, let's look at swaps: The number of swaps is unlimited. However, performing two swaps in a row brings us to a state we already visited.
+
+    So with the exchange we can transition between at most 26 unique states ($2 \le (r+g) \le 27)$. We can invert each of these by applying swap, which gives us at most 52 unique states. This contradicts our assumption, thus it is not possible to visit 108 unique states. $\blacksquare$
+  \end{solution}
 
 \end{questions}
 \end{document}

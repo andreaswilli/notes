@@ -98,5 +98,38 @@ $$
   We conclude by induction that $P(n)$ holds for all $n >= 0$. $\blacksquare$
 \end{solution}
 
+\question Prove the theorem: If fewer than $n$ students in class are initially infected, the whole class will never be completely infected.
+\begin{solution}
+  Proof by Induction. Let $P(k)$ for all $k >= 0$ be the induction hypothesis, that the perimeter of infected students after $k$ steps is at most $4n$.
+
+  Base case: $P(0)$ is true, because initially we have less than $n$ students, which means the perimeter must be less than $4n$.
+
+  Inductive step: We assume $P(k)$ to show that $P(k+1)$ follows. By the induction hypothesis, the perimeter of infected students after $k$ steps is less than $4n$. A new student can only be infected, if it is adjacent to two, three or four infected students. These cases change the perimeter in the following way:
+
+  \begin{itemize}
+    \item 2 adjacent: we remove 2 units and add 2 units = net change of 0
+    \item 3 adjacent: we remove 3 units and add 1 unit = net change of -2
+    \item 4 adjacent: we remove 4 units and add 0 units = net change of -4
+  \end{itemize}
+  This means that the perimeter can never increase, thus it is still less than $4n$ after $k+1$ steps.
+
+  By induction, we can conclude that $P(k)$ holds for all $k >= 0$.
+
+  Finally, since the perimeter of the whole class is $4n$, and the perimeter of the infected students can not increase, the whole class can never get infected if initially fewer than $n$ students are infected. $\blacksquare$
+\end{solution}
+
+\question Find the flaw in the bogus proof that $a^n=1$ for all nonnegative integers $n$, where $a$ is a nonzero real number.
+
+\begin{solution}
+
+  The flaw is in the indctive step $P(0) \implies P(1)$. In this step we have:
+
+  $$
+  a^{0+1}=\frac{a^0 \cdot a^0}{a^{0-1}} = \frac{1 \cdot 1}{1} = 1
+  $$
+
+  However, this incorrectly assumes $P(-1)$ while $P(n)$ only holds for $n >= 0$. Thus the proof is invalid.
+\end{solution}
+
 \end{questions}
 \end{document}

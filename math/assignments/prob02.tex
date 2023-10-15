@@ -131,5 +131,38 @@ $$
   However, this incorrectly assumes $P(-1)$ while $P(n)$ only holds for $n >= 0$. Thus the proof is invalid.
 \end{solution}
 
+\question Prove that for all $n \in \mathbb{N}$, $G_n = k^n - 2^n$.
+
+\begin{solution}
+
+  Proof by strong induction. Let $P(k)$ for all $k \in \mathbb{N}$ be the proposition that $G_k = 3^k - 2^k$.
+
+  Base case: $P(0)$ holds since $3^0 - 2^0 = 0 = G_0$. $P(1)$ holds since $3^1 - 2^1 = 1 = G_1$.
+
+  Inductive step: We assume $P(k-2)$ and $P(k-1)$ for purposes of strong induction. We want to prove that:
+
+  $$
+  5G_{k-1} - 6G_{k-2} = 3^k - 2^k
+  $$
+
+  By $P(k-2)$ and $P(k-1)$ we can plug in:
+
+  $$
+  5(3^{k-1} - 2^{k-1}) - 6(3^{k-2} - 2^{k-2})
+  $$
+  $$
+  = 5 \cdot 3^{k-1} - 5 \cdot 2^{k-1} - \frac{6}{3} \cdot 3^{k-1} + \frac{6}{2} \cdot 2^{k-1} 
+  $$
+  $$
+  = 3 \cdot 3^{k-1} - 2 \cdot 2^{k-1}
+  $$
+  $$
+  = 3^k - 2^k
+  $$
+
+  Thus, $P(k-2)$ and $P(k-1)$ imply $P(k)$ and we conclude by strong induction that $P(k)$ holds for every $k \in \mathbb{N}$. $\blacksquare$
+
+\end{solution}
+
 \end{questions}
 \end{document}

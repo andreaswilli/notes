@@ -1,0 +1,28 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 4}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 4}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question The Pulverizer
+  \begin{parts}
+    \part Describe a situation where the frog can't reach the worm.
+    \begin{solution}
+      The frog can't reach the worm if $gcd(k, n) > 1$. One example is $n = 10$ and $k = 6$.
+    \end{solution}
+
+    \part In a situation where the frog can actually reach the worm, explain how to use the Pulverizer to find how many jumps the frog will need.
+    \begin{solution}
+      Assuming the frog can reach the work, there is a number of jumps $j$ and a number of cycles $c$ so that $jk = cn + 1$. Thus $1$ is a linear combination of $k$ and $n$. Since $1$ is the smallest positive integer $jk - cn = 1$ needs to be the smallest positive linear combination of $k$ and $n$. This means that $1$ is the GCD of $k$ and $n$ and we can now use the Pulverizer to calculate $j$. 
+    \end{solution}
+
+  \part Compute the number of jumps if $n = 50$ and $k = 21$. Anything strange? Can you fix it?
+  \begin{solution}
+    In this case $j$ is equal to $-19$ (19 jumps in the other direction would be the shortest way to the worm). The Pulverizer is not guaranteed to give us a positive value for $j$, thus we need to find a positive $j$ some other way.
+  \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

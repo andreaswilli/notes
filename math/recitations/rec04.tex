@@ -24,5 +24,31 @@
   \end{solution}
   \end{parts}
 
+  \question Give an inductive proof that the Fibonacci numbers $F_n$ and $F_{n+1}$ are relatively prime for all $n \ge 0$.
+  \begin{solution}
+
+    Proof by Induction on $n$. Let $P(n)$ be the proposition that $F_n$ and $F_{n+1}$ are relatively prime.
+
+    Base case: $P(0)$ is true, since $F_0 = 0$ and $F_1 = 1$ have no common divisors greater than $1$.
+
+    Inductive step: We show that for all $n \ge 0$, $P(n) \implies P(n+1)$. In order to show this, we assume $P(n)$ and show that $P(n+1)$ follows. We will do this by contradiction.
+
+    Suppose $F_{n+1}$ and $F_{n+2}$ are not relatively prime, which means they have a common divisor $d$ such that $\frac{F_{n+1}}{d}$ and $\frac{F_{n+2}}{d}$ are integer. Now consider this equation:
+
+    $$
+    F_{n+2} - F_{n+1} = d \cdot \frac{F_{n+2}}{d} - d \cdot \frac{F_{n+1}}{d} = d \cdot \left(\frac{F_{n+2}}{d} - \frac{F_{n+1}}{d}\right)
+    $$
+
+    This implies that $d$ divides $F_{n+2} - F_{n+1} = F_n$ and $d$ is a divisor of both $F_n$ and $F_{n+1}$ which contradicts the induction hypothesis. Thus $F_{n+1}$ and $F_{n+2}$ must be relatively prime and $P(n+1)$ holds.
+
+
+    We conclude by induction that $P(n)$ holds for all $n \ge 0$. $\blacksquare$
+  \end{solution}
+
+  \question Extra Problem: The power of 3.
+  \begin{solution}
+    \textit{skipped}
+  \end{solution}
+
 \end{questions}
 \end{document}

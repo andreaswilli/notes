@@ -1,0 +1,67 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 5}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 5}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question RSA: Beforehand steps
+  \begin{parts}
+    \part Choose primes $p$ and $q$ in range $5-15$ (would be hundrets of digits in practice).
+    \begin{solution}
+      We choose $p=7$ and $q=13$.
+    \end{solution}
+
+    \part Calculate $n=pq$ which will be used to encrypt and decrypt messages.
+    \begin{solution}
+      $n=7 \cdot 13=91$
+    \end{solution}
+
+    \part Find an $e>1$ such that $gcd(e, (p-1)(q-1))=1$.
+    \begin{solution}
+      $(p-1)(q-1)=72$. If we pick $e=5$, then $gcd(5, 72)=1$.
+    \end{solution}
+
+    \part Find a $d$ such that $de \equiv 1\ (mod\ (p-1)(q-1))$.
+    \begin{solution}
+      $5d \equiv 1\ (mod\ 72)$. This holds for $d=29$.
+
+      So we have our keys:
+
+      Public key: (5, 91)
+
+      Private key: (29, 91)
+    \end{solution}
+  \end{parts}
+
+  \question RSA: Pick a message to encrypt.
+  \begin{solution}
+    We pick the message $6=$ "Someone on our team thinks someone on your team is kinda cute."
+  \end{solution}
+
+  \question RSA: Encrypt the message using the public key.
+  \begin{solution}
+
+    $m'=rem(m^e,\ n)$
+
+    Public key: (5, 91), message: 6
+
+    $m'=rem(6^5, 91)=41$
+  \end{solution}
+
+  \question RSA: Decrypt the message using the private key. 
+  \begin{solution}
+    $m=rem((m')^d,\ n)$
+
+    Private key: (29, 91), cypher text: 41
+
+    $m=rem(41^{29},\ 91)=6$ which was in fact the original message.
+  \end{solution}
+
+  \question RSA: Explain how you could read messages encrypted with RSA if you could quickly factor large numbers.
+  \begin{solution}
+    The public key consists of $(e,\ n)$. If we can factor $n$ into $pq$ quickly, we can use these factors and the Pulverizer or Euler's Theorem to calculate the private key and decrypt all messages encrypted with the corresponding public key.
+  \end{solution}
+\end{questions}
+\end{document}

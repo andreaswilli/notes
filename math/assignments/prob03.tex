@@ -1,0 +1,93 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Problem Set 3}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Problem Set 3}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+\question Warmup Exercises
+\begin{parts}
+  \part Use the Pulverizer to find integers $s$ and $t$ such that $135s+59t=gcd(135,\ 59)$.
+  \begin{solution}
+
+      \begin{tabular}{|ccrl|}
+        \hline
+        $x$ & $y$ & $rem(x,\ y)$ & $=x-q \cdot y$ \\
+        \hline
+        135 & 59 & 17 & $=135-2 \cdot 59$ \\
+         59 & 17 &  8 & $= 59-3 \cdot 17$ \\
+            &    &    & $= 59-3 \cdot (135-2 \cdot 59)$ \\
+            &    &    & $= -3 \cdot 135+7 \cdot 59$ \\
+         17 &  8 &  1 & $= 17-2 \cdot 8$ \\
+            &    &    & $=(135-2 \cdot 59) -2 \cdot (-3 \cdot 135 + 7 \cdot 59)$ \\
+            &    &    & $=7 \cdot 135 - 16 \cdot 59$ \\
+          8 &  1 &  0 & \\
+          \hline
+      \end{tabular}
+
+      $gcd(135,\ 59)=1$
+
+      We get the solution $s=7$ and $t=-16$.
+    
+  \end{solution}
+
+  \part Use the previous part to find the inverse of 59 modulo 135 in the range \{1, ..., 134\}.
+  \begin{solution}
+    
+    The inverse $x$ has the property $59x \equiv 1\ (mod\ 135)$.
+    
+    The linear combination from the previous solution is $7 \cdot 135-16 \cdot 59$.
+
+    Now, we can decrease $s$ by 59 and increase $t$ by 135 without changing the value of the expression. Doing this once leads to $-52 \cdot 135+119 \cdot 59$.
+
+    $t$ is now in the range \{1, ..., 134\} and can be used as our inverse $x$.
+    
+    To verify the result we can use the property $135 \bigm| 59 \cdot 119-1$, which is indeed true.
+  \end{solution}
+
+  \part Use Euler’s theorem to find the inverse of 17 modulo 31 in the range \{1, ..., 30\}.
+  \begin{solution}
+
+    We are looking for $x$ in $17x \equiv 1\ (mod\ 31)$
+
+    Euler's Theorem: $k^{\phi (n)} \equiv 1\ (mod\ n)$, for $n \in \mathbb{N}$ and $k$ is relatively prime to $n$.
+
+    Combining the two leads to: 
+
+    $$
+    17x \equiv 17^{\phi (31)}\ (mod\ 31)
+    $$
+    $$
+    x \equiv 17^{\phi (31)-1}\ (mod\ 31)
+    $$
+
+    The totient function $\phi (31)-1=31 \left(1-\frac{1}{31}\right)-1=30-1=29$
+
+    Repeated squaring: $17^{29} = 17^{16+8+4+1} = 17^{16} \cdot 17^8 \cdot 17^4 \cdot 17$
+
+    $$
+    17^2 \equiv 10\ (mod\ 31)
+    $$
+    $$
+    17^4 \equiv 10 \cdot 10 \equiv 7\ (mod\ 31)
+    $$
+    $$
+    17^8 \equiv 7 \cdot 7 \equiv 18\ (mod\ 31)
+    $$
+    $$
+    17^{16} \equiv 18 \cdot 18 \equiv 14\ (mod\ 31)
+    $$
+
+    Now we can combine these results:
+
+    $$
+    17^{29} \equiv 14 \cdot 18 \cdot 7 \cdot 17 \equiv 11\ (mod\ 31)
+    $$
+
+    So $x=11$. Check: $31 \bigm| 17 \cdot 11-1$. $\frac{186}{31}=6$.
+  \end{solution}
+
+\end{parts}
+\end{questions}
+\end{document}

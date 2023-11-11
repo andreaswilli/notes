@@ -88,6 +88,51 @@
     So $x=11$. Check: $31 \bigm| 17 \cdot 11-1$. $\frac{186}{31}=6$.
   \end{solution}
 
+  \part Find the remainder of $34^{82248}$ divided by $83$. (\textit{Hint: Euler’s theorem.})
+  \begin{solution}
+
+    If $34^{82248}$ is relatively prime to 83, then $(34^{82248})^{\phi(83)} \equiv 1\ (mod\ 83)$.
+
+    They are relatively prime since 83 is prime.
+
+    Also, $\phi(83) = 82$. So $34^{82} \equiv 1\ (mod\ 83)$.
+
+    Further, $34^{82248} = (34^{82})^{1003} \cdot 34^2 \equiv 1^{1003} \cdot 34^2 \equiv 34^2 \equiv 77\ (mod\ 83)$.
+  \end{solution}
+
 \end{parts}
+
+\question Prove the following statements, assuming all numbers are positive integers.
+\begin{parts}
+  \part If $a \bigm| b$, then $\forall c, a \bigm| bc$.
+  \begin{solution}
+
+    $a \bigm| b$ can be written as $b \equiv 0\ (mod\ a)$.
+
+    Multiplying both sides with $c$:
+
+    $bc \equiv 0c \equiv 0\ (mod\ a)$ implying $a \bigm| bc$. $\blacksquare$
+  \end{solution}
+
+  \part If $a \bigm| b$ and $a \bigm| c$, then $a \bigm| sb + tc$.
+  \begin{solution}
+
+    $b \equiv c \equiv 0\ (mod\ a)$ and, by the previous part, $sb \equiv tc \equiv 0\ (mod\ a)$.
+
+    Thus, $sb + tc \equiv 0\ (mod\ a)$ implying $a \bigm| sb + tc$. $\blacksquare$
+  \end{solution}
+
+  \part $\forall c,\ a \bigm| b \iff ca \bigm| cb$
+  \begin{solution}
+
+    $\frac{a}{b} = \frac{ca}{cb}$
+  \end{solution}
+
+  \part $gcd(ka,\ kb) = k \cdot gcd(a,\ b)$
+  \begin{solution}
+    \textit{skipped}
+  \end{solution}
+\end{parts}
+
 \end{questions}
 \end{document}

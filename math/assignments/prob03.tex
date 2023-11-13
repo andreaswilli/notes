@@ -134,5 +134,48 @@
   \end{solution}
 \end{parts}
 
+\question In this problem, we will investigate numbers which are squares modulo a prime number $p$.
+\begin{parts}
+  \part An integer $n$ is a square modulo $p$ if there exists another integer $x$ such that $n \equiv x^2\ (mod\ p)$. Prove that $x^2 \equiv y^2\ (mod\ p)$ if and only if $x \equiv y\ (mod\ p)$ or $x \equiv -y\ (mod\ p)$. (Hint: $x^2 - y^2 = (x + y)(x - y)$)
+  \begin{solution}
+
+    $$
+    x^2 \equiv y^2\ (mod\ p) \iff
+    $$
+    $$
+    p \bigm| x^2 - y^2 = (x+y)(x-y) \iff
+    $$
+    $$
+    (p \bigm| (x+y) \text{ or } p \bigm| (x-y)) \iff
+    $$
+    $$
+    (x \equiv -y\ (mod\ p) \text{ or } x \equiv y\ (mod\ p))
+    $$
+  \end{solution}
+
+  \part Prove the first part of Euler’s Criterion. (\textit{Hint: Use Fermat’s theorem.})
+  \begin{solution}
+
+    First part of Euler's Criterion: If $n$ is a square modulo $p$ then $n^{\frac{p-1}{2}} \equiv 1\ (mod\ p)$.
+
+    Fermat's Little Theorem: Suppose $p$ is a prime and $k$ is not a
+    multiple of $p$. Then: $k^{p-1} \equiv 1\ (mod\ p)$.
+
+    Since $n$ is a square modulo $p$, there must be an $x$ such that $n \equiv x^2\ (mod\ p)$.
+
+    Plugging in: $(x^2)^{\frac{p-1}{2}} = x^{p-1} \equiv 1\ (mod\ p)$, which is true by Fermat's Little Theorem, assuming $p$ is prime and $x$ is not a multiple of $p$. (\textit{Not sure how to prove these assumptions.})
+  \end{solution}
+
+  \part Assume that $p \equiv 3\ (mod\ 4)$ and $n \equiv x^2\ (mod\ p)$. Given $n$ and $p$, find one possible value of $x$. (\textit{Hint: Write $p$ as $p=4k+3$ and use Euler's Criterion. You might have to multiply two sides of an equation by $n$ at one point.})
+  \begin{solution}
+
+    By Euler's Criterion: $n^{\frac{(4k+3)-1}{2}} = n^{2k+1} \equiv 1\ (mod\ 4k+3)$
+
+    Multiplying both sides by $n$: $n^{2k+2} = (n^{k+1})^2 \equiv n\ (mod\ 4k+3)$
+
+    So $n^{k+1}$ is one possible value of $x$.
+  \end{solution}
+\end{parts}
+
 \end{questions}
 \end{document}

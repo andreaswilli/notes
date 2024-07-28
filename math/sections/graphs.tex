@@ -1,0 +1,37 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Simple Graphs}
+
+\subsection{Definitions}
+
+\textbf{Graphs} consist of vertices and edges. $G = (V, E)$
+
+\textbf{Vertices} (sing. Vertex; also called Nodes) are the "dots". Vertices are represented by the set $V = \{a, b, c\}$.
+
+\textbf{Edges} are the "lines". They are represented by the set of sets $E = \{\{a, b\}, \{b, c\}\}$
+
+\textbf{Adjacent Vertices} are two vertices that are directly joined by an edge.
+
+An edge is \textbf{incident} to the vertices is joins.
+
+\textbf{Degree} of a vertex is the number of edges that are incident to it. Denoted by $deg(v)$.
+
+\textbf{Complete Graph} has $n$ vertices and has an edge between every two vertices (total of $\frac{n(n-1)}{2}$). Denoted by $K_n$.
+
+\textbf{Empty Graph} has at least one vertex and no edges.
+
+\textbf{Line Graph} has $n$ vertices that are connected in a line by $n-1$ edges. Denoted by $L_n$.
+
+\textbf{Cycle Graph} has $n$ vertices that are connected in a circle by $n$ edges. Denoted by $C_n$.
+
+\textbf{Isomorphic Graphs} are two graphs that have the same number of vertices and edges and are arranged in the same way, so they "look the same". They may only be different in the names of vertices. (However, the same graph can often be drawn in lots of different ways.)
+
+\textbf{Subgraphs} consist of a subset of the vertices and edges of some other graph.
+
+\textbf{Weighted Graphs} are simple graphs that associate a real number, called weight, to each edge.
+
+\textbf{Adjacency Matrix} represents a graph with $n$ vertices as a $n \times n$ matrix where the values are 1 if there is an edge between two nodes, and 0 otherwise. (For weighted graphs the weight is used instead of 1.)
+
+\end{document}
+

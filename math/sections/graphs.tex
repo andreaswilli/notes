@@ -33,5 +33,26 @@ An edge is \textbf{incident} to the vertices is joins.
 
 \textbf{Adjacency Matrix} represents a graph with $n$ vertices as a $n \times n$ matrix where the values are 1 if there is an edge between two nodes, and 0 otherwise. (For weighted graphs the weight is used instead of 1.)
 
+\textbf{Bipartite Graphs} divide their vertices into two sets $L$ and $R$. Every edge is incident to a vertex in $L$ and $R$.
+
+\textbf{Regular Graphs} have the same degree for all vertices.
+
+\subsection{Matching Problems}
+
+A \textit{matching} in a graph $G$ is a set of edges such that no two edges in the set share a vertex. A matching \textit{covers} a set of vertices $L$, iff every vertex in $L$ is incident to an edge of the matching. A matching is \textit{perfect} if every vertex is incident to an edge in the matching.
+
+The set $N(S)$ called \textit{neighbors} of a set, $S$, of vertices contains all vertices adjecent to some vertex in $S$. $S$ is a \textit{bottleneck} if $|S| > |N(S)|$.
+
+\textbf{Hall's Theorem:}
+Let $G$ be a bipartite graph with vertex partition $L, R$. There is a matching in $G$ that covers $L$ iff no subset of $L$ is a bottleneck.
+
+Every regular bipartite graph has a perfect matching.
+
+\subsection{Coloring}
+
+A \textit{coloring} or \textit{valid coloring} is an assignment of a color to each vertex such that no two adjecent vertices have the same color. A graph that has a coloring that uses at most $k$ colors is said to be \textit{k-colorable}. The minimum value of $k$ for which a graph $G$ has a valid $k$-coloring is called its \textit{chromatic number}, $\chi(G)$.
+
+A graph with maximum degree at most $k$ is $(k+1)$-colorable. 
+
 \end{document}
 

@@ -1,0 +1,45 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 6}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 6}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question Use induction to prove that every graph with width at most $w$ is $(w+1)$-colorable.
+  \begin{solution}
+
+    Proof by induction on $n$.
+
+    Induction hypothesis: Let $P(n)$ be the proposition that every graph $G$ with $n$ nodes and width at most $w$ is $(w+1)$-colorable.
+
+    Base case: $P(1)$ means that $G$ has width $0$ and since there is only one node it can be colored with $1$ color which is equal to $w+1$.
+
+    Inductive step: $G$ is a graph with $n+1$ nodes and width at most $w$. Let $G'$ be $G$ where the last node $v_{n+1}$ is removed. $G'$ has $n$ nodes and since we removed one node, $w$ could not have increased. Thus, $P(n)$ applies to $G'$ which we assume to hold for purpose of induction. Since $G$ has width at most $w$, $v_{n+1}$ can be adjacent to at most $w$ other nodes. That means at least one of $w+1$ colors is still available for $v_{n+1}$ and $P(n+1)$ holds.
+
+    The theorem follows by induction. $\blacksquare$
+  \end{solution}
+
+  \question Planar Graphs
+  \begin{parts}
+    \part Show that any subgraph of a planar graph is planar.
+    \begin{solution}
+
+      Let $G$ be any planar graph. A subgraph of $G$ can only consist of nodes and edges that are part of $G$, no new nodes or edges can be added. Thus any subgraph is still planar. $\blacksquare$
+    \end{solution}
+
+    \part Prove by induction that any graph can be colored in at most 6 colors.
+    \begin{solution}
+    
+      Proof by induction on $n$. Let $P(n)$ be the proposition that any planar graph with $n$ nodes is 6-colorable.
+
+      Base case: $P(1)$ holds because a graph with 1 node can be 6-colored (in fact, it can be 1-colored).
+
+      Inductive step: Let $G$ be a planar graph with $n+1$ nodes. Let us construct a graph $G'$ by removing a node of degree at most 5 from $G$ (we know that any planar graph has such a node). $G'$ has $n$ nodes, so we can assume $G'$ to be 6-colorable by the induction hypothesis. The node we removed from $G$ is adjacent to at most 5 other nodes, thus $G$ is also 6-colorable and $P(n+1)$ holds.
+
+      We have shown that $P(n)$ holds for every $n>=1$, so the theorem follows by induction. $\blacksquare$
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

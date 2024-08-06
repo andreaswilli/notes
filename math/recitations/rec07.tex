@@ -1,0 +1,63 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 7}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 7}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question A Protocol for College Admission
+  \begin{solution}
+
+    Each day:
+
+    \begin{itemize}
+      \item Morning: Each student visits their favorite university that is not
+        crossed off on their list.
+
+      \item Afternoon: University $u_i$ tells their $n_i$ favorite applicants
+        "maybe, come back tomorrow" and rejects all the other applicants of today.
+
+      \item Evening: Every student that got rejected today crosses this
+        university off their list.
+    \end{itemize}
+
+    Termination condition: On the day every university $u_i$ has at most $n_i$
+    applicants, we stop.
+  \end{solution}
+
+  \begin{parts}
+    \part Show that the algorithm terminates after $NM+1$ days.
+    \begin{solution}
+      Proof by contradiction. Assume the algorithm does not terminate after
+      $NM+1$ days. On any day the algorithm does not terminate, there is at
+      least one university that has more applicants than available spots
+      (termination condition). Thus at least one student gets rejected and at
+      least one university gets crossed off a list. After $NM+1$ days at least
+      $NM+1$ universities have been crossed off. However, this is a
+      contradiction since there is a total of $NM$ universities on lists. So
+      the algorithm has to terminate on day $NM+1$ or earlier. $\blacksquare$
+    \end{solution}
+
+    \part Show the following: If during some day a university $u_j$ has at
+          least $n_j$ applicants, then when the algorithm terminates it accepts
+          exactly $n_j$ students.
+    \begin{solution}
+      On the day that $u_j$ has at least $n_j$ applicants it keeps its $n_j$
+      favorites around. These get only rejected if a preferred student applies
+      on a later day. Each applicant that has not been rejected will still want
+      to join $u_j$ on the next day. Thus, on the next day $u_j$ still has at
+      least $n_j$ applicants and the number of applicants can never go below
+      $n_j$ at this point. On the day the algorithm terminates, the university
+      can have at most $n_j$ students. Thus, on termination it must have
+      exactly $n_j$ applicants. $\blacksquare$
+    \end{solution}
+
+    \part Show that every student is assigned to one university.
+    \begin{solution}
+
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

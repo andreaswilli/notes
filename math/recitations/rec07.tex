@@ -55,7 +55,45 @@
 
     \part Show that every student is assigned to one university.
     \begin{solution}
+      Proof by contradiction. Assume that one student is not assigned to a
+      university on the day the algorithm ends. This means that one university
+      $u_j$ admits less than $n_j$ students. Thus $u_j$ had less than $n_j$
+      applicants each day (by previous proof), which means they never rejected
+      anyone. Since every university is on a students list, they must have
+      applied to it on one day. But this means that the student would be
+      assigned to $u_j$ because it was their first choice at this point.
+      However, this student is not assigned to a university and we have a
+      contradiction. $\blacksquare$
+    \end{solution}
 
+    \part Show that for all $i$, $u_i$ gets assigned $n_i$ students.
+    \begin{solution}
+      The total number of spots is equal to the total number of students. Each
+      student is assigned to exactly one university. Thus for every $i$,
+      university $u_i$ must have admitted exactly $n_i$ students. $\blacksquare$
+    \end{solution}
+
+    \part Suppose that on some day a university $u_j$ has at least $n_j$
+          applicants. Show that the rank of $u_j$'s least favorite applicant
+          that it says "Maybe..." to cannot decrease on any future day.
+    \begin{solution}
+      $u_j$ will be the top choice of all its applicants as long as $u_j$ does
+      not reject them. Since $u_j$ already has $n_j$ applicants, any new
+      applicants with a lower rank will automatically be rejected, so the rank
+      of $u_j$'s least favorite applicant it does not reject can only stay the
+      same or increase. $\blacksquare$
+    \end{solution}
+
+    \part Show there does not exist $s_i$, $s_j$, $u_k$ and $u_l$ where $s_i$
+          is assigned to $u_k$, $s_j$ is assigned to $u_l$, $s_j$ prefers $u_k$
+          to $u_l$ and $u_k$ prefers $s_j$ to $s_i$.
+    \begin{solution}
+      Proof by contradiction. Assume the above to be false. Since $s_j$ prefers
+      $u_k$ to $u_l$ they applied to $u_k$ first. However, $u_j$ is assigned to
+      $u_l$, which means they must have been rejected by $u_k$. $s_i$ was not
+      rejected by $u_k$ even though they have a lower rank than $s_j$. This
+      contradicts the previous proof. $\blacksquare$
+    \end{solution}
     \end{solution}
   \end{parts}
 

@@ -94,6 +94,24 @@
       rejected by $u_k$ even though they have a lower rank than $s_j$. This
       contradicts the previous proof. $\blacksquare$
     \end{solution}
+
+    \part Show that each student is assigned to its \textit{optimal} university.
+    \begin{solution}
+      Proof by contradiction. If the assignment by the algorithm is not
+      student-optimal, there must be first student (in time), $s_i$, that is
+      rejected from its optimal university $u_k$. On this day there must be
+      student, $s_j$, that is preferred by $u_k$. Since $u_k$ is in $s_i$'s
+      realm of possibility, there is an assignment $M$ that assigns $s_i$ to
+      $u_k$. Let $u_l$ be that university that is assigned to $s_j$ in $M$. If
+      $s_j$ prefers $u_l$ to $u_k$, then they must have been rejected by $u_l$
+      before applying to $u_k$. But this is not possible, since $u_i$ was the
+      first student to be rejected by a university in their realm of
+      possibility. Thus $s_j$ must prefer $u_k$ to $u_l$. But then $s_j$ and
+      $u_k$ prefer each other over their assignments in $M$ (they are a "rouge
+      couple"). This is a contradiction since $M$ must not have "rouge couples".
+      This means our assumption is wrong and there is no student rejected by
+      their optimal university, thus the algorithm assigns every student to
+      the optimal university. $\blacksquare$
     \end{solution}
   \end{parts}
 

@@ -37,6 +37,20 @@ An edge is \textbf{incident} to the vertices is joins.
 
 \textbf{Regular Graphs} have the same degree for all vertices.
 
+\textbf{Walk} is a sequence of edges of a simple graph (graphs with multiple edges require a more strict definition) that are all connected. The same edge can occur multiple times in a single walk. Also called \textit{path}, in which case path is called \textit{simple path}.
+
+\textbf{Path} (also \textit{simple path}) is a walk with no repeated edges.
+
+\textbf{Connected Nodes} have a path between them. Every node is connected to itself by a path of length $0$.
+
+\textbf{Connected Graph} has a path between every pair of nodes.
+
+\textbf{Connected Component} is a subgraph of a graph and consists of some node and all nodes that are connected to it as well as the edges that connect them.
+
+\textbf{k-Connected Graph} (also \textit{k-vertex connected graph}) is a graph that remains connected after removing any $k-1$ vertices.
+
+\textbf{k-Edge Connected Graph} is a graph that remains connected after removing any $k-1$ edges.
+
 \subsection{Matching Problems}
 
 A \textit{matching} in a graph $G$ is a set of edges such that no two edges in the set share a vertex. A matching \textit{covers} a set of vertices $L$, iff every vertex in $L$ is incident to an edge of the matching. A matching is \textit{perfect} if every vertex is incident to an edge in the matching.

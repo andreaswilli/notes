@@ -37,9 +37,33 @@ An edge is \textbf{incident} to the vertices is joins.
 
 \textbf{Regular Graphs} have the same degree for all vertices.
 
+\textbf{Acyclic Graphs} have no cycles.
+
+\textbf{Trees} are connected acyclic graphs.
+
+\textbf{Leaf} is a node of degree $1$ in a tree.
+
+\textbf{Ordered Binary Trees} are trees where each node has at most two children labeled left-child and right-child.
+
+\textbf{Spanning Tree} is a tree which is a subgraph of a connected graph $G$ that contains all the nodes of $G$ and a subset of its edges.
+
+\textbf{Minimum (Weight) Spanning Tree (MST)} is a spanning tree of a weighted graph that has the smallest possible sum of edge weights.
+
 \textbf{Walk} is a sequence of edges of a simple graph (graphs with multiple edges require a more strict definition) that are all connected. The same edge can occur multiple times in a single walk. Also called \textit{path}, in which case path is called \textit{simple path}.
 
 \textbf{Path} (also \textit{simple path}) is a walk with no repeated edges.
+
+\textbf{Closed Walk} is a walk that starts and ends at the same node. Also called \textit{cycle} in which case cycle is called \textit{simple cycle}.
+
+\textbf{Cycle} (also \textit{simple cycle}) is a closed walk with no repeated nodes (except the start and end nodes) and length at least $3$.
+
+\textbf{Euler Walk} is a walk that traverses every edge exactly once.
+
+\textbf{Euler Tour} is a closed walk that traverses every edge exactly once. In other words, it is an Euler walk that starts and ends at the same node.
+
+\textbf{Hamiltonian Path} is a path that visits every node in a graph exactly once.
+
+\textbf{Hamiltonian Cycle} is a cycle that visits every node in a graph exactly once.
 
 \textbf{Connected Nodes} have a path between them. Every node is connected to itself by a path of length $0$.
 
@@ -67,6 +91,25 @@ Every regular bipartite graph has a perfect matching.
 A \textit{coloring} or \textit{valid coloring} is an assignment of a color to each vertex such that no two adjecent vertices have the same color. A graph that has a coloring that uses at most $k$ colors is said to be \textit{k-colorable}. The minimum value of $k$ for which a graph $G$ has a valid $k$-coloring is called its \textit{chromatic number}, $\chi(G)$.
 
 A graph with maximum degree at most $k$ is $(k+1)$-colorable. 
+
+\subsection{Traveling Salesperson Problem}
+
+The Traveling Salesperson Problem (TSP) is a problem in which a salesperson must visit a set of cities and return to the starting city. The goal is to find the shortest possible route that visits each city exactly once.
+
+In other words, the TSP is a problem of finding a Hamiltonian cycle of minimum weight in a weighted graph.
+
+\subsection{Trees}
+
+Properties of trees:
+
+\enumerate{
+    \item Any connected subgraph is a tree.
+    \item There is a unique simple path between any two vertices.
+    \item Adding an edge to a tree creates a cycle.
+    \item Removing any edge disconnects the graph.
+    \item If the tree has at least $2$ nodes, then it has at least $2$ leaves.
+    \item The number of nodes in a tree is one more than the number of edges.
+}
 
 \end{document}
 

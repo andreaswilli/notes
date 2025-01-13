@@ -1,0 +1,89 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 8}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 8}{Page \thepage\ of \numpages}
+
+\begin{document}
+\begin{questions}
+
+  \question Build-up error
+
+  \textbf{False Claim.} \textit{If every vertex in a graph has positive degree, then the graph is connected.}
+
+  \begin{parts}
+    \part Prove that the claim is false by providing a counterexample.
+    \begin{solution}
+      Counterexample: Consider the graph $G = (V, E)$ with $V = \{1, 2, 3, 4\}$ and $E = \{\{1, 2\}, \{3, 4\}\}$. Every vertex in $G$ has positive degree. However, vertices $2$ and $3$ are not connected, so $G$ must not be connected, either.
+    \end{solution}
+
+    \part Pinpoint the first logicl mistake in the proof.
+    \begin{solution}
+      The problem with this proof is that we need to prove that the claim is true for any graph where every vertex has positive degree. However, not every $n+1$-vertex graph  with this property can be built up from an $n$-vertex graph with the same property. Again, consider the counterexample above: By removing any vertex, one of the three remaining vertices will have degree $0$, so the induction hypothesis does not apply and the proof falls apart.
+    \end{solution}
+  \end{parts}
+
+  \question The Grow Algorithm
+
+  \begin{parts}
+    \part Prove the following lemma.
+    
+    \textbf{Lemma 2.} Let $T = (V, E)$ be a tree and let $e$ be an edge not in $E$. Then, $G = (V, E \cup \{e\})$ contains a cycle.
+
+    \begin{solution}
+      \textit{Proof.} Let the nodes adjecent to $e$ be $v_i$ and $v_j$. And consider that $T$ is a connected graph since every tree is connected. This means that there is already a path from $v_i$ to $v_j$ in $T$. The path also has to be different from $e$ since $e$ is not in $E$. Therefore we now have two paths between these nodes, forming a circle. $\blacksquare$
+    \end{solution}
+
+    \part Prove the following lemma.
+
+    \textbf{Lemma 3.} Let $T = (V, E)$ be a spanning tree of $G$ and let $e$ be an edge not in $E$. Then there exists an edge $e' \ne e$ in $E$ such that $T^* = (V, E - \{e'\} \cup \{e\})$ is a spanning tree of $G$.
+
+    \begin{solution}
+      \textit{Proof.} $E \cup e$ contains a cycle by Lemma 2. In fact, $e$ is part of this cycle. There has to be a different edge $e'$ of $T$ in the cycle, since $T$ is a tree and thus any two nodes must have a path between them. $E - \{e'\} \cup \{e\}$ contains the same number of edges as $E$ and $T^*$ is still connected (since we only removed one edge that was part of the cycle) which means it is still a tree (by Lemma 1). $T^*$ also still contains all the vertices $V$ which means is must be a spanning tree of $G$. $\blacksquare$
+    \end{solution}
+
+    \part Prove the following lemma.
+
+    \textbf{Lemma 4.} Let $T = (V, E)$ be a spanning tree of $G$, let $e$ be an edge not in $E$ and let $S \subseteq E$ such that $S \cup \{e\}$ does not contain a cycle. Then there exists an edge $e' \ne e$ in $E - S$ such that $T^* = (V, E - \{e'\} \cup \{e\})$ is a spanning tree of $G$.
+
+    \begin{solution}
+      \textit{Proof.} (by contradiction) The proof above shows that removing any edge $e' \ne e$ from the cycle that gets created by adding $e$ to $E$ will result in a spanning tree of $G$. All that is left to show is that there exists an edge $e' \ne e$ in this cycle that is not an element of $S$. Assume for the purpose of contradiction that all edges except $e$ in the cycle are elements of $S$. This means that $S \cup \{e\}$ contains a cycle which contradicts the assumption in the lemma. $\blacksquare$
+    \end{solution}
+  
+    \part Prove the following lemma.
+
+    \textbf{Lemma 5.} Define $S_m$ to be the set consisting of the first $m$ edges selected by ALG-GROW from a connected graph $G$. Let $P(m)$ be the predicate that if $m \le \lvert V \rvert$ then $S_m \subseteq E$ for some MST $T = (V, E)$ of $G$. Then $\forall m$. $P(m)$.
+
+    \begin{solution}
+      \textit{Proof.} (by induction)
+
+      Let $P(m)$ be the predicate as defined in Lemma 5.
+
+      Base case: $P(0)$ holds, since $S_0 = \emptyset$ which is a subset of any other set, and there exists a MST for $G$ since it is connected.
+
+      Inductive step:
+
+      Assume $P(m)$ holds for some $m < \lvert V \rvert$. We need to show that $P(m+1)$ holds. Let $e$ be the $(m+1)$-th edge selected by ALG-GROW. If $e \in E$, then $S_{m+1} = S_m \cup \{e\} \subseteq E$ and we are done.
+
+      Otherwise, by Lemma 4, there exists an edge $e' \ne e$ in $E - S_m$ such that $T^* = (V, E - \{e'\} \cup \{e\})$ is a spanning tree of $G$. Now, to show that $T^*$ is a MST consider the weights of $e$ and $e'$. $e'$ has not been chosen before step $m - 1$ since it is in $E - S_m$. Also, since $e' \in E$ and $E$ is the set of edges of a tree, $S_m \cup \{e'\}$ can not form a cycle. This means that both $e$ and $e'$ would have been valid choices for step $m + 1$. The fact that ALG-GROW chose $e$ over $e'$ shows that $wt(e) \le wt(e')$ and thus $wt(T^*) \le wt(T)$. Since $T$ is a MST, $T^*$ must be one as well and P(m + 1) holds.
+
+      We conclude by induction that Lemma 5 holds. $\blacksquare$
+    \end{solution}
+
+    \part Prove the theorem.
+
+    \textbf{Theorem.} For any connected, wighted graph $G$, ALG-GROW produces an MST of $G$.
+
+    \begin{solution}
+      \textit{Proof.} Lemma 5 shows that for $m = \lvert V \rvert$, $S_m \subseteq E$ for some MST $T = (V, E)$ of $G$. Now we consider the two possible cases:
+
+      Case $S_m = E$: ALG-GROW has selected all the edges of T and thus produced an MST.
+
+      Case $S_m \subset E$: Assume for purpose of contradiction that there exists an edge $e$ in $E - S_m$. Since it is an element of $E$ and $S_m \subseteq E$, $S_m \cup \{e\}$ cannot form a cycle. This means that $e$ would have been selected by ALG-GROW. This is a contradiction, thus this case is impossible.
+
+      This covers all the cases and we conclude that the theorem holds. $\blacksquare$
+    \end{solution}
+
+    \end{parts}
+
+\end{questions}
+\end{document}

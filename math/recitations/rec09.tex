@@ -1,0 +1,53 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 9}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 9}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\section{Traveling Salesperson Problem}
+
+\begin{questions}
+
+  \question Show that the cost of any tour is at least the cost of an MST of $G$. Hence conclude that the cost of an MST is at most OPT.
+  \begin{solution}
+    \textit{Proof.} Suppose for the purpose of contradiction that there is a tour $T$ in $G$ that costs less than an MST of $G$. By definition, $T$ is a tour and visits every node in $G$, in other words it \textit{spans} $G$. Also, $T$ has lower cost than an MST of $G$ which is a contradiction. $\blacksquare$
+
+    Now, since OPT is also a tour, an MST has cost at most OPT.
+  \end{solution}
+
+  \question Prove that the size of $S$ is even.
+  \begin{solution}
+    Every edge in a graph $G$ connects two nodes, which means it increases the total degree of $G$ by 2. Thus the total degree in $G$ must be even. $S$ contains all the nodes with odd degree and its total degree is even, since the total degree in $G$ is the sum of the degree of all the even degree nodes plus the sum of all the odd degree nodes, and the sum of the even degree nodes is even, the sum of the odd degree nodes must be even as well. The sum of $n$ odd numbers is even iff $n$ is even. This means that $\lvert S \rvert$ is even. $\blacksquare$
+  \end{solution}
+
+  \question Prove that the weight of the min weight perfect matching is at most $OPT/2$. \textit{Hint: Consider a minimum cost TSP tour on just the vertices in S.}
+  \begin{solution}
+    (\textit{skipped})
+  \end{solution}
+
+  \question Prove that $G'$ has an Euler circuit, and its cost is at most $3OPT/2$.
+  \begin{solution}
+    Let $v$ be any node in $G'$. Consider the parity of the degree of $v$. There are two cases:
+
+    Case $v \in S$: By definition, the degree of $v$ in $T$ is odd. $M$ adds exactly one edge to $v$, making its degree in $G'$ even.
+
+    Case $v \notin S$: By definition, the degree of $v$ in $T$ is even. $M$ adds no additional edges to $v$, thus its degree in $G'$ is even.
+
+    Since every node $v$ in $G'$ has even degree, there exists an Euler circuit in $G'$. The cost of this Euler circuit is $cost(T) + cost(M) \le OPT + OPT/2 = 3OPT/2$. $\blacksquare$
+  \end{solution}
+
+  \question Show that the length of the TSP tour is at most $3OPT/2$.
+  \begin{solution}
+    (assuming \textit{length} was supposed to be \textit{cost})
+
+    The TSP tour is the Euler circuit with repeated nodes removed. By \textit{triangle inequality}, the length of the new edge cannot be longer than the sum of the removed edges. Thus the TSP tour has also cost at most $3OPT/2$. $\blacksquare$
+  \end{solution}
+
+  \question Conclude that our algorithm outputs a $3/2$-approximation.
+  \begin{solution}
+    This follows trivially from the fact that the optimal solution has cost OPT while the TSP tour output by ALG has cost at most $3OPT/2$. So we have a factor of $3/2$ and we have a $3/2$-approximation. $\blacksquare$
+  \end{solution}
+
+\end{questions}
+\end{document}

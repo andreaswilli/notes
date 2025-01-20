@@ -102,14 +102,44 @@ In other words, the TSP is a problem of finding a Hamiltonian cycle of minimum w
 
 Properties of trees:
 
-\enumerate{
+\begin{enumerate}
     \item Any connected subgraph is a tree.
     \item There is a unique simple path between any two vertices.
     \item Adding an edge to a tree creates a cycle.
     \item Removing any edge disconnects the graph.
     \item If the tree has at least $2$ nodes, then it has at least $2$ leaves.
     \item The number of nodes in a tree is one more than the number of edges.
-}
+\end{enumerate}
+
+\section{Directed Graphs}
+
+\subsection{Communication Networks}
+
+These are attributes used to describe communication networks:
+
+\textbf{Network Diameter} is the distance between the two nodes that are farthest apart.
+
+\textbf{Switch Size} is the number of inputs and outputs of the largest switch. For example, a $3 \times 3$ switch has $3$ inputs and $3$ outputs.
+
+\textbf{Switch Count} is the number of switches in the network.
+
+\textbf{Congestion} is the maximum number of paths that pass through a single switch in the worst case routing scenario.
+
+The following table shows the attributes of some common communication networks:
+
+\begin{center}
+\begin{tabular}{l|c|c|c|c}
+network              & diameter      & switch size  & switch count    & congestion \\
+\hline
+Complete Binary Tree & $2\log N + 2$ & $3 \times 3$ & $2N - 1$        & $N$        \\
+\hline
+2-D array            & $2N$          & $2 \times 2$ & $N^2$           & $2$        \\
+\hline
+butterfly            & $2 + \log N$  & $2 \times 2$ & $N(1 + \log N)$ & $\sqrt{N}$ or $\sqrt{N/2}$ \\
+\hline
+Benes                & $1 + 2\log N$ & $2 \times 2$ & $2N\log N$      & $1$        \\
+\end{tabular}
+\end{center}
 
 \end{document}
 

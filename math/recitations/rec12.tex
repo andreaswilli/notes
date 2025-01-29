@@ -1,0 +1,173 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 12}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 12}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question The L-Tower problem
+  \begin{solution}
+    The center of gravity of an L-Tower with $k$ Ls (excluding the base) is at
+    $$
+    \frac{\sum_{i=0}^{k-1} i+\frac{x}{2} + i+\frac{1}{2}}{2k}
+    $$
+    $$
+    = \frac{\sum_{i=0}^{k-1} 2i + \frac{x+1}{2}}{2k} 
+    $$
+    $$
+    = \frac{k\frac{x+1}{2} + \sum_{i=0}^{k-1} 2i}{2k} 
+    $$
+    $$
+    = \frac{x+1}{4} + \frac{\sum_{i=0}^{k-1} i}{k}
+    $$
+    $$
+    = \frac{x+1}{4} + \frac{k-1}{2}
+    $$
+    $$
+    = \frac{2k+x-1}{4}
+    $$
+
+    The left edge of the base is at $x-1$, and the right edge is at $x$.
+
+    So if $\frac{2k+x-1}{4} < x-1$ then the tower falls to the left. That means we have a lower bound of:
+    $$
+    \frac{2k+x-1}{4} \ge x-1
+    $$
+    $$
+    2k+x-1 \ge 4x-4
+    $$
+    $$
+    k \ge \frac{3x-3}{2}
+    $$
+    \hfill$\square$
+
+    Similarly, if $\frac{2k+x-1}{4} > x$ then the tower falls to the right. That means we have an upper bound of:
+    $$
+    \frac{2k+x-1}{4} \le x
+    $$
+    $$
+    2k+x-1 \le 4x
+    $$
+    $$
+    k \le \frac{3x+1}{2}
+    $$
+
+    This considers the stability on the base, however, we also need to consider the tower itself.
+
+    A tower consisting of $k$ Ls falls over if $\frac{2(k-1)+x-1}{4}+1 > x$. So we have and upper bound of:
+    $$
+    \frac{2(k-1)+x-1}{4}+1 \le x
+    $$
+    $$
+    k \le \frac{3x-3}{2} + 1
+    $$
+    $$
+    k \le \frac{3x-1}{2}
+    $$
+    \hfill$\square$
+
+    So since the difference between the upper and lower bounds is $1$, there is always a possible $k$ for which the tower is stable (if the bounds are integer, there are two $k$ for which it is stable).
+    \hfill$\blacksquare$
+  \end{solution}
+
+  \question Double Sums
+
+  \begin{parts}
+
+    \part Evaluate $\sum_{i=1}^n \sum_{j=1}^i j$.
+    \begin{solution}
+      Replace the inner sum with a closed form expression:
+      $$
+      \sum_{i=1}^n \sum_{j=1}^i j
+      $$
+      $$
+      = \sum_{i=1}^n \frac{i(i+1)}{2}
+      $$
+      $$
+      = \frac{1}{2} \left(\sum_{i=1}^n i^2 + \sum_{i=1}^n i\right)
+      $$
+
+      Now, replace the remaining sums with closed form expressions:
+      $$
+      = \frac{1}{2} \left(\frac{n(n+1)(2n+1)}{6} + \frac{n(n+1)}{2}\right)
+      $$
+      $$
+      = \frac{1}{2} \left(\frac{n(n+1)(2n+1) + 3n(n+1)}{6}\right)
+      $$
+      $$
+      = \frac{1}{2} \left(\frac{(n^2+n)(2n+1) + 3n^2 + 3n}{6}\right)
+      $$
+      $$
+      = \frac{1}{2} \left(\frac{2n^3 + 3n^2 + n + 3n^2 + 3n}{6}\right)
+      $$
+      $$
+      = \frac{1}{2} \left(\frac{2n^3 + 6n^2 + 4n}{6}\right)
+      $$
+      $$
+      = \frac{n^3 + 3n^2 + 2n}{6} 
+      $$
+      $$
+      = \frac{n(n+1)(n+2)}{6} 
+      $$
+    \end{solution}
+
+    \part Write the sum of the harmonic numbers as a double sum.
+    \begin{solution}
+      $$
+      \sum_{k=1}^n H_k = \sum_{k=1}^n \sum_{j=1}^k \frac{1}{j}
+      $$
+    \end{solution}
+
+    \pagebreak
+    \part Now try to gain some intuition for exactly what you’re up against by integrating the summation in its less threatening single-summation form. You may use $H_k \approx \ln k$.
+    \begin{solution}
+      (skipped)
+    \end{solution}
+
+    \part Finally, we’ll look for an exact answer. If we think about the pairs ($k$, $j$) over which we are summing, they form a triangle in the table below. The values in the cells of the table correspond to the terms in the double summation. The first two rows have been filled in for you. Complete the remaining three rows to see the pattern.
+    \begin{solution}
+      \begin{tabular}{c|cccccc}
+        $j$ & 1 & 2   & 3   & 4   & ... & $n$ \\
+        \hline
+        $k$ &   &     &     &     &     &     \\
+        1   & 1 &     &     &     &     &     \\
+        2   & 1 & 1/2 &     &     &     &     \\
+        3   & 1 & 1/2 & 1/3 &     &     &     \\
+        4   & 1 & 1/2 & 1/3 & 1/4 &     &     \\
+        ... &   &     &     &     &     &     \\
+        $n$ & 1 & 1/2 & 1/3 & 1/4 & ... & 1/n \\
+      \end{tabular}
+    \end{solution}
+
+    \part The summation above is summing each row and then adding the row sums. But we can tame this beast if, instead, we first sum the columns and then add the column sums. Use the table to rewrite the double summation. The inner summation should sum over $k$, and the outer summation should sum over $j$.
+    \begin{solution}
+      $$
+      \sum_{k=1}^n \sum_{j=1}^k \frac{1}{j} = \sum_{j=1}^n \sum_{k=j}^n \frac{1}{j}
+      $$
+    \end{solution}
+
+    \pagebreak
+    \part Now simplify the summation to derive a closed form in terms of $n$ and $H_n$.
+    \begin{solution}
+      $$
+      \sum_{j=1}^n \sum_{k=j}^n \frac{1}{j}
+      $$
+      $$
+      = \sum_{j=1}^n \frac{1}{j}(n-j+1)
+      $$
+      $$
+      = \sum_{j=1}^n \frac{n}{j} - \sum_{j=1}^n \frac{j}{j} + \sum_{j=1}^n \frac{1}{j}
+      $$
+      $$
+      = n\sum_{j=1}^n \frac{1}{j} - n + H_n
+      $$
+      $$
+      = (n+1)H_n - n
+      $$
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

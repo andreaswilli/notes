@@ -1,0 +1,49 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Relations}
+
+\subsection{Binary Relations}
+
+Given sets $A$ and $B$, a \textit{binary relation} $R : A \to B$ from $A$
+to $B$ is a subset of $A \times B$. The sets $A$ and $B$ are called the \textit{domain} and \textit{codomain} of $R$, respectively. We commonly use the notation $aRb$ or $a \sim _R b$ to denote that $(a,b) \in R$.
+
+The \textit{inverse} $R^{-1}$ of a relation $R : A \to B$ is the relation from $B$ to $A$ defined by the rule $bR^{-1}a$ iff $aRb$.
+
+\subsection{Properties of Relations}
+
+Consider a relation $R : A \to A$ (relation on one set):
+
+\textbf{Reflexivity} $R$ is \textit{reflexive} if $\forall x \in A$. $xRx$. (Every node in $G$ has a loop.)
+
+\textbf{Irreflexivity} $R$ is \textit{irreflexive} if $\neg\exists x \in A$. $xRx$. (There are no loops in $G$.)
+
+\textbf{Symmetry} $R$ is \textit{symmetric} if $\forall x, y \in A$. $xRy \implies yRx$. (If there is an edge from $x$ to $y$, there is an edge from $y$ to $x$ in $G$.)
+
+\textbf{Antisymmetry} $R$ is \textit{antisymmetric} if $\forall x, y \in A$. $xRy \land yRx \implies x = y$. (There is at most one directed edge between any two nodes in $G$.)
+
+\textbf{Asymmetry} $R$ is \textit{asymmetric} if $\neg\exists x, y \in A$. $xRy \land  yRx$. (There are no loops and there is at most one directed edge between any two nodes in $G$.)
+
+\textbf{Transitivity} $R$ is \textit{transitive} if $\forall x, y, z \in A$. $xRy \land yRz \implies xRz$. (If there is a path from $x$ to $y$ and a path from $y$ to $z$, there is a path from $x$ to $z$ in $G$.)
+
+\subsection{Equivalence Relations}
+
+A relation is an \textit{equivalence relation} if it is reflexive, symmetric, and transitive. Examples are $=$ (equality) and $\equiv$ (equivalence modulo $n$).
+
+\subsection{Partial Orders}
+
+A relation is a \textit{weak partial order} if it is reflexive, antisymmetric, and transitive. Examples are $\leq$ (less than or equal to) and $\subseteq$ (subset).
+
+A relation is a \textit{strong partial order} if it is irreflexive, antisymmetric, and transitive. Examples are $<$ (less than) and $\subset$ (proper subset).
+
+In a \textit{partial order} not every pair of elements is comparable. A \textit{total order} is a partial order where every pair of elements is comparable.
+
+Weak partial orders are often denoted by $\preceq$ or $\sqsubseteq$.
+
+Strong partial orders are often denoted by $\prec$ or $\sqsubset$.
+
+\subsection{Posets}
+
+Given a partial order $\preceq$ on a set $A$, the pair $(A, \preceq)$ is called a \textit{partially ordered set} or \textit{poset}.
+
+\end{document}

@@ -10,9 +10,9 @@ to $B$ is a subset of $A \times B$. The sets $A$ and $B$ are called the \textit{
 
 The \textit{inverse} $R^{-1}$ of a relation $R : A \to B$ is the relation from $B$ to $A$ defined by the rule $bR^{-1}a$ iff $aRb$.
 
-\subsection{Properties of Relations}
+\subsection{Properties of Relations on one Set}
 
-Consider a relation $R : A \to A$ (relation on one set):
+Consider a relation $R : A \to A$:
 
 \textbf{Reflexivity} $R$ is \textit{reflexive} if $\forall x \in A$. $xRx$. (Every node in $G$ has a loop.)
 
@@ -45,5 +45,27 @@ Strong partial orders are often denoted by $\prec$ or $\sqsubset$.
 \subsection{Posets}
 
 Given a partial order $\preceq$ on a set $A$, the pair $(A, \preceq)$ is called a \textit{partially ordered set} or \textit{poset}.
+
+\subsection{Properties of Binary Relations}
+
+A binary relation $R : A \to B$ is:
+
+\begin{itemize}
+  \item \textit{surjective} if $\forall b \in B$, $\exists a \in A$ such that $aRb$. (Every element in $B$ is matched to at least one element in $A$.)
+  \item \textit{injective} if $\forall b \in B$ and $\forall a_1, a_2 \in A$, $a_1Rb \land a_2Rb \implies a_1 = a_2$. (Every element in $B$ is matched to at most one element in $A$.)
+  \item \textit{total} if $\forall a \in A$, $\exists b \in B$ such that $aRb$. (Every element in $A$ is matched to at least one element in $B$.)
+  \item \textit{bijective} if it is surjective, injective, total and a function. (Every element in $B$ is matched to exactly one element in $A$ and vice versa.)
+\end{itemize}
+
+\subsection{Cardinality}
+Let $\lvert A \rvert$ be the number of elements in a finite set $A$. $\lvert A \rvert$ is called the \textit{cardinality} of $A$.
+
+Consider a binary relation $R : A \to B$:
+
+\begin{itemize}
+  \item If $R$ is a surjective function, then $\lvert A \rvert \geq \lvert B \rvert$.
+  \item If $R$ is an injective function, then $\lvert A \rvert \leq \lvert B \rvert$.
+  \item If $R$ is bijective, then $\lvert A \rvert = \lvert B \rvert$.
+\end{itemize}
 
 \end{document}

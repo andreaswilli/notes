@@ -1,0 +1,70 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Asymptotic Notation}
+
+There are six common symbols used in asymptotic notation:
+
+\begin{center}
+\begin{tabular}{c|c|c|c}
+  Symbol   & Read as        & Meaning                   & Example              \\
+  \hline
+  $O$      & "Big Oh"       & Upper bound               & $2n + \log n = O(n)$ \\
+  $o$      & "Little Oh"    & Strict upper bound        & $\log n = o(n)$      \\
+  $\Omega$ & "Big Omega"    & Lower bound               & $2n = \Omega(n)$     \\
+  $\omega$ & "Little Omega" & Strict lower bound        & $n^2 = \omega(n)$    \\
+  $\Theta$ & "Theta"        & Tight bound               & $2n^2 = \Theta(n^2)$ \\
+  $\sim$   & "Equivalent"   & Asymptotically equivalent & $n+1 \sim n$
+\end{tabular}
+\end{center}
+
+\subsection{Definitions}
+
+\begin{center}
+  \begin{tabular}{l l p{9cm}}
+  $f = \Theta(g)$ & $f$ grows at the same rate as $g$ & There exists an $n_0$ and constants $c_1, c_2 > 0$ such that for all $n > n_0$, $c_1g(n) \le \left|f(n)\right| \le c_2g(n)$ \\
+
+  $f = O(g)$      & $f$ grows no faster than $g$      & There exists an $n_0$ and a constant $c > 0$ such that for all $n > n_0$, $\left|f(n)\right| \le cg(n)$ \\
+
+  $f = \Omega(g)$ & $f$ grows at least as fast as $g$ & There exists an $n_0$ and a constant $c > 0$ such that for all $n > n_0$, $\left|f(n)\right| \ge cg(n)$ \\
+
+  $f = o(g)$      & $f$ grows slower than $g$         & For all constants $c > 0$, there exists an $n_0$ such that for all $n > n_0$, $\left|f(n)\right| \le cg(n)$ \\
+
+  $f = \omega(g)$ & $f$ grows faster than $g$         & For all constants $c > 0$, there exists an $n_0$ such that for all $n > n_0$, $\left|f(n)\right| \ge cg(n)$ \\
+
+  $f \sim g$      & $f/g$ approaches $1$              & $\lim_{n \to \infty} \frac{f(n)}{g(n)} = 1$
+\end{tabular}
+\end{center}
+
+\subsection{Definitions with Limits}
+Asymptotic notation is related to limits in the following ways:
+\nopagebreak
+
+\begin{align*}
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} \not= 0, \infty &\implies f = \Theta(g) \\
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} \not= \infty    &\implies f = O(g) \\
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} \not= 0         &\implies f = \Omega(g) \\
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} = 1             &\implies f \sim o(g) \\
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} = 0             &\implies f = o(g) \\
+  \lim_{n \to \infty} \frac{f(n)}{g(n)} = \infty        &\implies f = \omega(g) \\
+\end{align*}
+
+In this context L'Hopital's Rule can be useful. If $\lim_{n \to \infty} f(n) = \infty$ and $\lim_{n \to \infty} g(n) = \infty$, then:
+
+$$
+\lim_{n \to \infty} \frac{f(n)}{g(n)} = \lim_{n \to \infty} \frac{f'(n)}{g'(n)}
+$$
+
+\subsection{More Implications}
+There are some more implications that can be derived from the definitions:
+
+\begin{align*}
+  f = O(g) \text{ and } f = \Omega(g) &\iff f = \Theta(g) \\
+                             f = O(g) &\iff g = \Omega(f) \\
+                             f = o(g) &\iff g = \omega(f) \\
+                             f = o(g) &\implies f = O(g) \\
+                        f = \omega(g) &\implies f = \Omega(g) \\
+                             f \sim g &\implies f = \Theta(g) \\
+\end{align*}
+
+\end{document}

@@ -1,0 +1,180 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 13}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 13}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Asymptotic Notation
+  \begin{solution}
+
+    Symbols: $\Theta$, $O$, $\Omega$, $o$, $\omega$
+
+    $2n + \log n = O(n)$ or $\Omega(n)$ or $\Theta(n)$
+
+    $\log n = O(n)$ or $o(n)$
+
+    $\sqrt n = \Omega(\log^{300} n)$ or $\omega(\log^{300} n)$
+
+    $n2^n = \Omega(n)$ or $\omega(n)$
+
+    $n^7 = O(1.01^n)$ or $o(1.01^n)$
+  \end{solution}
+
+  \question Asymptotic Equivalence
+
+  Suppose $f,g : \mathbb{Z}^+ \to \mathbb{Z}^+$ and $f \sim g$.
+  \begin{parts}
+    \part Prove that $2f \sim 2g$.
+    \begin{solution}
+      $\lim_{n \to \infty} \frac{2f(n)}{2g(n)} = \lim_{n \to \infty} \frac{f(n)}{g(n)} = 1$
+    \end{solution}
+
+    \part Prove that $f^2 \sim g^2$.
+    \begin{solution}
+      $\frac{f^2}{g^2} = \left(\frac{f}{g}\right)^2$
+
+      We know that $\lim_{n \to \infty} \frac{f(n)}{g(n)} = 1$.
+
+      So $\lim_{n \to \infty} \left(\frac{f(n)}{g(n)}\right)^2 = 1^2 = 1$.
+    \end{solution}
+
+    \part Give examples of $f$ and $g$ such that $2^f \not\sim 2^g$.
+    \begin{solution}
+
+      Let $f(n) = n$ and $g(n) = n+1$.
+
+      $$
+      \lim_{n\to\infty} \frac{n}{n+1} = 1
+      $$
+      
+      So $f \sim g$. But $2^g = 2^{n+1} = 2 \cdot 2^n = 2 \cdot 2^f$. So
+
+      $$
+      \lim_{n\to\infty} \frac{2^f}{2^g} = \lim_{n\to\infty} \frac{2^f}{2 \cdot 2^f} = \frac{1}{2} \not= 1
+      $$
+    \end{solution}
+
+    \pagebreak
+    \part Show that $\sim$ is an equivalence relation.
+    \begin{solution}
+      And equivalence relation needs to be \textit{reflexive}, \textit{symmetric} and \textit{transitive}.
+
+      $\sim$ is reflexive, since
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{f(n)} = 1
+      $$
+
+      $\lim$ is symmetric, since
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{g(n)} = 1 \iff \lim_{n\to\infty} \frac{g(n)}{f(n)} = 1
+      $$
+
+      $\lim$ is transitive, since if we have
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{g(n)} = 1
+      $$
+
+      and
+
+      $$
+      \lim_{n\to\infty} \frac{g(n)}{h(n)} = 1
+      $$
+
+      Then by multiplying we get
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{h(n)} = \lim_{n\to\infty} \frac{f(n)}{g(n)} \times \frac{g(n)}{h(n)} = 1
+      $$
+    \end{solution}
+
+    \part Show that $\Theta$ is an equivalence relation.
+    \begin{solution}
+
+      \textbf{Reflexive:} $f = \Theta(f)$, since
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{f(n)} = 1 < \infty
+      $$
+
+      \textbf{Symmetric:} $f = \Theta(g) \iff g = \Theta(f)$, since
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{g(n)} = c
+      $$
+
+      where $c$ is a non-zero finite constant, so
+
+      $$
+      \lim_{n\to\infty} \frac{g(n)}{f(n)} = \frac{1}{c}
+      $$
+
+      which is also a non-zero finite constant.
+
+      \textbf{Transitive:} $f = \Theta(g)$ and $g = \Theta(h) \implies f = \Theta(h)$, since
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{g(n)} = c_1
+      $$
+
+      and
+
+      $$
+      \lim_{n\to\infty} \frac{g(n)}{h(n)} = c_2
+      $$
+
+      where $c_1$ and $c_2$ are non-zero finite constants, so by multiplying we get
+
+      $$
+      \lim_{n\to\infty} \frac{f(n)}{h(n)} = \lim_{n\to\infty} \frac{f(n)}{g(n)} \times \frac{g(n)}{h(n)} = c_1 \cdot c_2
+      $$
+
+      so $c_1 \cdot c_2$ is also a non-zero finite constant and $f = \Theta(h)$.
+    \end{solution}
+  \end{parts}
+
+  \question More Asymptotic Notation
+  \begin{parts}
+    \part Show that $(an)^{b/n} \sim 1$.
+    \begin{solution}
+      $$
+      (an)^{b/n} = \left(a^b\right)^{1/n} \cdot 2^{(b \log_2 n) / n}
+      $$
+      $$
+      \lim_{n\to\infty} \frac{\left(a^b\right)^{1/n} \cdot 2^{(b \log_2 n) / n}}{1}
+      = \frac{\left(a^b\right)^0 \cdot 2^0}{1}
+      = 1
+      $$
+    \end{solution}
+
+    \part Show that $\sqrt[n]{n!} = \Theta(n)$.
+    \begin{solution}
+      
+      By using Stirling's approximation:
+
+      $$
+      \sqrt[n]{n!} \sim \sqrt[n]{\sqrt{2\pi n}\left(\frac{n}{e}\right)^n}
+      = \left(2\pi n\right)^{1/2n} \frac{n}{e}
+      $$
+
+      Now, by part (a):
+
+      $$
+      \left(2\pi n\right)^{1/2n} \sim 1
+      $$
+
+      so
+
+      $$
+      \sqrt[n]{n!} \sim 1 \cdot \frac{n}{e} = \Theta(n)
+      $$
+    \end{solution}
+  \end{parts}
+
+\end{questions}
+\end{document}

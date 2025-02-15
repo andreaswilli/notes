@@ -1,0 +1,192 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 14}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 14}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question TriMergeSort
+  \begin{parts}
+
+    \part How many comparisons are needed to merge three lists of 1 item each?
+    \begin{solution}
+      At most 3.
+    \end{solution}
+
+    \part In the worst case, how many comparisons are needed to merge three lists of $n/3$ items, where $n$ is a power of 3?
+    \begin{solution}
+      $2(n-2)+1$. At each step we compare the first items of each list, thus comparing twice to determine the next item. Do this until there are two items left (thus do it $n-2$ times). The remaining two items require one additional comparison.
+    \end{solution}
+
+    \part Define a divide-and-conquer recurrence for this algorithm. Let $T(n)$ be the number of comparisons to sort a list of $n$ items.
+    \begin{solution}
+      
+      $T(n) = 3T(n/3) + 2n-3$.
+    \end{solution}
+
+    \part We could analyze the running time of this using plug-and-chug, but let's try Akra-Bazzi. First, what is $p$?
+    \begin{solution}
+    
+      For a divide-and-conquer recurrence
+      $$
+      T(n) = \sum_{i=1}^k a_i T(b_i n) + g(n)
+      $$
+
+      $p$ must satisfy
+      $$
+      \sum_{i=1}^k a_i b_i^p = 1
+      $$
+
+      In this case
+      $$
+      3(1/3)^p = 1 \implies p = 1
+      $$
+    \end{solution}
+
+    \part Does the condition $\left| g'(x) \right| = O(x^c)$ hold for some $c \in N$?
+    \begin{solution}
+    
+      $$
+      g(x) = 2x-3
+      $$
+      $$
+      g'(x) = 2 = O(1)
+      $$
+
+      so it holds for $c=0$.
+    \end{solution}
+
+    \part Determine the theta bound on $T(n)$ by integration.
+    \begin{solution}
+
+      Akra-Bazzi gives
+      $$
+      T(n) = \Theta \left( n^p \left( 1 + \int_1^n \frac{g(u)}{u^{p+1}}du \right) \right)
+      $$
+
+      Pluggin in $p=1$ and $g(u) = 2u-3$ gives
+      \begin{align*}
+        T(n) &= \Theta \left( n \left( 1 + \int_1^n \frac{2u-3}{u^2}du \right) \right) \\
+             &= \Theta \left( n \left( 1 + \int_1^n \left( \frac{2}{u} - \frac{3}{u^2} \right) du \right) \right) \\
+             &= \Theta \left( n \left( 1 + \left[ 2\ln{u} + \frac{3}{u} \right]_1^n \right) \right) \\
+             &= \Theta \left( n \left( 1 + \left( 2\ln{n} + \frac{3}{n} - 2\ln(1) - 3 \right) \right) \right) \\
+             &= \Theta \left( n \left( 2\ln{n} + \frac{3}{n} - 2 \right) \right) \\
+             &= \Theta (2n\ln{n} - 2n + 3) \\
+             &= \Theta (n\ln{n})
+      \end{align*}
+    \end{solution}
+
+    \part Turns out that any equal partition of the list into a constant number of sublists $c>1$ will yield the same theta bound. Can you see why?
+    \begin{solution}
+      $cT(n/c) \implies c(1/c)^p = 1 \implies p=1$ so $p$ is always $1$. The second part of the recurrence is always $O(n)$, and $c$ only affects constant factors, which is irrelevant for $\Theta$.
+    \end{solution}
+  
+  \end{parts}
+
+  \pagebreak
+  \question Linear Recurrences
+
+  Find closed-form solutions to the following linear recurrences.
+  \begin{parts}
+
+    \part $T_0=0$, $T_1=1$, $T_n=T_{n-1}+T_{n-2}+1$.
+    \begin{solution}
+
+      Characteristic equation:
+      \begin{align*}
+        x^n &= x^{n-1} + x^{n-2} \\
+        x^2 &= x + 1 \\
+        0 &= x^2 - x - 1 \\
+        x_{1,2} &= \frac{1 \pm \sqrt{1 - (-4)}}{2} \\
+        x_{1,2} &= \frac{1 \pm \sqrt{5}}{2}
+      \end{align*}
+
+      So the homogeneous solution is
+      $$
+      T_n = c_1\left(\frac{1+\sqrt{5}}{2}\right)^n + c_2\left(\frac{1-\sqrt{5}}{2}\right)^n
+      $$
+
+      For the particular solution guess $T(n) = c$ since the inhomogeneous term is constant. Plugging in gives:
+      \begin{align*}
+        c &= c + c + 1 \\
+        c &= 2c + 1 \\
+        c &= -1
+      \end{align*}
+
+      So $T_n = -1$ is a particular solution.
+
+      The general solution is the sum of the homogeneous and particular solutions:
+      $$
+      T_n = c_1\left(\frac{1+\sqrt{5}}{2}\right)^n + c_2\left(\frac{1-\sqrt{5}}{2}\right)^n - 1
+      $$
+
+      Now plug in the boundary conditions $T_0=0$ and $T_1=1$:
+      $$
+      0 = c_1 + c_2 - 1
+      $$
+
+      and
+      $$
+      1 = c_1\frac{1+\sqrt{5}}{2} + c_2\frac{1-\sqrt{5}}{2} - 1
+      $$
+
+      Plug in $c_1 = 1 - c_2$ into the second equation:
+      \begin{align*}
+        1 &= (1-c_2)\frac{1+\sqrt{5}}{2} + c_2\frac{1-\sqrt{5}}{2} - 1 \\
+        1 &= \frac{1+\sqrt{5}}{2} - c_2\frac{1+\sqrt{5}}{2} + c_2\frac{1-\sqrt{5}}{2} - 1 \\
+        1 &= \frac{1+\sqrt{5}}{2} - c_2\left(\frac{1+\sqrt{5} - (1-\sqrt{5})}{2}\right) - 1 \\
+        c_2\sqrt{5} &= \frac{1+\sqrt{5}}{2} - 2 \\
+        c_2 &= \frac{1+\sqrt{5}}{2\sqrt{5}} - \frac{2}{\sqrt{5}} \\
+        c_2 &= \frac{\sqrt{5}+5 - 4\sqrt{5}}{10} \\
+        c_2 &= \frac{5 - 3\sqrt{5}}{10}
+      \end{align*}
+
+      Plug back in to find $c_1$:
+      \begin{align*}
+        c_1 &= 1 - \frac{5-3\sqrt{5}}{10} \\
+        c_1 &= \frac{10 - 5 + 3\sqrt{5}}{10} \\
+        c_1 &= \frac{5 + 3\sqrt{5}}{10}
+      \end{align*}
+
+      So the complete solution is
+      $$
+      T_n = \frac{5 + 3\sqrt{5}}{10} \left(\frac{1+\sqrt{5}}{2}\right)^n + \frac{5 - 3\sqrt{5}}{10} \left(\frac{1-\sqrt{5}}{2}\right)^n - 1
+      $$
+    \end{solution}
+
+    \part $S_0=0$, $S_1=1$, $S_n=6S_{n-1} - 9S_{n-2}$
+    \begin{solution}
+    
+      Characteristic equation:
+      \begin{align*}
+        x^n &= 6x^{n-1} - 9x^{n-2} \\
+        x^2 &= 6x - 9 \\
+        0 &= x^2 - 6x + 9 \\
+        0 &= (x-3)^2 \\
+        x &= 3
+      \end{align*}
+
+      $x$ occurs twice, so we have two roots $d_1 3^n$ and $d_2 n3^n$. Their sum forms the homogeneous solution:
+      $$
+      S_n = c_1 3^n + c_2 n3^n
+      $$
+
+      Now plug in the boundary conditions $S_0=0$ and $S_1=1$:
+      \begin{align*}
+        0 &= c_1 \\
+        1 &= 3c_1 + 3c_2 \\
+        c_2 &= \frac{1}{3}
+      \end{align*}
+
+      So the complete solution is
+      $$
+      S_n = \frac{1}{3}n3^n = n3^{n-1}
+      $$
+    \end{solution}
+  
+  \end{parts}
+
+\end{questions}
+\end{document}

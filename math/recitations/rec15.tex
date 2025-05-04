@@ -1,0 +1,211 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 15}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 15}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question The Tao of BOOKKEEPER
+  \begin{parts}
+
+    \part In how many ways can you arrange the letters in the word \textit{POKE}?
+    \begin{solution}
+      $4!$ ways
+    \end{solution}
+
+    \part In how many ways can you arrange the letters in the word \textit{$BO_1O_2K$}?
+    \begin{solution}
+      Also $4!$ ways, because $O_1$ and $O_2$ are distinct letters.
+    \end{solution}
+
+    \part Map arrangements of the letters in \textit{BOOK} to arrangements of the letters in \textit{$BO_1O_2K$} by removing the subscripts.
+    \begin{solution}
+      \begin{align*}
+        BO_1O_2K &\rightarrow BOOK \\
+        BO_2O_1K &\rightarrow BOOK \\
+        O_1BO_2K &\rightarrow OBOK \\
+        O_2BO_1K &\rightarrow OBOK \\
+        KBO_1O_2 &\rightarrow KOBO \\
+        KBO_2O_1 &\rightarrow KOBO \\
+                 &...
+      \end{align*}
+    \end{solution}
+
+    \part What kind of mapping is this?
+    \begin{solution}
+      A 2-to-1 mapping.
+    \end{solution}
+
+    \part In light of the division rule, how many arrangements are there of \textit{BOOK}?
+    \begin{solution}
+      Since there are $4!$ arrangements of \textit{$BO_1O_2K$} and the mapping is 2-to-1, we have $\frac{4!}{2}$ arrangements of \textit{BOOK}.
+    \end{solution}
+
+    \part How many arrangements are there of the letters in \textit{$KE_1E_2PE_3R$}?
+    \begin{solution}
+      $6!$
+    \end{solution}
+
+    \part (skipped)
+
+    \part What kind of mapping is this?
+    \begin{solution}
+      A 3-to-1 mapping.
+    \end{solution}
+
+    \pagebreak
+    \part So how many arrangements are there of the letters in \textit{KEEPER}?
+    \begin{solution}
+      $\frac{6!}{3!} = 120$
+    \end{solution}
+
+    \part How many arrangements of \textit{$BO_1O_2K_1K_2E_1E_2PE_3R$} are there?
+    \begin{solution}
+      $10!$
+    \end{solution}
+  
+    \part How many arrangements of \textit{$BOOK_1K_2E_1E_2PE_3R$} are there?
+    \begin{solution}
+      $\frac{10!}{2!}$
+    \end{solution}
+  
+    \part How many arrangements of \textit{$BOOKKE_1E_2PE_3R$} are there?
+    \begin{solution}
+      $\frac{10!}{2! \cdot 2!}$
+    \end{solution}
+  
+    \part How many arrangements of \textit{$BOOKKEEPER$} are there?
+    \begin{solution}
+      $\frac{10!}{2! \cdot 2! \cdot 3!} = 151200$
+    \end{solution}
+
+    \part How many arrangements of \textit{VOODOODOLL} are there?
+    \begin{solution}
+      $\frac{10!}{5! \cdot 2! \cdot 2!} = 7560$
+    \end{solution}
+
+    \part How many $n$-bit sequences contain $k$ zeroes and $n-k$ ones?
+    \begin{solution}
+      $\frac{n!}{k! \cdot (n-k)!}$
+    \end{solution}
+
+    This quantity is denoted $\binom{n}{k}$, and read "$n$ choose $k$".
+  
+  \end{parts}
+
+  \question Pigeonhole Principle
+  \begin{parts}
+
+    \part In a room of $500$ people, there exist two who share a birthday.
+    \begin{solution}
+      There are $366$ pigeonholes, one for every possible birthday.
+      There are $500$ pigeons (people).
+      Since $500 > 366$, by the pigeonhole principle, at least two people must share a birthday.
+    \end{solution}
+
+    \part Suppose that each of the $115$ students in $6.042$ sums the nine digits of their ID number. Must two people arrive at the same sum?
+    \begin{solution}
+      There are $115$ pigeons (students). The sum must lie between $0$ and $9*9 = 81$, resulting in $82$ pigeonholes. Thus, at least two people must arrive at the same sum.
+    \end{solution}
+
+    \part In every set of $100$ integers, there exist two whose difference is a multiple of $37$.
+    \begin{solution}
+      The pigeons are the $100$ integers. Map each integer to the remainder of dividing it by $37$. Thus there are $37$ pigeonholes ($0$ to $36$). By the pigeonhole principle we know that two numbers must map to the same remainder. Call them $a$ and $b$. Now, since they have the same remainder after dividing by $37$, $a-b$ must be a multiple of $37$.
+    \end{solution}
+  
+  \end{parts}
+
+  \question More Counting Problems
+  \begin{parts}
+
+    \part In how many ways can $k$ elements be chosen from an $n$-element set $\{x_1, x_2, ..., x_n\}$?
+    \begin{solution}
+      There is a bijection from $n$-bit sequences with $k$ ones and $n-k$ zeroes. The sequence $(b_1, b_2, ..., b_n)$ maps to the subset that contains $x_i$ iff $b_i = 1$. Therefore, the number of subsets is $\binom{n}{k}$.
+    \end{solution}
+
+    \part How many different ways are there to select a dozen donuts if five varieties are available?
+    \begin{solution}
+      There is a bijection from $16$-bit sequences with $4$ ones. The sequences are constructed as follows:
+
+      $$
+      (<v_1 zeroes>, 1, <v_2 zeroes>, 1, <v_3 zeroes>, 1, <v_4 zeroes>, 1, <v_5 zeroes>)
+      $$
+
+      where $v_i$ is the number of donuts chosen from variety $i$.
+
+      This leads to the conclusion that there are $\binom{16}{4}$ valid selections.
+    \end{solution}
+
+    \part An independent living group is hosting eight pre-frosh, affectionately known as $P_1,...,P_8$ by the permanent residents. Each pre-frosh is assigned a task: $2$ must wash pots, $2$ must clean the kitchen, $1$ must clean the bathrooms, $1$ must clean the common area, and $2$ must serve dinner. In how many ways can $P_1,...,P_8$ be put to productive use?
+    \begin{solution}
+      $$
+      \frac{8!}{2! \cdot 2! \cdot 2!}
+      $$
+    \end{solution}
+
+    \part Suppose that two identical $52$-card decks are mixed together. In how many ways can the cards in this double-sized deck be arranged?
+    \begin{solution}
+      The new set contains $2*52 = 104$ cards and has $2$ of each card:
+      $$
+      \frac{104!}{(2!)^{52}}
+      $$
+    \end{solution}
+  
+  \end{parts}
+
+  \pagebreak
+  \question Fun with Phonology: Hawaiian
+  \begin{parts}
+
+    \part How many different words are there with exactly $4$ phonemes?
+    \begin{solution}
+      The possible distributions of vowels and consonants are:
+
+      \begin{center}
+        VVVV, CVVV, VCVV, VVCV, CVCV
+      \end{center}
+
+      We can use the product rule to calculate the size of each set, and since all the sets are disjoint, we can add the sizes together (sum rule):
+
+      $$
+      (25^4) + 3 * (8 * 25^3) + (8^2 * 25^2) = 805625
+      $$
+    \end{solution}
+
+    \part Now for the general case. Let $A$ be the set of all $n$-phoneme words, and let $A_k$ be the set of all $n$-phoneme words with $k$ consonants. Express $\lvert A \rvert$ in terms of $\lvert A_k \rvert$ for all possible $k$.
+    \begin{solution}
+      There can be anywhere from $0$ to $n/2$ consonants (we assume $n$ to be even). So:
+
+      $$
+      \lvert A \rvert = \sum_{k=0}^{n/2}{\lvert A_k \rvert}
+      $$
+    \end{solution}
+
+    \part Now let's find $\lvert A_k \rvert$ for an arbitrary $k$. For simplicity's sake, assume Hawaiian has only one constant and one vowel. Find a bijection between $A_k$ and a set of arbitrary sequences of $0$ and $1$ of length $p$. What is $p$?
+    \begin{solution}
+      Since each consonant has to be followed by a vowel, we can pair each of the $k$ consonants with a vowel, producing $k$ such pairs. These pairs are represented by zeroes in the bit sequence, while the remaining vowels are represented by ones. There are $n-2k$ remaining vowels and the length of the bit sequence $p = k + n - 2k = n - k$.
+    \end{solution}
+
+    \part Using this bijection, compute $\lvert A_k \rvert$.
+    \begin{solution}
+      $\lvert A_k \rvert = \binom{n-k}{n-2k} = \binom{n-k}{k}$.
+    \end{solution}
+
+    \part How would you change your expression for $\lvert A_k \rvert$ to allow for $8$ consonants and $25$ vowels, not just one of each?
+    \begin{solution}
+      $\lvert A_k \rvert = \binom{n-k}{k} \cdot 8^k \cdot 25^{n-k}$.
+    \end{solution}
+
+    \part How many $n$-phoneme words are there in Hawaiian?
+    \begin{solution}
+      $$
+      \lvert A \rvert = \sum_{k=0}^{n/2}{\binom{n-k}{k} \cdot 8^k \cdot 25^{n-k}}
+      $$
+    \end{solution}
+  
+  \end{parts}
+
+\end{questions}
+\end{document}

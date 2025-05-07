@@ -1,0 +1,180 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 16}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 16}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Combinatorial Proofs
+  \begin{solution}
+    (skipped)
+  \end{solution}
+
+  \question Triangles
+  \begin{solution}
+    $\lvert C \rvert = 3t$ because for each triangle the set contains an entry for each of its sides, which is equal to three times the number of triangles $t$.
+
+    Also, there are $\binom{n}{2}$ edges, each of them being part of $\lambda$ triangles. Thus, $\lvert C \rvert = \lambda \frac{n!}{2! \cdot (n-2)!} = \lambda \frac{n(n-1)}{2}$.
+
+    Because equality is transitive, we conclude that $\lambda \frac{n(n-1)}{2} = 3t$.
+  \end{solution}
+
+  \question Counting, counting, counting 
+  \begin{parts}
+
+    \part How many different arrangements are there of the letters in \textit{BANANA}?
+    \begin{solution}
+      $$
+      \frac{6!}{3! \cdot 2!} = 60
+      $$
+
+      In the denominator we need to account for the 3 A's and 2 N's (Bookkeeper Rule).
+    \end{solution}
+
+    \part How many different paths are there from point (0, 0, 0) to point (10, 20, 30) if every step increments one coordinate and leaves the other two unchanged?
+    \begin{solution}
+      There is a bijection from the set of all paths to the set of all strings consisting of 10 X's, 20 Y's and 30 Z's. We can interpret such a string to mean that we take one step in X direction for each X and so on. The number of such strings is:
+      $$
+      \frac{(10 + 20 + 30)!}{10! \cdot 20! \cdot 30!}
+      $$
+    \end{solution}
+
+    \part Find the number of 5-card hands with exactly three aces.
+    \begin{solution}
+      There are $\binom{4}{3}$ ways to choose the three aces. For the other two cards there are $\binom{52-4}{2}$ ways. We use the product rule:
+      $$
+      \binom{4}{3} \cdot \binom{48}{2}
+      $$
+    \end{solution}
+
+    \pagebreak
+    \part Find the number of 5-card hands in which every suit appears at most twice.
+    \begin{solution}
+      We look at the possible suit distributions for the hands where $S_i$ is a suit for $0 \le i \le 3$.
+      The following cases are possible:
+      \begin{itemize}
+        \item $\{S_0, S_0, S_1, S_2, S_3\}$
+        \item $\{S_0, S_0, S_1, S_1, S_2\}$
+      \end{itemize}
+
+      For the first case, we chose one suit that occurs twice, and the other three suits appear exactly once, which means we have $4$ ways to distribute suits in this case. For the individual cards we have $\binom{13}{2} \cdot 13 \cdot 13 \cdot 13$ ways. This results in a total of $4 \cdot \binom{13}{2} \cdot 13^3$.
+
+      In the second case, we choose two suits that occur twice, and the third suit is one of the remaining two, which means we have $\binom{4}{2} \cdot 2$ ways to distribute suits. For the individual cards we have $\binom{13}{2} \cdot \binom{13}{2} \cdot 13$ ways. This results in a total of $\binom{4}{2} \cdot 2 \cdot \binom{13}{2}^2 \cdot 13$.
+
+      Since the sets of these two cases are disjoint, we can use the sum rule:
+      $$
+      4 \cdot \binom{13}{2} \cdot 13^3 + \binom{4}{2} \cdot 2 \cdot \binom{13}{2}^2 \cdot 13 
+      $$
+    \end{solution}
+
+    \part How many different throws are possible?
+    \begin{solution}
+      $$
+      \binom{15}{0} + \binom{15}{1} + \binom{15}{2} + \binom{15}{3}
+      $$
+    \end{solution}
+
+    \part In how many different ways can the numbers shown on a red die, a green die, and a blue die total up to $15$? Assume that these are ordinary, 6-sided dice.
+    \begin{solution}
+      $15$ can be composed of three integers between $1$ and $6$ in the following ways:
+      \begin{itemize}
+        \item $3 + 6 + 6$
+        \item $4 + 5 + 6$
+        \item $5 + 5 + 5$
+      \end{itemize}
+
+      For the second case we have $3!$ ways to arrange the colors. By the Bookkeeper Rule, in the first case we have $\frac{3!}{2!}$, and in the third case $\frac{3!}{3!}$ ways. This gives a total of $3! + \frac{3!}{2!} + \frac{3!}{3!} = 10$.
+    \end{solution}
+
+    \part In how many ways can $20$ indistinguishable pre-frosh be stored in four different crates if each crate must contain an \textit{even} number of pre-frosh?
+    \begin{solution}
+      It's the same as storing $10$ pre-frosh but crates can store any number of them. There is a bijection to 13-bit strings with 3 ones. The strings are built in the following way: $0^a 1 0^b 1 0^c 1 0^d$ where $0^x$ means there are as many zeroes as pre-frosh in crate $x$ and they are divided by a one.
+
+      Thus, there are $\binom{13}{3}$ ways.
+    \end{solution}
+
+    \pagebreak
+    \part How many paths are there from point (0, 0) to (50, 50) if every step increments one coordinate and leaves the other unchanged and there are impassable boulders sitting at points (10, 10) and (20, 20)?
+    \begin{solution}
+      Ignoring the boulders there are $\frac{100!}{50! \cdot 50!}$ different ways, because there is a bijection to the set of all possible strings with 50 X's and 50 Y's.
+
+      Now we need to subtract the paths that go through the boulders. The number of paths from (0, 0) to (10, 10) is $\frac{20!}{10! \cdot 10!}$ and from (10, 10) to (50, 50) is $\frac{80!}{40! \cdot 40!}$. Thus, the total number of paths that go through (10, 10) is $\frac{20! \cdot 80!}{(10!)^2 \cdot (40!)^2}$.
+
+      Similarly, the number of paths that go through (20, 20) is $\frac{40! \cdot 60!}{(20!)^2 \cdot (30!)^2}$.
+
+      However, paths that go through both boulders have been subtracted twice, so we have to re-add them (inclusion-exclusion). There are $(\frac{20!}{(10!)^2})^2 \cdot \frac{60!}{(30!)^2}$ such paths.
+
+      Thus, the total number of paths is:
+      $$
+      \frac{100!}{50! \cdot 50!} - \frac{20! \cdot 80!}{(10!)^2 \cdot (40!)^2} - \frac{40! \cdot 60!}{(20!)^2 \cdot (30!)^2} + \frac{20!^2 \cdot 60!}{(10!)^4 \cdot (30!)^2}
+      $$
+    \end{solution}
+
+    \part In how many ways can the $180$ students in 6.042 be divided into $36$ groups of $5$?
+    \begin{solution}
+      Consider a sequence of all the students indexed $0$ to $179$. We map the student with index $i$ to the group $i \text{ rem } 36$. This way there are exactly $5$ students in each group. All the students can be ordered in $180!$ ways. The students in each group can be ordered in $5!$ ways. The groups themselves can be ordered in $36!$ ways.
+
+      Thus, the total number of ways is:
+      $$
+      \frac{180!}{(5!)^{36} \cdot 36!}
+      $$
+    \end{solution}
+
+    \part In how many different ways can $10$ indistinguishable balls be placed in four distinguishable boxes, such that every box gets 1, 2, 3, or 4 balls?
+    \begin{solution}
+      We have to consider the following distributions of balls:
+      \begin{itemize}
+        \item $1 + 1 + 4 + 4$, ways: $\frac{4!}{(2!)^2} = 6$
+        \item $1 + 2 + 3 + 4$, ways: $4! = 24$
+        \item $1 + 3 + 3 + 3$, ways: $\frac{4!}{3!} = 4$
+        \item $2 + 2 + 2 + 4$, ways: $\frac{4!}{(3!)^2} = 4$
+        \item $2 + 2 + 3 + 3$, ways: $\frac{4!}{(2!)^2} = 6$
+      \end{itemize}
+      
+      Thus, the total number of ways is $6 + 24 + 4 + 4 + 6 = 44$.
+    \end{solution}
+
+    \pagebreak
+    \part In how many different ways can Blockbuster arrange $64$ copies of \textit{Cat in the Hat}, $96$ copies of \textit{Matrix Revolutions}, and $1$ copy of \textit{Amelie} on $5$ shelves?
+    \begin{solution}
+      There is a bijection to strings with $64 + 96 + 1 + 4$ letters, where $64$ are C's, $96$ are M's, $1$ is A, and $4$ are X's (dividers between shelves). The number of such strings is:
+      $$
+      \frac{(64 + 96 + 1 + 4)!}{64! \cdot 96! \cdot 4!}
+      $$
+    \end{solution}
+
+  \end{parts}
+
+  \question There's more than one way...
+  \begin{solution}
+    Proof by Induction.
+
+    Let $P(n)$ be $\sum_{i=0}^{n}{\binom{k+i}{k}} = \binom{k+n+1}{k+1}$
+
+    Induction hypothesis: $P(n)$ holds for all $n \ge 0$.
+
+    Base case: $n = 0$.
+    $$
+    \binom{k}{k} = \binom{k+1}{k+1} = 1
+    $$
+    So the base case holds.
+
+
+    Inductive step: Assume $P(n)$ to prove $P(n+1)$.
+    \begin{align*}
+        & \binom{k+n+1}{k+1} + \binom{k+n+1}{k} \\
+      = & \frac{(k+n+1)!}{(k+1)! n!} + \frac{(k+n+1)!}{k! (n+1)!} \\
+      = & \frac{(n+1)(k+n+1)! + (k+1)(k+n+1)!}{(k+1)! (n+1)!} \\
+      = & \frac{(k+n+1)!(k+n+2)}{(k+1)!(n+1)!} \\
+      = & \frac{(k+n+2)!}{(k+1)!(n+1)!} \\
+      = & \binom{k+n+2}{k+1}
+    \end{align*}
+    Thus, $P(n+1)$ holds.
+
+    We conclude that $P(n)$ holds for all $n \ge 0$. $\blacksquare$
+  \end{solution}
+
+\end{questions}
+\end{document}

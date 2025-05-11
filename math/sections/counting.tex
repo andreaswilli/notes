@@ -1,0 +1,136 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Counting}
+
+\subsection{Bijection Rule}
+
+If there is a bijection $f$ : $A \to B$ between $A$ and $B$, then $\lvert A \rvert = \lvert B \rvert$.
+
+We can use this to count the number of elements in a set by finding a bijection to a set we already know the size of. For example, if we can find a bijection to the set of all possible $n$-bit strings with $k$ ones and $n-k$ zeroes, we know the set has size $\binom{n}{k}$.
+
+\subsection{Product Rule}
+
+If $P_1$, $P_2$, ..., $P_n$ are sets, then: 
+$$
+\lvert P_1 \times P_2 \times ... \times P_n \rvert = \lvert P_1 \rvert \cdot \lvert P_2 \rvert \cdot ... \cdot \lvert P_n \rvert
+$$
+
+\subsection{Generalized Product Rule}
+
+Let $S$ be a set of length-$k$ sequences. If there are:
+\begin{itemize}
+  \item $n_1$ possible first entries,
+  \item $n_2$ possible second entries for each first entry,
+  \item $n_3$ possible third entries for each combination of first and second entries,
+  \item etc.
+\end{itemize}
+
+then:
+
+$$
+\lvert S \rvert = n_1 \cdot n_2 \cdot n_3 \cdot ... \cdot n_k
+$$
+
+For example, when creating permutations of a set of $n$ elements, the first element can be any of the $n$ elements, the second can be any of the remaining $n-1$ elements, and so on. Thus, the number of permutations is:
+
+$$
+n \cdot (n-1) \cdot (n-2) \cdot ... \cdot 2 \cdot 1 = n!
+$$
+
+\subsection{Subsets}
+
+The number of different subsets of an $n$-element set is $2^n$.
+
+\subsection{k-element Subsets}
+
+("permutations with repetition")
+
+How many $k$-element subsets of an $n$-element set are there?
+
+The notation for this is:
+$$
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+$$
+and it is read as "$n$ choose $k$". This expression if often called a "binomial coefficient" (because it appears in the Binomial Theorem).
+
+\subsection{Sequences with Repetitions}
+
+The number of of ($k_1$, $k_2$, ..., $k_m$)-splits of an $n$-element set is:
+
+$$
+\binom{n}{k_1, k_2, ..., k_m} = \frac{n!}{k_1! \cdot k_2! \cdot ... \cdot k_m!}
+$$
+
+The expression on the left is called a "multinomial coefficient".
+
+\subsubsection{Bookkeeper Rule}
+
+(also called the "formula for permutations with indistinguishable objects")
+
+Let $l_1$, ..., $l_m$ be distinct elements. The number of sequences with $k_1$ occurrences of $l_1$, and $k_2$ occurences of $l_2$, ..., and $k_m$ occurrences of $l_m$ is:
+
+$$
+\frac{(k_1 + k_2 + ... + k_m)!}{k_1! \cdot k_2! \cdot ... \cdot k_m!}
+$$
+
+\subsection{Sum Rule}
+
+If $A_1$, $A_2$, ..., $A_n$ are \textit{disjoint} sets (= they have no intersections), then: 
+$$
+\lvert A_1 \cup A_2 \cup ... \cup A_n \rvert = \lvert A_1 \rvert + \lvert A_2 \rvert + ... + \lvert A_n \rvert
+$$
+
+For intersecting sets use the principle of inclusion-exclusion.
+
+\subsection{Inclusion-Exclusion Principle}
+
+For two sets, $S_1$ and $S_2$, the size of their union is:
+
+\begin{align*}
+  \lvert S_1 \cup S_2 \rvert = &\lvert S_1 \rvert + \lvert S_2 \rvert \\
+                               &- \lvert S_1 \cap S_2 \rvert
+\end{align*}
+
+For three sets, $S_1$, $S_2$, and $S_3$, the size of their union is:
+
+\begin{align*}
+  \lvert S_1 \cup S_2 \cup S_3 \rvert = &\lvert S_1 \rvert + \lvert S_2 \rvert + \lvert S_3 \rvert \\
+                                        &- \lvert S_1 \cap S_2 \rvert - \lvert S_1 \cap S_3 \rvert - \lvert S_2 \cap S_3 \rvert \\
+                                        &+ \lvert S_1 \cap S_2 \cap S_3 \rvert
+\end{align*}
+
+In general, for $n$ sets, $S_1$, $S_2$, ..., $S_n$, the size of their union is:
+
+\begin{align*}
+  \lvert \bigcup_{i=1}^{n}{S_i} \rvert = &\sum_{i=1}^{n}{\lvert S_i \rvert} \\
+                                                 &- \sum_{1 \leq i < j \leq n}{\lvert S_i \cap S_j \rvert} \\
+                                                 &+ \sum_{1 \leq i < j < k \leq n}{\lvert S_i \cap S_j \cap S_k \rvert} \\
+                                                 &- ... \\
+                                                 &+ (-1)^{n+1} \lvert \bigcap_{i=1}^{n}{S_i} \rvert
+\end{align*}
+
+\subsection{Division Rule}
+
+A $k$-to-$1$ function maps exactly $k$ elements of the domain to every element of the codomain.
+
+If $f$ : $A \to B$ is $k$-to-$1$, then $\lvert A \rvert = k \cdot \lvert B \rvert$.
+
+\subsection{Combinatorial Proofs}
+
+Proof that relies on counting principles. The first step is usually the hard part:
+
+\begin{enumerate}
+  \item Define a set $S$.
+  \item Show that $\lvert S \rvert = n$ by counting one way.
+  \item Show that $\lvert S \rvert = m$ by counting another way.
+  \item Conclude that $n = m$.
+\end{enumerate}
+
+\subsection{Pigeonhole Principle}
+
+If $\lvert X \rvert > \lvert Y \rvert$, then for every total function $f$ : $X \to Y$, there exist two different elements of $X$ that are mapped to the same element of $Y$.
+
+To apply this we need to find the pigeons to use as the elements of $X$ and the holes to use as the elements of $Y$. We also need to find a mapping that maps \textit{every} pigeon to a hole.
+
+\end{document}

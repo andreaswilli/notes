@@ -1,0 +1,69 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 18}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 18}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Nerditosis
+  \begin{parts}
+
+    \part Doctor X
+    \begin{solution}
+      There are two kinds of mistakes: false-positives and false-negatives.
+
+      For the $0.1\%$ of people who have the disease, $1\%$ will get a negative test result.
+
+      For the $99.9\%$ of people who do not have the disease, $3\%$ will get a positive test result.
+
+      Total Probability Law:
+      $$
+      Pr\{E\} = Pr\{E|D\} \cdot Pr\{D\} + Pr\{E|\overline{D}\} \cdot Pr\{\overline{D}\}
+      $$
+
+      So the probability of a mistake is:
+      $$
+      Pr\{E\} = 0.01 \cdot 0.001 + 0.03 \cdot 0.999 = 0.02998
+      $$
+    \end{solution}
+
+    \part Doctor Y
+    \begin{solution}
+      By the Total Probability Law:
+      $$
+      Pr\{F\} = 0.999 \cdot 0.001 + 0.001 \cdot 0.999 = 0.001998
+      $$
+    \end{solution}
+
+    \part Which doctor is more reliable?
+    \begin{solution}
+      Doctor Y is more reliable because the probability of a mistake is lower.
+    \end{solution}
+  
+  \end{parts}
+
+  \question Barglesnort
+  \begin{solution}
+    \begin{align*}
+      Pr\{B_3 | \overline{T_2}\} &= \frac{Pr\{B_3 \cap \overline{T_2}\}}{Pr\{\overline{T_2}\}} \\
+                                 &= \frac{\frac{1}{24} + \frac{1}{12} + \frac{1}{12}}{1 - \frac{1}{12} - \frac{1}{24}} \\
+                                 &= \frac{5}{21}
+    \end{align*}
+  \end{solution}
+
+  \pagebreak
+  \question Prisoners
+  \begin{solution}
+    In the case where Voldemort is revealed, the probability is:
+    \begin{align*}
+      Pr\{S | R_V\} &= \frac{Pr\{S \cap R_V\}}{Pr\{R_V\}} \\
+                    &= \frac{\frac{1}{3}}{\frac{1}{6} + \frac{1}{3}} \\
+                    &= \frac{2}{3}
+    \end{align*}
+    The same is true for the case where Foo-Foo is revealed. Thus, the probability of Sauron getting released stays the same.
+  \end{solution}
+
+\end{questions}
+\end{document}

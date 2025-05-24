@@ -1,0 +1,116 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 19}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 19}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Bayes' Rule
+  \begin{parts}
+
+    \part Prove Bayes' Rule
+    \begin{solution}
+      \begin{align*}
+          &Pr\{A | B\} \cdot Pr\{B\} \\
+        = &Pr\{A \cap B\} \\
+        = &Pr\{B \cap A\} \\
+        = &Pr\{B | A\} \cdot Pr\{A\}
+      \end{align*}
+    \end{solution}
+
+    \part Weatherman
+    \begin{solution}
+      Let $R$ be the event that it rains, and let $U$ be the event that the weatherman carries an umbrella.
+
+      By Bayes' Rule, we have:
+      \begin{align*}
+        Pr\{U | R\} \cdot Pr\{R\} &= Pr\{R | U\} \cdot Pr\{U\} \\
+        0.8 \cdot 0.3 &= Pr\{R | U\} \cdot 0.4 \\
+        Pr\{R | U\} &= \frac{0.8 \cdot 0.3}{0.4} = 0.6 \\
+      \end{align*}
+    \end{solution}
+  
+  \end{parts}
+
+  \question DNA Profiles
+  \begin{parts}
+
+    \part What is the probability that two people's DNS profile would match?
+    \begin{solution}
+      We use the birthday problem with number of days $N$ and number of people $m$.
+
+      $$
+      N = 20000000000
+      $$
+      $$
+      m = 300000000
+      $$
+      So the probability that two people's DNS profile would match is:
+      $$
+      1 - e^{-300000000^2 / (2 \cdot 20000000000)} = 1 - e^{-2250000} \approx 1
+      $$
+    \end{solution}
+
+    \part Trial
+    \begin{solution}
+      The above argument shows that there is likely \textit{a} collision. However, if there is only one person with this specific DNA in the database, it's certain this is the person we're looking for.
+    \end{solution}
+  
+  \end{parts}
+
+  \pagebreak
+  \question The Immortals
+  \begin{parts}
+
+    \part What does your intuition say?
+    \begin{solution}
+      Intuition cannot be trusted when it comes to probability.
+    \end{solution}
+
+    \part What is the probability that the experiment succeeds as a function of $p$ and $n$?
+    \begin{solution}
+      The event of success $S$ consists of $n$ outcomes where $O_i$ the the outcome where Immortal at position $i$ gets heads while everyone else gets tails. $Pr\{O_i\} = p(1-p)^{n-1}$.
+
+      So $Pr\{S\} = np(1-p)^{n-1}$.
+    \end{solution}
+
+    \part How could $p$ be chosen to maximize the probability of $S$?
+    \begin{solution}
+      
+      Let $f(p) = np(1-p)^{n-1}$. To find the maximum we first take the derivative:
+      \begin{align*}
+        f'(p) &= n((1-p)^{n-1} + p(1-n)(1-p)^{n-2}) \\
+              &= n(1-p)^{n-1} + (np-n^2p)(1-p)^{n-2} \\
+              &= (n-np)(1-p)^{n-2} + (np-n^2p)(1-p)^{n-2} \\
+              &= (n-np + np-n^2p)(1-p)^{n-2} \\
+              &= -n(np-1)(1-p)^{n-2} \\
+      \end{align*}
+      Now we set $f'(p) = 0$ to find the maximum:
+      \begin{align*}
+        0 &= -n(np-1)(1-p)^{n-2} \\
+        p &= \frac{1}{n} \text{ or } 1
+      \end{align*}
+
+      But $p=1$ means that the experiment is not successful, so the optimal value for $p$ is $\frac{1}{n}$.
+    \end{solution}
+
+    \part What is the probability of success if $p$ is chosen this way?
+    \begin{solution}
+      With $p = \frac{1}{n}$:
+      $$
+      Pr\{S\} = \left(1 - \frac{1}{n}\right)^{n-1}
+      $$
+
+      When $n$ grows large:
+      $$
+      \lim_{n \to \infty} \left(1 - \frac{1}{n}\right)^{n-1} = \frac{1}{e}
+      $$
+      This means the probability of success does not tend to zero if we choose $p$ correctly.
+    \end{solution}
+  
+  \end{parts}
+
+\end{questions}
+\end{document}

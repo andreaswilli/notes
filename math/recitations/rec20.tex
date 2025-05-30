@@ -1,0 +1,61 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 20}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 20}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Approximating the Cumulative Binomial Distribution Function
+  \begin{solution}
+
+    We have $\# heads = n - \# tails$.
+
+    The probability of the coin coming up tails is $1-p$.
+
+    So we can use the formula plugging in $\alpha = 1-\beta$ and $p = 1-p$:
+
+    $$
+    Pr\{\# tails \le (1-\beta) n\} \le \frac{\beta}{1 - (1-\beta)/(1-p)} \cdot \frac{2^{nH(1-\beta)}}{\sqrt{2 \pi \beta (1-\beta)n}} \cdot p^{\beta n}(1-p)^{(1-\beta)n}
+    $$
+  
+  \end{solution}
+
+  \question Gallup's Folly
+  \begin{parts}
+
+    \part Give an upper bound on the probability that the poll's estimate will be $0.04$ or more too low. Just write the expression; don't evalutate yet!
+    \begin{solution}
+      We are looking for $Pr\{qn \le (p-0.04) n\}$ which is upper-bounded by: 
+      $$
+        \frac{1.04 - p}{0.04/p} \cdot \frac{2^{nH(p-0.04)}}{\sqrt{2 \pi (p-0.04) (1.04-p) n}} \cdot p^{(p-0.04)n}(1-p){(1.04-p)n}
+      $$
+    \end{solution}
+
+    \part Give an upper bound on the probability that the poll's estimate will be 0.04 or move too high. Again, just write the expression.
+    \begin{solution}
+      $Pr\{qn \ge (p+0.04)n\} = Pr\{qn \le (0.96-p)n\}$ which is upper-bounded by:
+      $$
+        \frac{p+0.04}{1- (0.96-p)/(1-p)} \cdot \frac{2^{nH(p+0.04)}}{\sqrt{2 \pi (0.96-p) (p+0.04) n}} \cdot p^{(p+0.04)n}(1-p){(0.96-p)n}
+      $$
+    \end{solution}
+
+    \part Is Gallup's poll properly designed?
+    \begin{solution}
+      (skipped)
+    \end{solution}
+
+  \end{parts}
+
+  \question Noisy Channel
+  \begin{solution}
+    $Pr\{\# \text{ lost packets} \ge 0.02 \cdot 10000\} = Pr\{\# \text{ transmitted packets} \le 0.98 \cdot 10000\}$ is upper-bounded by:
+
+    $$
+    \frac{0.02}{1 - 0.98/0.99} \cdot \frac{2^{10000(0.98 \log_2 \frac{1}{0.98} + 0.02 \log_2 \frac{1}{0.02})}}{\sqrt{2 \pi 0.98 \cdot 0.02 \cdot 10000}} \cdot 0.99^{0.98 \cdot 10000}0.01^{0.02 \cdot 10000} \approx 5.68609 \cdot 10^{-19}
+    $$
+  \end{solution}
+
+\end{questions}
+\end{document}

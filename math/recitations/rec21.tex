@@ -1,0 +1,89 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 21}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 21}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Dice Game
+  \begin{solution}
+
+    The probability of the number coming up three times is $(1/6)^3 = 1/216$.
+
+    The probability of the number coming up twice is $\binom{3}{2} (1/6)^2 (5/6) = \frac{3!}{2! \cdot 1!} (1/36) (5/6) = 5/72$.
+
+    The probability of the number coming up once is $\binom{3}{1} (1/6) (5/6)^2 = 3 (1/6) (25/36) = 25/72$.
+
+    Thus, the probability of the number not coming up at all is $1 - 1/216 - 5/72 - 25/72 = 1 - 1/216 - 15/216 - 75/216 = 125/216$.
+
+    So the expected winnings are $4 \cdot \frac{1}{216} + 2 \cdot \frac{5}{72} + 1 \cdot \frac{25}{72} + (-1) \cdot \frac{125}{216} = \frac{4 + 30 + 75 - 125}{216} = -\frac{2}{27}$.
+
+    This means the game is not likely to be profitable for the player.
+  \end{solution}
+
+  \question Monopoly
+  \begin{parts}
+
+    \part What is the expected sum of two dice, given that the same number comes up on both?
+    \begin{solution}
+      Let $D$ be the random variable representing the result of one die roll. Then $Ex(2 \cdot D) = 2 \cdot Ex(D) = 2 \cdot 3.5 = 7$.
+    \end{solution}
+
+    \part What is the expected sum of two dice, given that different numbers come up?
+    \begin{solution}
+      Let $S$ be the event that the two dice show the same number. By Total Expectation we have:
+
+      \begin{align*}
+        Ex(2 \cdot D) &= Ex(2 \cdot D | S) Pr\{S\} + Ex(2 \cdot D | \overline{S}) Pr\{\overline{S}\} \\
+        7 &= 7 \cdot \frac{1}{6} + Ex(2 \cdot D | \overline{S}) \cdot \frac{5}{6} \\
+        Ex(2 \cdot D | \overline{S}) &= (7 - \frac{7}{6}) \cdot \frac{6}{5} \\
+                                     &= 7
+      \end{align*}
+    \end{solution}
+
+    \part Write the expected number of sqares a piece advances in these terms.
+    \begin{solution}
+    
+      \begin{align*}
+        Ex(\text{advance}) = &Ex(X_1 | \overline{E_1}) \cdot Pr\{\overline{E_1}\} \\
+                             &+ Ex(X_1 + X_2 | E_1 \cap \overline{E_2}) \cdot Pr\{E_1 \cap \overline{E_2}\} \\
+                            &+ Ex(X_1 + X_2 + X_3 | E_1 \cap E_2 \cap \overline{E_3}) \cdot Pr\{E_1 \cap E_2 \cap \overline{E_3}\} \\
+                            &+ Ex(0 | E_1 \cap E_2 \cap E_3) \cdot Pr\{E_1 \cap E_2 \cap E_3\}
+      \end{align*}
+
+      \pagebreak 
+      By linearity of expectation, we can write this as:
+      \begin{align*}
+        Ex(\text{advance}) &= Ex(X_1 | \overline{E_1}) \cdot Pr\{\overline{E_1}\} \\
+                     &+ (Ex(X_1 | E_1 \cap \overline{E_2}) + Ex(X_2 | E_1 \cap \overline{E_2})) \cdot Pr\{E_1 \cap \overline{E_2}\} \\
+                     &+ (Ex(X_1 | E_1 \cap E_2 \cap \overline{E_3}) + Ex(X_2 | E_1 \cap E_2 \cap \overline{E_3}) + Ex(X_3 | E_1 \cap E_2 \cap \overline{E_3})) \\
+                     &\cdot Pr\{E_1 \cap E_2 \cap \overline{E_3}\} \\
+                     &+ 0
+      \end{align*}
+
+      Using mutual independence, we can simplify this to:
+      \begin{align*}
+        Ex(\text{advance}) &= Ex(X_1 | \overline{E_1}) \cdot Pr\{\overline{E_1}\} \\
+                           &+ (Ex(X_1 | E_1) + Ex(X_2 | \overline{E_2})) \cdot Pr\{E_1\} \cdot Pr\{\overline{E_2}\} \\
+                           &+ (Ex(X_1 | E_1) + Ex(X_2 | E_2) + Ex(X_3 | \overline{E_3})) \cdot Pr\{E_1\} \cdot Pr\{E_2\} \cdot Pr\{\overline{E_3}\} \\
+      \end{align*}
+    \end{solution}
+
+    \part What is the expected number of squares that a piece advances in Monopoly? 
+    \begin{solution}
+      \begin{align*}
+        Ex(\text{advance}) &= 7 \cdot \frac{5}{6} \\
+                           &+ (7 + 7) \cdot \frac{1}{6} \cdot \frac{5}{6} \\
+                           &+ (7 + 7 + 7) \cdot \frac{1}{6} \cdot \frac{1}{6} \cdot \frac{5}{6} \\
+                           &= 5 \frac{5}{6} + 1 \frac{34}{36} + \frac{105}{216} \\
+                           &= 6 \frac{180 + 204 + 105}{216} \\
+                           &= 8 \frac{19}{72}
+      \end{align*}
+    \end{solution}
+
+  \end{parts}
+
+\end{questions}
+\end{document}

@@ -1,0 +1,112 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 22}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 22}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Properties of Variance
+  \begin{parts}
+
+    \part Show that for any random variable $R$, $\text{Var}[R] = \text{E}[R^2] - \text{E}^2[R]$.
+    \begin{solution}
+    
+      We start from the definition of variance:
+
+      \begin{align*}
+        \text{Var}[R] &= \text{E}[(R - \text{E}[R])^2] \\
+                      &= \text{E}[R^2] - \text{E}[2R\text{E}[R]] + \text{E}^2[R] \\
+                      &= \text{E}[R^2] - 2 \text{E}[R] \text{E}[R] + \text{E}^2[R] \\
+                      &= \text{E}[R^2] - 2 \text{E}^2[R] + \text{E}^2[R] \\
+                      &= \text{E}[R^2] - \text{E}^2[R]
+      \end{align*}
+
+      Thus, we have shown that $\text{Var}[R] = \text{E}[R^2] - \text{E}^2[R]$. $\blacksquare$
+    \end{solution}
+
+    \part Show that for any random variable $R$ and constants $a$ and $b$, $\text{Var}[aR+b] = a^2 \text{Var}[R]$. Conclude that the standard deviation of $aR+b$ is $a$ times the standard deviation of $R$.
+    \begin{solution}
+      \begin{align*}
+        \text{Var}[aR+b] &= \text{E}[(aR+b)^2] - \text{E}^2[aR+b] \\
+                         &= \text{E}[a^2R^2 + 2abR + b^2] - (a \text{E}[R] + b)^2 \\
+                         &= a^2 \text{E}[R^2] + 2ab \text{E}[R] + b^2 - a^2 \text{E}^2[R] - 2ab \text{E}[R] - b^2 \\
+                         &= a^2 (\text{E}[R^2] - \text{E}^2[R]) \\
+                         &= a^2 \text{Var}[R]
+      \end{align*}
+
+      By taking the square root of both sides, we conclude that $\sigma (aR+b) = \sqrt{a^2 \text{Var}[R]} = a \sigma (R)$. $\blacksquare$
+    \end{solution}
+
+    \part Show that if $R_1$ and $R_2$ are independent random variables, then $\text{Var}[R_1 + R_2] = \text{Var}[R_1] + \text{Var}[R_2]$.
+    \begin{solution}
+      \begin{align*}
+        \text{Var}[R_1 + R_2] &= \text{E}[(R_1 + R_2)^2] - \text{E}^2[R_1 + R_2] \\
+                       &= \text{E}[R_1^2 + 2R_1R_2 + R_2^2] - (\text{E}[R_1] + \text{E}[R_2])^2 \\
+                       &= \text{E}[R_1^2] + 2\text{E}[R_1]\text{E}[R_2] + \text{E}[R_2^2] - (\text{E}^2[R_1] + 2\text{E}[R_1]\text{E}[R_2] + \text{E}^2[R_2]) \\
+                      &= \text{E}[R_1^2] - \text{E}^2[R_1] + \text{E}[R_2^2] - \text{E}^2[R_2] \\
+                       &= \text{Var}[R_1] + \text{Var}[R_2] \blacksquare
+      \end{align*}
+    \end{solution}
+
+    \pagebreak
+    \part Give an exmpale of random variables $R_1$ and $R_2$ for which the above is not true.
+    \begin{solution}
+
+      Let $R = R_1 = R_2$. Then:
+      \begin{align*}
+        \text{Var}[2R] &= \text{Var}[R] + \text{Var}[R] \\
+        \text{Var}[2R] &= 2 \text{Var}[R] \\
+        \text{E}[(2R)^2] - \text{E}^2[2R] &= 2 (\text{E}[R^2] - \text{E}^2[R]) \\
+        4 (\text{E}[R^2] - \text{E}^2[R]) &\ne 2 (\text{E}[R^2] - \text{E}^2[R]) \\
+      \end{align*}
+
+      This can only hold if $\text{Var}[R] = 0$, which means that $R$ is a constant random variable. So any non-constant random variable $R$ will work. $\blacksquare$
+    \end{solution}
+
+    \part Compute the variance and standard deviation of the Binomial distribution $H_{n,p}$ with parameters $n$ and $p$.
+    \begin{solution}
+    
+      $H_{n,p} = \sum_{k=1}^n I_k$ where the $I_k$ are mutually independent random variables with values $0$ or $1$. We also known that $\text{Pr}\{I_k = 1\} = p$.
+
+      The variance of $I_k$ is:
+      \begin{align*}
+        \text{Var}[I_k] &= \text{E}[I_k^2] - \text{E}^2[I_k] \\
+                &= \text{E}[I_k] - \text{E}^2[I_k] \\
+                &= p - p^2 \\
+                &= p(1-p)
+      \end{align*}
+
+      Then, by mutual independence and linearity, we have:
+      \begin{align*}
+        \text{Var}[H_{n,p}] &= \text{Var}\left[\sum_{k=1}^n I_k\right] \\
+                  &= \sum_{k=1}^n \text{Var}[I_k] \\
+                  &= np(1-p)
+      \end{align*}
+
+      Thus, the standard deviation is:
+      $$
+      \sigma(H_{n,p}) = \sqrt{np(1-p)}
+      $$
+    \end{solution}
+
+    \pagebreak
+    \part Prove that $\text{Var}[T] \le \text{Ex}[T]$.
+    \begin{solution}
+    
+      Consider a single component of $T$ called $T_j$:
+      \begin{align*}
+        \text{Var}[T_j] &= \text{Ex}[T_j^2] - \text{Ex}^2[T_j] \\
+                        &\le \text{Ex}[T_j]
+      \end{align*}
+
+      This holds because $\text{Ex}[T_j^2] \le \text{Ex}[T_j]$ (since its value is between $0$ and $1$) and $\text{Ex}^2[T_j] \ge 0$.
+
+      Thus, since the variance of every term $T_j$ in $T$ is upper bounded by the expectation of $T_j$ the same must be true for the sum of all $T_j$. We conclude that $\text{Var}[T] \le \text{Ex}[T]$. $\blacksquare$
+    \end{solution}
+
+  \end{parts}
+
+\end{questions}
+\end{document}

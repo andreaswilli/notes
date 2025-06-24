@@ -1,0 +1,188 @@
+\documentclass[../main.tex]{subfiles}
+
+\firstpageheader{6.042}{Recitation Problems 23}{Page \thepage\ of \numpages}
+\runningheader{6.042}{Recitation Problems 23}{Page \thepage\ of \numpages}
+
+\begin{document}
+
+\begin{questions}
+
+  \question Getting Dressed
+  \begin{parts}
+
+    \part Let $X$ be the number of these that I forget. What is $\text{Ex}(X)$?
+    \begin{solution}
+      The expected number of events that happen is the sum of the event probabilities:
+      $$
+      \text{Ex}(X) = 0.2 + 0.1 + 0.1 + 0.3 = 0.7
+      $$
+    \end{solution}
+
+    \part Upper bound the probability that I forget one or more items. Make no independence assumptions.
+    \begin{solution}
+      Let $X$ be the random variable that denotes the number of events that occur.
+
+      By Markov's Inequality:
+      $$
+      \text{Pr}\{X \ge 1\} \le \frac{\text{Ex}(X)}{1} = 0.7
+      $$
+    \end{solution}
+
+    \part Use the Markov Inequality to upper bound the probability that I forget 3 or more items.
+    \begin{solution}
+      By Markov's Inequality:
+      $$
+      \text{Pr}\{X \ge 3\} \le \frac{\text{Ex}(X)}{3} = \frac{0.7}{3} = \frac{7}{30}
+      $$
+    \end{solution}
+
+    \part Now suppose that I forget each item of footwear independently. Use Chebyshev's Inequality to upper bound the probability that I forget two or more items.
+    \begin{solution}
+      For any random variable $R$, $\text{Var}[R] = \text{Ex}[R^2] - \text{Ex}^2 [R]$.
+
+      Let $X_1, ..., X_4$ be the random variables that denote whether I forget each of the four items. Since $X_i$ can only be 0 or 1, $X_i^2 = X_i$. This means that $\text{Var}[X_i] = \text{Ex}[R] - \text{Ex}^2[R]$.
+
+      For our four items, we have:
+      \begin{align*}
+        \text{Var}[X_1] = 0.2 - 0.04 = 0.16 \\
+        \text{Var}[X_2] = 0.1 - 0.01 = 0.09 \\
+        \text{Var}[X_3] = 0.1 - 0.01 = 0.09 \\
+        \text{Var}[X_4] = 0.3 - 0.09 = 0.21
+      \end{align*}
+
+      Since the events are independent, we can sum the variances:
+      $$
+      \text{Var}[X] = 0.16 + 0.09 + 0.09 + 0.21 = 0.55
+      $$
+
+      Now we can apply Chebyshev's Inequality:
+      $$
+      \text{Pr}\{X \ge 2\} = \text{Pr}\{|X - \text{Ex}(X)| \ge 2 - 0.7\} \le \frac{\text{Var}[X]}{(2 - 0.7)^2} = \frac{0.55}{1.69} \le 0.326
+      $$
+    
+    \end{solution}
+
+    \pagebreak
+    \part Use Murphy's Law to lower bound the probability that I forget one or more items.
+    \begin{solution}
+    
+      By Murphy's Law:
+      $$
+      \text{Pr}\{X_1 \cup ... \cup X_4\} \ge 1 - e^{-\text{Ex}(X)} = 1 - e^{-0.7} \ge 0.503
+      $$
+    \end{solution}
+
+    \part Suppose I remember items mutually independently and $\text{Ex}(X) = 36$. Use Chernoff's Bound to give an upper bound on the probability that I remember 48 or more items.
+    \begin{solution}
+
+      Chernoff's Bound states that for any $c > 1$:
+      $$
+      \text{Pr}\{X \ge c \text{Ex}(X)\} \le e^{-(c \ln c - c + 1) \text{Ex}(X)}
+      $$
+
+      In this case, we have $c = \frac{48}{36} = \frac{4}{3}$. So:
+      $$
+      \text{Pr}\{X \ge 48\} \le e^{-\left(\frac{4}{3} \ln \frac{4}{3} - \frac{4}{3} + 1\right) 36} \approx 0.1638
+      $$
+    \end{solution}
+
+    \part Give an upper bound on the probability that I remember 108 or more items.
+    \begin{solution}
+      In this case, we have $c = \frac{108}{36} = 3$. So:
+      $$
+      \text{Pr}\{X \ge 108\} \le e^{-(3 \ln 3 - 3 + 1) 36} \le e^{-46} \approx 1.05 \times 10^{-20}
+      $$
+    \end{solution}
+
+  \end{parts}
+
+  \question A Financial Crisis
+  \begin{parts}
+
+    \part Suppose that $1000$ loans make up a bond, and the fail rate is 5\% a year. Assuming mutual independence, give an upper bound for the probability that there are one or more failures in the second-worst tranche. What is the probability that there are failures in the best tranche?
+    \begin{solution}
+
+      Let $X_i$ be the random variable that denotes whether the $i$-th loan fails. Let $X = \sum_{i=1}^{1000} X_i$ be the total number of failures. The expected value of each loan is:
+      $$
+      \text{Ex}(X_i) = 0.05
+      $$
+
+      Thus, the expected value of the total number of failures is:
+      $$
+      \text{Ex}(X) = 1000 \cdot 0.05 = 50
+      $$
+
+      Now, we can use Chernoff's Bound to upper bound the probability that there are one or more failures in the second-worst tranche. This means we use $c = \frac{101}{50}$.
+      $$
+      \text{Pr}\{X \ge 101\} \le e^{-\left(\frac{101}{50} \ln \frac{101}{50} - \frac{101}{50} + 1\right) 50} \approx 2.03 \times 10^{-9}
+      $$
+
+      Similarly, for the best tranche, we can use $c = \frac{901}{50}$:
+      $$
+      \text{Pr}\{X \ge 901\} \le e^{-\left(\frac{901}{50} \ln \frac{901}{50} - \frac{901}{50} + 1\right) 50} \approx 1.41 \times 10^{-762}
+      $$
+    \end{solution}
+
+    \part Now, do not assume that the loans are independent. Give an upper bound for the probability that there are one or more failures in the second tranche. What is an upper bound for the probability that the entire bond defaults? Show that it is a tight bound.
+    \begin{solution}
+      
+      Let $X$ be the total number of defaults.
+
+      Using Markov's Inequality:
+      $$
+      \text{Pr}\{X \ge 100\} \le \frac{\text{Ex}(X)}{100} = \frac{50}{100} = \frac{1}{2}
+      $$
+
+      $$
+      \text{Pr}\{X \ge 1000\} \le \frac{\text{Ex}(X)}{1000} = \frac{50}{1000} = \frac{1}{20}
+      $$
+
+      These bounds are thight because we can give examples that are equal to the bounds. 
+
+      For the first case, assume 100 loans are completely dependent and default with probability $\frac{1}{2}$. All other bounds never default. The expected value of $X$ is still $50 = \frac{100}{2}$ and the probability that 100 loans fail is now $\frac{1}{2}$.
+
+      For the second case, assume all 1000 loans are completely dependent and default with probability $\frac{1}{20}$. The expected value of $X$ is still $50 = \frac{1000}{20}$ and the probability that 1000 loans fail is now $\frac{1}{20}$.
+    \end{solution}
+  
+    \part Given this setup (and assuming mutual independence between the loans), what is the expected failure rate in the mezzanine tranche?
+    \begin{solution}
+      The expected number of total failures is $50$. Since all $50$ failures are part of this tranche, its expected failure rate is $50\%$.
+    \end{solution}
+
+    \part We take the mezzanine tranches from 100 bonds and create a CDO. What is the expected number of underlying failures to hit the CDO?
+    \begin{solution}
+      The expected number of failures is $50 \cdot 100 = 5000$.
+    \end{solution}
+
+    \part We divide this CDO into 10 tranches of 1000 loans each. Assuming mutual independence, give an upper bound on the probability of one or more failures in the best tranche. The third tranche?
+    \begin{solution}
+    
+      Using Chernoff's Bound with $c = \frac{9001}{5000}$:
+      $$
+      \text{Pr}\{X \ge 9001\} \le e^{-\left(\frac{9001}{5000} \ln \frac{9001}{5000} - \frac{9001}{5000} + 1\right) 5000} \approx 2.95 \times 10^{-561}
+      $$
+
+      For the third tranche, we use $c = \frac{7001}{5000}$:
+      $$
+      \text{Pr}\{X \ge 7001\} \le e^{-\left(\frac{7001}{5000} \ln \frac{7001}{5000} - \frac{7001}{5000} + 1\right) 5000} \approx 3.52 \times 10^{-155}
+      $$
+    \end{solution}
+
+    \part Repeat the previous question without the assumption of mutual independence.
+    \begin{solution}
+      Using Markov's Inequality:
+      $$
+      \text{Pr}\{X \ge 9001\} \le \frac{\text{Ex}(X)}{9001} = \frac{5000}{9001} \approx 0.555
+      $$
+      For the third tranche:
+      $$
+      \text{Pr}\{X \ge 7001\} \le \frac{\text{Ex}(X)}{7001} = \frac{5000}{7001} \approx 0.714
+      $$
+    
+    \end{solution}
+
+  \end{parts}
+
+
+\end{questions}
+\end{document}

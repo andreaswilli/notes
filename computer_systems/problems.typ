@@ -333,3 +333,49 @@ $-8 + 16 = 8$ and $-1 + 16 = 15$. Positive numbers (and zero) stay the same.
   [$-2147483647-1 < -2147483647$], [Signed], [$1$],
   [$-2147483647-1"U" < -2147483647$], [Unsigned], [$1$],
 )
+
+==
+
+*A.* $[1011] = -2^3 + 2^1 + 2^0 = -5$ \
+*B.* $[11011] = -2^4 + 2^3 + 2^1 + 2^0 = -5$ \
+*C.* $[111011] = -2^5 + 2^4 + 2^3 + 2^1 + 2^0 = -5$ \
+
+==
+
+#table(
+  columns: 3,
+  align: center,
+  table.header([*`w`*], [*`fun1(w)`*], [*`fun2(w)`*]),
+  [`0x00000076`], [`0x00000076`], [`0x00000076`],
+  [`0x87654321`], [`0x00000021`], [`0x00000021`],
+  [`0x000000C9`], [`0x000000C9`], [`0xFFFFFFC9`],
+  [`0xEDCBA987`], [`0x00000087`], [`0xFFFFFF87`],
+)
+
+`fun1` keeps only the least significant byte and sets the other three to all
+zeroes, resulting in a value between 0 and 255. `fun2` also extracts the least
+significant byte, but it performs sign extension instead of zero extension,
+which results in a value between -128 and 127.
+
+==
+
+#table(
+  columns: 6,
+  align: center,
+  table.header(
+    table.cell([*Hex*], colspan: 2),
+    table.cell([*Unsigned*], colspan: 2),
+    table.cell([*Two's complement*], colspan: 2),
+  ),
+  [Original], [Truncated], [Original], [Truncated], [Original], [Truncated],
+  table.hline(),
+  [0], [0], [0], [0], [0], [0],
+  [2], [2], [2], [2], [2], [2],
+  [9], [1], [9], [1], [-7], [1],
+  [B], [3], [11], [3], [-5], [3],
+  [F], [7], [15], [7], [-1], [-1],
+)
+
+We can use the equations to verify these results. For example, in hex F
+truncates to 7, in unsigned $B 2 U_4(1111) mod 2^3 = 7$ and in two's complement
+$U 2 T_3(B 2 U_4(1111) mod 2^3) = -1$.

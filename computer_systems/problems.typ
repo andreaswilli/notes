@@ -379,3 +379,25 @@ which results in a value between -128 and 127.
 We can use the equations to verify these results. For example, in hex F
 truncates to 7, in unsigned $B 2 U_4(1111) mod 2^3 = 7$ and in two's complement
 $U 2 T_3(B 2 U_4(1111) mod 2^3) = -1$.
+
+==
+
+Because `length` is unsigned the expression $0 - 1$ evaluates to UMax. The
+comparison has an unsigned integer on one side, which means the other side will
+also be treated as unsigned. Of course every unsigned number is $<=$ UMax and so
+we try to access invalid array elements.
+
+We can fix it by changing the condition to `i < length` or changing `length` to
+a signed integer.
+
+==
+
+*A.* The function returns wrong results in case `t` is longer than `s`.
+
+*B.* The problem is that `strlen` returns a `size_t` which is unsigned. When
+calculating `strlen(s) - strlen(t)` where `t` is longer than `s` unsigned
+arithmetic is used, resulting in a number close to UMax instead of a negative
+number. This is obviously greater than 0 so the function incorrectly says that
+`s` is longer.
+
+*C.* We can fix it by changing the condition to `strlen(s) > strlen(t)`.

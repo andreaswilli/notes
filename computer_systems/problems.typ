@@ -15,7 +15,7 @@
 )
 #show raw: it => box(
   fill: rgb("eee"),
-  inset: 4pt,
+  inset: if it.block { 10pt } else { 4pt },
   baseline: 4pt,
   radius: 2pt,
   math.mono(text(it)),
@@ -401,3 +401,84 @@ number. This is obviously greater than 0 so the function incorrectly says that
 `s` is longer.
 
 *C.* We can fix it by changing the condition to `strlen(s) > strlen(t)`.
+
+==
+
+```c
+/* Determine whether arguments can be added without overflow */
+int uadd_ok(unsigned x, unsigned y) {
+  return x + y >= x;
+}
+
+```
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header(
+    table.cell([*$x$*], colspan: 2), table.cell([*$-^u_omega x$*], colspan: 2)
+  ),
+  [*Hex*], [*Decimal*], [*Decimal*], [*Hex*],
+  table.hline(),
+  [0], [0], [0], [0],
+  [5], [5], [11], [B],
+  [8], [8], [8], [8],
+  [D], [13], [3], [3],
+  [F], [15], [1], [1],
+)
+
+==
+
+#table(
+  columns: 5,
+  align: center,
+  table.header($x$, $y$, $x+y$, $x +^t_5 y$, [Case]),
+  [-12], [-15], [-27], [5], [1],
+  [[10100]], [[10001]], [[100101]], [[00101]], [],
+  table.hline(),
+  [-8], [-8], [-16], [-16], [2],
+  [[11000]], [[11000]], [[110000]], [[10000]], [],
+  table.hline(),
+  [-9], [8], [-1], [-1], [2],
+  [[10111]], [[01000]], [[111111]], [[11111]], [],
+  table.hline(),
+  [2], [5], [7], [7], [3],
+  [[00010]], [[00101]], [[000111]], [[00111]], [],
+  table.hline(),
+  [12], [4], [16], [-16], [4],
+  [[01100]], [[00100]], [[010000]], [[10000]], [],
+)
+
+==
+
+```c
+/* Determine whether arguments can be added without overflow */
+int tadd_ok(int x, int y) {
+  int sum = x + y;
+
+  if (x > 0 && y > 0) {
+    return sum > 0;
+  }
+
+  if (x < 0 && y < 0) {
+    return sum < 0;
+  }
+
+  return 1;
+}
+```
+
+==
+
+$"sum" - x$ can overflow again, since it's another two's complement addition.
+For example, if $x$ and $y$ are large positive numbers whose sum overflows to a
+negative number, then $"sum" - x$ will cause a negative overflow "wrapping back
+around" to $y$. So this check will not detect the overflow.
+
+==
+
+The function will be incorrect for $y = "TMin"_omega$. This is because the two's
+complement representation is not symmetric. $-y = -"TMin"_omega = "TMin"_omega$
+causes and overflow possibly resulting in an incorrect return value.

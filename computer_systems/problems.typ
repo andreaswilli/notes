@@ -481,4 +481,4 @@ around" to $y$. So this check will not detect the overflow.
 
 The function will be incorrect for $y = "TMin"_omega$. This is because the two's
 complement representation is not symmetric. $-y = -"TMin"_omega = "TMin"_omega$
-causes and overflow possibly resulting in an incorrect return value.
+causes an overflow possibly resulting in an incorrect return value.

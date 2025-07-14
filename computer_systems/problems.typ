@@ -482,3 +482,83 @@ around" to $y$. So this check will not detect the overflow.
 The function will be incorrect for $y = "TMin"_omega$. This is because the two's
 complement representation is not symmetric. $-y = -"TMin"_omega = "TMin"_omega$
 causes an overflow possibly resulting in an incorrect return value.
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header(table.cell($x$, colspan: 2), table.cell($-^t_4 x$, colspan: 2)),
+  [Hex], [Decimal], [Decimal], [Hex],
+  table.hline(),
+  [0], [0], [0], [0],
+  [5], [5], [-5], [B],
+  [8], [-8], [-8], [8],
+  [D], [-3], [3], [3],
+  [F], [-1], [1], [1],
+)
+
+The bit patterns for two's complement and unsigned negation are the same.
+
+==
+
+#table(
+  columns: 5,
+  align: (left, right, right, right, right),
+  table.header([Mode], $x$, $y$, $x dot y$, [Truncated $x dot y$]),
+  [Unsigned], [$4=[100]$], [$5=[101]$], [$20=[010100]$], [$4=[100]$],
+  [Two's complement], [$-4=[100]$], [$-3=[101]$], [$12=[001100]$], [$-4=[100]$],
+  table.hline(),
+  [Unsigned], [$2=[010]$], [$7=[111]$], [$14=[001110]$], [$6=[110]$],
+  [Two's complement], [$2=[010]$], [$-1=[111]$], [$-2=[111110]$], [$-2=[110]$],
+  table.hline(),
+  [Unsigned], [$6=[110]$], [$6=[110]$], [$36=[100100]$], [$4=[100]$],
+  [Two's complement], [$-2=[110]$], [$-2=[110]$], [$4=[000100]$], [$-4=[100]$],
+)
+
+==
+
+*1.* Let $t = u + p_(omega-1)$ where $u$ is the two's complement number
+represented by the $omega$ upper bits of the $2 omega$-bit representation of
+$x dot y$. Since $p_(omega-1)$ is either 0 or 1, there are two possibilities for
+$t$ to equal 0.
+
++ If $p_(omega-1) = 0$ then it must be that $u = 0$ (upper $omega$ bits are all
+  0s).
++ If $p_(omega-1) = 1$ then it must be that $u = -1$ (upper $omega$ bits are all
+  1s).
+
+So $t = 0$ if the upper $omega+1$ bits are all 0s or all 1s. These are exactly
+the cases where the multiplication does not overflow. All other cases do
+overflow.
+
+This means we can write $x dot y = p + t 2^omega$ which overflows iff $t != 0$.
+
+*2.* To show that $p$ can be written in the form $p = x dot q + r$, where
+$|r| < |q|$ we consider integer division. Dividing $p$ by nonzero $x$ gives a
+quotiont $q$ and remainder $r$, such that $|r| < |q|$.
+
+*3.* By plugging in we get $x dot y = x dot q + r + t 2^omega$. If
+$r + t 2^omega = 0$ then $q = y$. Since $|r| < |q| < 2^omega$ this can only hold
+if $r = t = 0$.
+
+==
+
+```c
+/* Determine whether arguments can be multiplied without overflow */
+int tmult_ok(int x, int y) {
+  int64_t prod = ((int64_t)x) * y;
+  int64_t upper = prod >> 31;
+  // if the upper 33 bits are all 1s or 0s the number fits into 32 bits
+  return upper == 0 || upper == -1;
+}
+```
+
+==
+
+*A.* The new code does not improve the situation since the 64-bit number will be
+truncated to 32 bits when passed to `malloc`. This truncation is the same that
+also happens when the multiplication overflows.
+
+*B.* Check the multiplication for overflow (by one of the previous methods) and
+if it overflows immediately abort and don't allocate any memory.

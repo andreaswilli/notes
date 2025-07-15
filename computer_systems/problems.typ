@@ -562,3 +562,51 @@ also happens when the multiplication overflows.
 
 *B.* Check the multiplication for overflow (by one of the previous methods) and
 if it overflows immediately abort and don't allocate any memory.
+
+==
+
+A single #smallcaps([lea]) instruction can compute the following multiples:
+
+#table(
+  columns: 3,
+  table.header($k$, $b$, $(a<<k)+b$),
+  [0], [0], [$(2^0+0)a = 1a$],
+  [0], [a], [$(2^0+1)a = 2a$],
+  [1], [0], [$(2^1+0)a = 2a$],
+  [1], [a], [$(2^1+1)a = 3a$],
+  [2], [0], [$(2^2+0)a = 4a$],
+  [2], [a], [$(2^2+1)a = 5a$],
+  [3], [0], [$(2^3+0)a = 8a$],
+  [3], [a], [$(2^3+1)a = 9a$],
+)
+
+==
+
+In this case the expression simplifies to $-(x<<m)$. This is because shifting by
+$n+1=omega$ to the left results in 0 so we can ignore the first term.
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header($K$, [Shifts], [Add/Subs], [Expression]),
+  [$6$], [$2$], [$1$], [$(x<<2) + (x<<1)$],
+  [$31$], [$1$], [$1$], [$(x<<5) - x$],
+  [$-6$], [$2$], [$1$], [$(x<<1) - (x<<3)$],
+  [$55$], [$2$], [$2$], [$(x<<6) - (x<<3) - x$],
+)
+
+==
+
+Consider two cases:
+- $m>0$: In this case form A requires $n-m+1$ shifts and $n-m$ additions while
+  form B requires 2 shifts and 1 subtraction. So if $n=m$, form A is favorable
+  since it requires only 1 shift and 0 additions which is less than the constant
+  numbers required for form B. If $n=m+1$, form A takes 2 shifts and 1 addition,
+  so either form is equally efficient in this case. If $n>m+1$ form A takes
+  $n-m+1>2$ shifts and $n-m>1$ additions so form B is favorable in this case.
+- $m=0$: In this case the last bit does not cause a shift so form A requires $n$
+  shifts and $n$ additions, while form B takes 1 shift and 1 subtraction. The
+  same three cases apply in the same way here, so the above analysis extends to
+  this case as well.

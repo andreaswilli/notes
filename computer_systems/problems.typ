@@ -610,3 +610,51 @@ Consider two cases:
   shifts and $n$ additions, while form B takes 1 shift and 1 subtraction. The
   same three cases apply in the same way here, so the above analysis extends to
   this case as well.
+
+==
+
+```c
+int div16(int x) {
+  int bias = (x >> 31) & 15;
+  return (x + bias) >> 4;
+}
+```
+
+==
+
+$x$ is shifted to the left by 5 which is equivalent to multiplying by $2^5=32$.
+Then, one $x$ is subtracted from it, so we end up with $31x$ and $M=31$.
+
+If $y$ is negative, a bias of $7=8-1$ is added. Then $y$ is shifted right
+arithmetically by 3 which is equivalent to dividing by $2^3=8$. This means that
+$N=8$.
+
+==
+
+*A.* `false` for $x = -2^31$ which is `INT32_MIN`. $x$ is obviously not greater
+than 0, and $x-1$ overflows to `INT32_MAX` which is not lower than 0.
+
+*B.* Always `true`. The expressions are connected by `OR` so both parts would
+need to evaluate to 0. Let $x_2$ be $x$'s third bit from the right. For the
+first part to evaluate to 0 we need $x_2=1$. For the second part, $x_2$ will
+become the sign so it needs to be 0 to represent a positive number. This is
+obviously not possible at the same time so at least one part always evaluates to
+$1$.
+
+*C.* `false` for $x = 2^16-1$.
+
+*D.* Always `true`. For all negative numbers the first part of the expression
+evaluates to 1. For 0 the second part evaluates to 1. Every positive number can
+be negated and still fits into a 32-bit integer so in this case also the second
+parts evaluates to 1.
+
+*E.* `false` for $x = -2^31$ which is `INT32_MIN`. It's not greater than 0 and
+negating it causes an overflow (`-INT32_MIN = INT32_MIN`) which is still lower
+than 0.
+
+*F.* Always `true`. Addition works the same on the bit level for both unsigned
+and two's complement numbers. Since the right side is unsigned, C will interpret
+both sides as unsigned numbers for the comparison.
+
+*G.* Always `true`. `~y` is equal to $-y-1$. Also, on the bit level `uy * ux` is
+the same as `x * y`. Plugging in we get $x(-y-1) + x y = -x y - x + x y = -x$.

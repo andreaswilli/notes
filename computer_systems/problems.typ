@@ -658,3 +658,33 @@ both sides as unsigned numbers for the comparison.
 
 *G.* Always `true`. `~y` is equal to $-y-1$. Also, on the bit level `uy * ux` is
 the same as `x * y`. Plugging in we get $x(-y-1) + x y = -x y - x + x y = -x$.
+
+==
+
+#table(
+  columns: 3,
+  align: center,
+  table.header(
+    [Fractional value], [Binary representation], [Decimal representation]
+  ),
+  [$1/8$], [$0.001$], [$0.125$],
+  [$3/4$], [$0.11$], [$0.75$],
+  [$25/16$], [$1.1001$], [$1.5625$],
+  [$43/16$], [$10.1011$], [$2.6875$],
+  [$9/8$], [$1.001$], [$1.125$],
+  [$47/8$], [$101.111$], [$5.875$],
+  [$51/16$], [$11.0011$], [$3.1875$],
+)
+
+==
+
+*A.* Binary representation of $0.1 - x$ is: 0.0000000000000000000000011001100...
+
+*B.* The above is the binary representation of $0.1$ with the binary point
+shifted to the left by 20, so it is equal to
+$0.1 times 2^(-20) approx 9.54 times 10^(-8)$.
+
+*C.* After 100 hours the clock is behind by
+$9.54 times 10^(-8) dot 100 dot 60 dot 60 dot 10 approx 0.343$ seconds.
+
+*D.* $2000"m/s" dot 0.343"s" approx 686"m"$

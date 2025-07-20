@@ -716,3 +716,27 @@ $9.54 times 10^(-8) dot 100 dot 60 dot 60 dot 10 approx 0.343$ seconds.
   [0 11 10], [-], [-], [-], [-], [-], [-], [NaN], [-],
   [0 11 11], [-], [-], [-], [-], [-], [-], [NaN], [-],
 )
+
+==
+
+$3'510'593$ in binary is 11 0101 1001 0001 0100 0001 which equals
+$1.101011001000101000001 times 2^21$. So the biased exponent is
+$21 + 2^7 - 1 = 148$.
+
+The complete single-precision floating-point representation is:
+
+0 10010100 10101100100010100000100 or 0x4A564504
+
+Comparing the two we see that part of it overlaps:
+
+```
+00000000001101011001000101000001
+           *********************
+  01001010010101100100010100000100
+```
+
+==
+
+*A.* $2^(n+1) + 1$
+
+*B.* $2^24 + 1 = 16'777'217$

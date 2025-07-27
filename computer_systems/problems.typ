@@ -828,3 +828,18 @@ because $log_2 10^20 > 66$ and `double` has only `52` bits for representing the
 fraction. So when we set the least significant bit to 1 we would need about `66`
 bits to store the precise number. This means that adding `1.0` will have no
 effect on the very large number.
+
+#counter(heading).update((2, 57)) // skip 55 - 57
+
+==
+
+```c
+int is_little_endian() {
+  // set only least significant byte to 0x01
+  uint16_t x = 1;
+  // char pointer reads only first byte, so it will be:
+  // 0x00 on big endian systems
+  // 0x01 on little endian systems
+  return *(char *)&x;
+}
+```

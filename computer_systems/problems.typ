@@ -791,3 +791,40 @@ $2.38 times 10^(-8) dot 100 dot 60 dot 60 dot 10 approx 0.086$ seconds.
   [110 1111], $31/2$, [1011 000], $16$,
   [000 0001], $1/64$, [0001 000], $1/64$,
 )
+
+==
+
+```c
+#define POS_INFIFINTY 1e400 // overflows
+#define NEG_INFINITY (-POS_INFINITY)
+#define NEG_ZERO (1.0/NEG_INFINITY)
+```
+
+==
+
+*A.* Always `true`. `double` has enough range to represent all `int` values and
+it does not need to round. This also means no rounding when casting back.
+
+*B.* `false` for $2^24+1$. It is not true for all numbers with $24$ or more
+significant bits, since `float` uses $23$ bits for representing the fraction,
+which means these values get rounded and lose precision.
+
+*C.* `false` for $2^24+1$. The same reasoning as above applies here.
+
+*D.* Always `true`. `double` has enough range and precision to exactly represent
+any `float`.
+
+*E.* Always `true`. Negating the `float` only flips the sign bit and loses no
+information. So flipping it back results in the original value.
+
+*F.* Always `true`. The integers get converted to `float` first.
+
+*G.* Always `true`. If the multiplication overflows it results in
+$infinity > 0$.
+
+*H.* `false` for $f = 10^20$ and $d = 1.0$. All values are promoted to `double`
+but even then the precision is not enough to represent $10^20 + 1.0$. This is
+because $log_2 10^20 > 66$ and `double` has only `52` bits for representing the
+fraction. So when we set the least significant bit to 1 we would need about `66`
+bits to store the precise number. This means that adding `1.0` will have no
+effect on the very large number.

@@ -740,3 +740,54 @@ Comparing the two we see that part of it overlaps:
 *A.* $2^(n+1) + 1$
 
 *B.* $2^24 + 1 = 16'777'217$
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header(
+    table.cell([Exact], colspan: 2), table.cell([Rounded], colspan: 2)
+  ),
+  [Binary], [Decimal], [Binary], [Decimal],
+  table.hline(),
+  $10.010_2$, $2 1/4$, $10.0_2$, $2$,
+  $10.011_2$, $2 3/8$, $10.1_2$, $2 1/2$,
+  $10.110_2$, $2 3/4$, $11.0_2$, $3$,
+  $11.001_2$, $3 1/8$, $11.0_2$, $3$,
+)
+
+==
+
+*A.* 0.00011001100110011001101
+
+*B.*
+```
+  0.00011001100110011001101
+- 0.0001100110011001100110011 0011 0011...
+  ----------------------------------------
+  0.0000000000000000000000000[1100]
+```
+This is equal to $1/10 times 2^(-22) approx 2.38 times 10^(-8)$.
+
+*C.* After 100 hours the clock is ahead by
+$2.38 times 10^(-8) dot 100 dot 60 dot 60 dot 10 approx 0.086$ seconds.
+
+*D.* $2000"m/s" dot 0.086"s" approx 172"m"$
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header(
+    table.cell([Format A], colspan: 2), table.cell([Format B], colspan: 2)
+  ),
+  [Bits], [Value], [Bits], [Value],
+  table.hline(),
+  [011 0000], $1$, [0111 000], $1$,
+  [101 1110], $15/2$, [1001 111], $15/2$,
+  [010 1001], $25/32$, [0110 100], $3/4$,
+  [110 1111], $31/2$, [1011 000], $16$,
+  [000 0001], $1/64$, [0001 000], $1/64$,
+)

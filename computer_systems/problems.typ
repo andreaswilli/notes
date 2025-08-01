@@ -843,3 +843,78 @@ int is_little_endian() {
   return *(char *)&x;
 }
 ```
+
+==
+
+```c
+int main() {
+  int x = 0x89ABCDEF;
+  int y = 0x76543210;
+  int mask = 0xFF;
+  printf("%d\n", ((x & mask) | (y & ~mask)) == 0x765432EF);
+}
+```
+
+==
+
+```c
+unsigned replace_byte(unsigned x, int i, unsigned char b) {
+  unsigned mask = ~(0xFF << (i << 3));
+  return (x & mask) | (b << (i << 3));
+}
+
+int main() {
+  printf("%d\n", replace_byte(0x12345678, 2, 0xAB) == 0x12AB5678);
+  printf("%d\n", replace_byte(0x12345678, 0, 0xAB) == 0x123456AB);
+}
+```
+
+==
+
+```c
+  int A = !!x;
+  int B = !!~x;
+  int C = !!(x & 0xFF);
+  int D = !!~(x >> ((sizeof(int) - 1) << 3));
+```
+
+==
+
+```c
+int int_shifts_are_arithmetic() {
+  return (-1 >> 1) == -1;
+}
+```
+
+==
+
+```c
+unsigned srl(unsigned x, int k) {
+  /* Perform shift arithmetically */
+  unsigned xsra = (int)x >> k;
+
+  int w = sizeof(int) << 3;
+  int mask = ~(-1 << (w - k));
+  return xsra & mask;
+}
+
+int sra(int x, int k) {
+  /* Perform shift logically */
+  int xsrl = (unsigned) x >> k;
+
+  int w = sizeof(int) << 3;
+  int mask = -1 << (w - k);
+  int sign = -(x & (1 << (w - 1)));
+  return xsrl | (mask & sign);
+}
+```
+
+==
+
+```c
+int any_odd_one(unsigned x) {
+  // Assume word size is 32 bits
+  int mask = 0b10101010101010101010101010101010;
+  return !!(x & mask);
+}
+```

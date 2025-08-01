@@ -913,8 +913,66 @@ int sra(int x, int k) {
 
 ```c
 int any_odd_one(unsigned x) {
-  // Assume word size is 32 bits
   int mask = 0b10101010101010101010101010101010;
   return !!(x & mask);
+}
+```
+
+==
+
+```c
+int odd_ones(unsigned x) {
+  x ^= x >> 16;
+  x ^= x >> 8;
+  x ^= x >> 4;
+  x ^= x >> 2;
+  x ^= x >> 1;
+  return x & 1;
+}
+```
+
+==
+
+```c
+int leftmost_one(unsigned x) {
+  // Spread leftmost 1 to the right
+  x |= x >> 1;
+  x |= x >> 2;
+  x |= x >> 4;
+  x |= x >> 8;
+  x |= x >> 16;
+  return x ^ (x >> 1);
+}
+```
+
+==
+
+Shifting by an amount $>=$ the width of the type is undefined for signed
+integers.
+
+```c
+int int_size_is(unsigned w) {
+  unsigned set_msb = 1U << (w - 1);
+  unsigned beyond_msb = set_msb << 1;
+  return set_msb && !beyond_msb;
+}
+```
+
+==
+
+```c
+int lower_one_mask(int n) {
+  int w = sizeof(int) << 3;
+  return ~0U >> (w - n);
+}
+```
+
+==
+
+```c
+unsigned rotate_left(unsigned x, int n) {
+  unsigned w = sizeof(unsigned) << 3;
+  unsigned rotated_bits = x >> (w - n - 1) >> 1;
+  return (x << n) | rotated_bits;
 }
 ```

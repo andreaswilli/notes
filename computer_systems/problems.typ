@@ -976,3 +976,94 @@ unsigned rotate_left(unsigned x, int n) {
   return (x << n) | rotated_bits;
 }
 ```
+
+==
+
+```c
+int fits_bits(int x, int n) {
+  int w = sizeof(int) << 3;
+  int shifted = x << (w - n) >> (w - n);
+  return shifted == x;
+}
+```
+
+==
+
+*A.* The upper three bytes are always all zeroes, which means we can't represent
+negative numbers.
+
+*B.* Correct implementation:
+
+```c
+typedef unsigned packed_t;
+
+int xbyte(packed_t word, int bytenum) {
+  // cut off unwanted bytes to the left
+  int shifted = word << ((3 - bytenum) << 3);
+  // cut off unwanted bytes to the right
+  // number will be sign extended because type is int
+  return shifted >> 24;
+}
+```
+
+==
+
+*A.* Because `sizeof` returns a `size_t` (which is unsigned), the result of
+`maxbytes - sizeof(val)` is also unsigned and thus always $>= 0$.
+
+*B.* Correct implementation:
+
+```c
+void copy_int(int val, void *buf, int maxbytes) {
+  if (maxbytes >= sizeof(val))
+    memcpy(buf, (void *)&val, sizeof(val));
+}
+```
+
+==
+
+```c
+int saturating_add(int x, int y) {
+  int sum = x + y;
+  int offset = (sizeof(int) << 3) - 1;
+
+  // create masks with all 0s or all 1s
+  int x_neg = x >> offset;
+  int y_neg = y >> offset;
+  int sum_neg = sum >> offset;
+
+  int pos_overflow = ~x_neg & ~y_neg & sum_neg;
+  int neg_overflow = x_neg & y_neg & ~sum_neg;
+
+  // use masks to choose between sum and bounds
+  return (INT32_MAX & pos_overflow) | (INT32_MIN & neg_overflow) |
+         (sum & ~(pos_overflow | neg_overflow));
+}
+```
+
+==
+
+```c
+int tsub_ok(int x, int y) {
+  int offset = (sizeof(int) << 3) - 1;
+  int x_neg = x >> offset;
+  int y_neg = y >> offset;
+  int diff_neg = (x - y) >> offset;
+
+  int pos_overflow = ~x_neg & y_neg & diff_neg;
+  int neg_overflow = x_neg & ~y_neg & ~diff_neg;
+  return !(pos_overflow | neg_overflow);
+}
+```
+
+==
+
+```c
+unsigned unsigned_high_prod(unsigned x, unsigned y) {
+  unsigned prod = signed_high_prod(x, y);
+  unsigned offset = (sizeof(unsigned) << 3) - 1;
+  unsigned x_sign = x >> offset;
+  unsigned y_sign = y >> offset;
+  return prod + x_sign * y + y_sign * x;
+}
+```

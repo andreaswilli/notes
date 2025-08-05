@@ -1067,3 +1067,81 @@ unsigned unsigned_high_prod(unsigned x, unsigned y) {
   return prod + x_sign * y + y_sign * x;
 }
 ```
+
+==
+
+```c
+void *calloc(size_t nmemb, size_t size) {
+  if (nmemb == 0 || size == 0) {
+    return NULL;
+  }
+
+  size_t total_size = nmemb * size;
+
+  if (total_size / size != nmemb) {
+    // Overflow occurred
+    return NULL;
+  }
+
+  void *ptr = malloc(total_size);
+
+  if (ptr == NULL) {
+    // Allocation failed
+    return NULL;
+  }
+
+  memset(ptr, 0, total_size);
+  return ptr;
+}
+```
+
+==
+
+```c
+int times_17 = (x << 4) + x;
+int times_neg7 = x - (x << 3);
+int times_60 = (x << 6) - (x << 2);
+int times_neg112 = (x << 4) - (x << 7);
+```
+
+==
+
+```c
+int divide_power(int x, int k) {
+  int w = sizeof(int) << 3;
+  int mask = x >> (w - 1);
+  int bias = mask & ((1 << k) - 1);
+  return (x + bias) >> k;
+}
+```
+
+==
+
+```c
+int mul3div4(int x) {
+  int mul3 = (x << 1) + x;
+  int w = sizeof(int) << 3;
+  int mask = mul3 >> (w - 1);
+  int bias = mask & 3;
+  return (mul3 + bias) >> 2;
+}
+```
+
+==
+
+```c
+int threefourths(int x) {
+  // calculate result for higher bits that are not relevant for rounding
+  int high_div4 = x >> 2;
+  int high_result = (high_div4 << 1) + high_div4;
+
+  // for the remainder we can safely multiply first since it cannot overflow
+  int rem = x - (high_div4 << 2);
+  int rem_mul3 = (rem << 1) + rem;
+  int mask = x >> ((sizeof(int) << 3) - 1);
+  int bias = mask & 3;
+  int low_result = (rem_mul3 + bias) >> 2;
+
+  return high_result + low_result;
+}
+```

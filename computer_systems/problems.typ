@@ -1145,3 +1145,35 @@ int threefourths(int x) {
   return high_result + low_result;
 }
 ```
+
+==
+
+```c
+int main() {
+  // example values
+  int k = 9;
+  int j = 5;
+
+  int A = -1 << k;
+  int B = ((1 << k) - 1) << j;
+}
+```
+
+==
+
+*A.* `false` for $x = -2^31$ which is $"TMin"_32$ because $-"TMin" = "TMin"$
+(since it overflows).
+
+*B.* Always `true`. If any overflows happen they will be the same on both sides.
+(ring properties of two's complement arithmetic)
+
+*C.* Always `true`. `~x` is equal to `-x - 1`. So we can write it as
+`-x - 1 - y - 1 + 1 = -(x+y) - 1` which simplifies to `-x - y - 1 = -x - y - 1`.
+
+*D.* Always `true`. By negating we turn $y-x$ into $x-y$. Regardless of the
+negation, both sides are treated as unsigned for the comparison. And unsigned
+and two's complement arithmetic are the same on the bit level.
+
+*E.* Always `true`. This basically sets the 2 lower bits to 0. These bits have a
+positive weight regardless of the sign bit, so setting them to 0 can not make
+the number larger.

@@ -1177,3 +1177,53 @@ and two's complement arithmetic are the same on the bit level.
 *E.* Always `true`. This basically sets the 2 lower bits to 0. These bits have a
 positive weight regardless of the sign bit, so setting them to 0 can not make
 the number larger.
+
+==
+
+*A.* Let $V$ be the value of the string. Shifting the binary point $k$ to the
+right results in y.yyyy... which equals both $V+Y$ and $V times 2^k$. These can
+now be equated:
+
+$
+  V + Y & = V times 2^k     \
+      Y & = V times 2^k - V \
+      Y & = V (2^k - 1)     \
+      V & = Y / (2^k - 1)
+$
+
+*B.*
+
+(a) $V = 5/(2^3 - 1) = 5/7$
+
+(b) $V = 6/(2^4 - 1) = 2/5$
+
+(c) $V = 19/(2^6 - 1) = 19/63$
+
+==
+
+```c
+  return ((ux << 1) == 0 && (uy << 1) == 0) // +0 and -0 are considered equal
+         || (!sx && !sy && ux <= uy)        // both positive
+         || (sx && sy && ux >= uy)          // both negative
+         || (sx > sy);                      // different signs
+```
+
+==
+
+*A.* The number $7.0$ will have exponent $E = 2$, significand
+$M = 1.11_2 = 7/4$, fraction $f = 0.11_2 = 3/4$ and value $V = 7$. The exponent
+will be represented as `10...01` (bias is $2^(k-1)-1 = 01...1_2$) and the
+fraction as `110...0`.
+
+*B.* The largest odd integer that can be represented exactly will have exponent
+$E = n$, significand $M = 1.1...1 = 2 - 1/2^n$, fraction
+$f = 0.1...1_2 = 1 - 1/2^n$ and value $V = 2^(n+1)-1$. The exponent will be the
+binary representation of $n + 2^(k-1)-1$ and the fraction will be represented as
+$1...1$.
+
+*C.* The smallest positive normalized value has exponent $2 - 2^(k-1)$ and
+fraction $0$, giving a value of $1.0 times 2^(2 - 2^(k-1))$. The reciprocal of
+this is $V = 2^(2^(k-1)-2)$. It will have exponent $E = 2^(k-1)-2$, significand
+$M = 1$ and fraction $f = 0$. The biased exponent will be
+$2^(k-1) - 2 - 2^(k-1) - 1 = -3$ represented by `1...101` and the fraction by
+`0...0`.

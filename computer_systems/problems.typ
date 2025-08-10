@@ -1227,3 +1227,67 @@ this is $V = 2^(2^(k-1)-2)$. It will have exponent $E = 2^(k-1)-2$, significand
 $M = 1$ and fraction $f = 0$. The biased exponent will be
 $2^(k-1) - 2 - 2^(k-1) - 1 = -3$ represented by `1...101` and the fraction by
 `0...0`.
+
+==
+
+#table(
+  columns: 3,
+  align: left,
+  table.header([], table.cell([Extended precision], colspan: 2)),
+  [Description], [Value], [Decimal],
+  table.hline(),
+  [Smallest positive denormalized],
+  $2^(-63) times 2^(2-2^14)$,
+  $2.645 times 10^(-4951)$,
+  [Smallest positive normalized], $2^(2-2^14)$, $3.362 times 10^(-4932)$,
+  [Largest normalized], $(2-2^(-63)) times 2^(2^14-1)$, $1.190 times 10^4932$,
+)
+
+==
+
+#table(
+  columns: 6,
+  align: (col, row) => horizon + if col == 0 { left } else { center },
+  table.header([Description], [Hex], $M$, $E$, $V$, $D$),
+  $-0$, `0x8000`, $0$, $-14$, $-0$, $-0.0$,
+  [Smallest value $> 2$],
+  `0x4001`,
+  $1025/1024$,
+  $1$,
+  $1025 times 2^(-9)$,
+  $2.001953125$,
+
+  $512$, `0x6000`, $1$, $9$, $512$, $512.0$,
+  [Largest denormalized],
+  `0x03FF`,
+  $1023/1024$,
+  $-14$,
+  $1023 times 2^(-24)$,
+  $0.0000609756$,
+
+  $-infinity$, `0xFC00`, [-], [-], $-infinity$, $-infinity$,
+  [Number with hex representation `3BB0`],
+  `0x3BB0`,
+  $123/64$,
+  $-1$,
+  $123 times 2^(-7)$,
+  $0.9609375$,
+)
+
+==
+
+#table(
+  columns: 4,
+  align: horizon + center,
+  table.header(
+    table.cell([Format A], colspan: 2), table.cell([Format B], colspan: 2)
+  ),
+  [Bits], [Value], [Bits], [Value],
+  table.hline(),
+  `1 01111 001`, $(-9)/8$, `1 0111 0010`, $(-9)/8$,
+  `0 10110 011`, $176$, `0 1110 0110`, $176$,
+  `1 00111 010`, $(-5)/1024$, `1 0000 0101`, $(-5)/1024$,
+  `0 00000 111`, $7/2^17$, `0 0000 0001`, $1/1024$,
+  `1 11100 000`, $-2^13$, `1 1110 1111`, $-248$,
+  `0 10111 100`, $384$, `0 1111 0000`, $infinity$,
+)

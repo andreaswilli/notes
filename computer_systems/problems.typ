@@ -33,19 +33,19 @@
 
 $
   S & = 1 / ((1 - 3/5) + 3/5 dot 2/3) \
-    & = 1 / (2/5 + 2/5)               \
-    & = 5/4                           \
-    & = 1.25 times                    \
+    & = 1 / (2/5 + 2/5) \
+    & = 5/4 \
+    & = 1.25 times \
 $
 
 *B.* We use the formula and work our way back:
 
 $
   5/3 & = 1 / ((1 - 3/5) + 3/(5k)) \
-  3/5 & = 2/5 + 3/(5k)             \
-  1/5 & = 3/(5k)                   \
-    1 & = 3/k                      \
-    k & = 3                        \
+  3/5 & = 2/5 + 3/(5k) \
+  1/5 & = 3/(5k) \
+    1 & = 3/k \
+    k & = 3 \
 $
 
 So the drive through Montana needs a speedup of $3 times$ which is $300$ km/hr.
@@ -56,10 +56,10 @@ Use the formula with $alpha = 4/5$ and $S = 2$ and solve for $k$.
 
 $
              2 & = 1 / ((1 - 4/5) + 4/(5k)) \
-  2/5 + 8/(5k) & = 1                        \
-        8/(5k) & = 3/5                      \
-           1/k & = 3/8                      \
-             k & = 8/3                      \
+  2/5 + 8/(5k) & = 1 \
+        8/(5k) & = 3/5 \
+           1/k & = 3/8 \
+             k & = 8/3 \
 $
 
 = Representing and Manipulating Information
@@ -1185,9 +1185,9 @@ right results in y.yyyy... which equals both $V+Y$ and $V times 2^k$. These can
 now be equated:
 
 $
-  V + Y & = V times 2^k     \
+  V + Y & = V times 2^k \
       Y & = V times 2^k - V \
-      Y & = V (2^k - 1)     \
+      Y & = V (2^k - 1) \
       V & = Y / (2^k - 1)
 $
 
@@ -1291,3 +1291,63 @@ $2^(k-1) - 2 - 2^(k-1) - 1 = -3$ represented by `1...101` and the fraction by
   `1 11100 000`, $-2^13$, `1 1110 1111`, $-248$,
   `0 10111 100`, $384$, `0 1111 0000`, $infinity$,
 )
+
+==
+
+*A.* Always `true`. `float` cannot represent every 32-bit integer value in full
+precision, but `double` can, so they will be rounded in the same way.
+
+*B.* `false` for $x = 0$ and $y = "TMin"_32$. The integer result will overflow
+before it is cast to `double` while the operation with `double`s has a wider
+range and does not overflow.
+
+*C.* Always `true`. The result of adding two floats in the 32-bit integer range
+cannot overflow.
+
+*D.* (Apparently not always true, cannot reproduce solution tho)
+
+*E.* `false` for $x = 1$ and $z = 0$. Dividing by $0$ results in `NaN`.
+
+==
+
+```c
+float fpwr2(int x) {
+  /* Result exponent and fraction */
+  unsigned exp, frac;
+  unsigned u;
+
+  if (exp < -126-23) {
+    /* Too small. Return 0.0 */
+    exp = 0;
+    frac = 0;
+  } else if (exp < -126) {
+    /* Demornalized result */
+    exp = 0;
+    frac = 1 << (exp + 126 + 23);
+  } else if (exp <= 127) {
+    /* Normalized result */
+    exp = exp + 127;
+    frac = 0;
+  } else {
+    /* Too big. Return +inf */
+    exp = 0xFF;
+    frac = 0;
+  }
+
+  /* Pack exp and frac into 32 bits */
+  u = exp << 23 | frac;
+  /* Return as float */
+  return u2f(u);
+}
+```
+
+==
+
+*A.* Binary representation: `0 10000000 10010010000111111011011`. So the
+exponent is $128-127=1$ and the fractional number is
+$11.0010010000111111011011_2$.
+
+*B.* $22/7 = 3 1/7 = 11.001001001001001..._2$
+
+*C.* The two approximations diverge starting from the 9th bit after the binary
+point.

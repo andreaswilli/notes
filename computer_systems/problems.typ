@@ -1351,3 +1351,161 @@ $11.0010010000111111011011_2$.
 
 *C.* The two approximations diverge starting from the 9th bit after the binary
 point.
+
+==
+
+```c
+typedef unsigned float_bits;
+
+float_bits float_negate(float_bits f) {
+  unsigned exp = f >> 23 & 0xFF;
+  unsigned frac = f & 0x7FFFFF;
+
+  if (exp == 0xFF && frac != 0) {
+    // NaN, return as is
+    return f;
+  };
+
+  unsigned mask = 1 << 31;
+  return f ^ mask;
+}
+```
+
+==
+
+```c
+typedef unsigned float_bits;
+
+float_bits float_absval(float_bits f) {
+  unsigned exp = f >> 23 & 0xFF;
+  unsigned frac = f & 0x7FFFFF;
+
+  if (exp == 0xFF && frac != 0) {
+    // NaN, return as is
+    return f;
+  };
+
+  unsigned mask = (1U << 31) - 1;
+  return f & mask;
+}
+```
+
+==
+
+```c
+typedef unsigned float_bits;
+
+float_bits float_twice(float_bits f) {
+  unsigned sign = f >> 31;
+  unsigned exp = (f >> 23) & 0xFF;
+  unsigned frac = f & 0x7FFFFF;
+
+  if (exp == 0xFF) {
+    // NaN, +-Infinity, return as is
+    return f;
+  };
+
+  if (exp == 0) {
+    // Denormalized number
+    frac <<= 1;
+
+    if (frac > 0x7FFFFF) {
+      // normalize
+      exp = 1;
+      frac &= 0x7FFFFF;
+    }
+    return sign << 31 | (exp << 23) | frac;
+  }
+
+  // normalized number
+  exp += 1;
+
+  if (exp == 0xFF) {
+    // overflow to infinity
+    frac = 0;
+  }
+  return sign << 31 | (exp << 23) | frac;
+}
+```
+
+==
+
+```c
+typedef unsigned float_bits;
+
+float_bits float_half(float_bits f) {
+  unsigned sign = f >> 31;
+  unsigned exp = (f >> 23) & 0xFF;
+  unsigned frac = f & 0x7FFFFF;
+
+  if (exp == 0xFF) {
+    // NaN, +-Infinity, return as is
+    return f;
+  };
+
+  // round to even
+  unsigned roundup = (frac & 0x3) == 3;
+
+  if (exp == 0) {
+    // Denormalized number
+    frac >>= 1;
+    frac += roundup;
+    return sign << 31 | (exp << 23) | frac;
+  }
+
+  // normalized number
+  exp -= 1;
+
+  if (exp == 0) {
+    // denormalize
+    frac |= 0x800000; // add implicit leading 1
+    frac >>= 1;
+    frac += roundup;
+  }
+
+  return sign << 31 | (exp << 23) | frac;
+}
+```
+
+==
+
+```c
+typedef unsigned float_bits;
+
+int float_f2i(float_bits f) {
+  unsigned sign = f >> 31;
+  unsigned exp = (f >> 23) & 0xFF;
+  unsigned frac = f & 0x7FFFFF;
+
+  if (exp == 0xFF) {
+    // NaN or infinity
+    return 0x80000000;
+  }
+
+  if (exp == 0) {
+    // Denormalized number
+    return 0;
+  }
+
+  // Normalized number
+  int unbiased_exp = exp - 127;
+
+  if (unbiased_exp < 0) {
+    // Absolute value less than 1
+    return 0;
+  }
+
+  if (unbiased_exp >= 31) {
+    // Overflow
+    return 0x80000000;
+  }
+
+  if (unbiased_exp < 23) {
+    frac >>= 23 - unbiased_exp;
+  } else {
+    frac <<= unbiased_exp - 23;
+  }
+
+  return (sign ? -1 : 1) * ((1 << unbiased_exp) + frac);
+}
+```

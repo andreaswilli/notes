@@ -1509,3 +1509,44 @@ int float_f2i(float_bits f) {
   return (sign ? -1 : 1) * ((1 << unbiased_exp) + frac);
 }
 ```
+
+==
+
+```c
+typedef unsigned float_bits;
+
+float_bits float_i2f(int i) {
+  unsigned sign = i & (1U << 31);
+  unsigned abs = i < 0 ? -i : i;
+
+  if (abs == 0) {
+    return 0;
+  }
+
+  // normalized number
+  unsigned exp = 127 + 31;
+
+  // shift left until bit 31 is set (will become implicit leading 1)
+  while ((abs & (1U << 31)) == 0) {
+    abs <<= 1;
+    exp--;
+  }
+
+  unsigned frac = (abs >> 8) & 0x7FFFFF;
+  unsigned residue = abs & 0xFF;
+
+  // round to even
+  if (residue > 0x80 || residue == 0x80 && (frac & 1)) {
+    frac++;
+
+    if (frac > 0x7FFFFF) {
+      // renormalize
+      frac &= 0x7FFFFF;
+      frac >>= 1;
+      exp++;
+    }
+  }
+
+  return sign | (exp << 23) | frac;
+}
+```

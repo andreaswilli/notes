@@ -1550,3 +1550,82 @@ float_bits float_i2f(int i) {
   return sign | (exp << 23) | frac;
 }
 ```
+
+= Machine-Level Representation of Programs
+
+==
+
+#table(
+  columns: 2,
+  align: left,
+  table.header([*Operand*], [*Value*]),
+  `%rax`, `0x100`,
+  `0x104`, `0xAB`,
+  `$0x108`, `0x108`,
+  `(%rax)`, `0xFF`,
+  `4(%rax)`, `0xAB`,
+  `9(%rax,%rdx)`, `0x11`,
+  `260(%rcx,%rdx)`, `0x13`,
+  `0xFC(,%rcx,4)`, `0xFF`,
+  `(%rax,%rdx,4)`, `0x11`,
+)
+
+==
+
+`movl` \
+`movw` \
+`movb` \
+`movb` \
+`movq` \
+`movw` \
+
+==
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Instruction*], [*Mistake*]),
+  `movb $0xF, (%ebx)`,
+  [`%ebx` is a 32-bit register, memory addresses have to be 64 bit],
+
+  `movl %rax, (%rsp)`, [`%rax` is 64 bit and thus must be used with `movq`],
+  `movw (%rax),4(%rsp)`, [both operands are memory locations],
+  `movb %al,%sl`, [`%sl` is not a valid register],
+  `movq %rax,$0x123`, [destination cannot be an immediate value],
+  `movl %eax,%rdx`, [`%rdx` is 64 bit and thus must be used with `movq`],
+  `movb %si, 8(%rbp)`, [`%si` is 16 bit and thus must be used with `movw`],
+)
+
+==
+
+#table(
+  columns: 3,
+  align: left + horizon,
+  table.header(`src_t`, `dest_t`, [*Instruction*]),
+  [long], [long], [`movq (%rdi), %rax` \ `movq %rax, (%rsi)`],
+  table.hline(),
+  [char], [int], [`movsbl (%rdi), %eax` \ `movl %eax, (%rsi)`],
+  table.hline(),
+  [char], [unsigned], [`movsbl (%rdi), %eax` \ `movl %eax, (%rsi)`],
+  table.hline(),
+  [unsigned char], [long], [`movzbl (%rdi) %eax` \ `movq %rax (%rsi)`],
+  table.hline(),
+  [int], [char], [`movl (%rdi) %eax` \ `movb %al (%rsi)`],
+  table.hline(),
+  [unsigned], [unsigned char], [`movl (%rdi) %eax` \ `movb %al (%rsi)`],
+  table.hline(),
+  [char], [short], [`movsbw (%rdi) %ax` \ `movw %ax (%rsi)`],
+)
+
+==
+
+```c
+void decode1(long *xp, long *yp, long *zp) {
+  long x = *xp;
+  long y = *yp;
+  long z = *zp;
+  *yp = x;
+  *zp = y;
+  *xp = z;
+}
+```

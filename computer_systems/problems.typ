@@ -1629,3 +1629,37 @@ void decode1(long *xp, long *yp, long *zp) {
   *xp = z;
 }
 ```
+
+==
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Instruction*], [*Result*]),
+  `leaq 6(%rax), %rdx`, $x+6$,
+  `leaq (%rax,%rcx), %rdx`, $x+y$,
+  `leaq (%rax,%rcx,4), %rdx`, $x+4y$,
+  `leaq 7(%rax,%rax,8), %rdx`, $9x+7$,
+  `leaq 0xA(,%rcx,4), %rdx`, $4y+10$,
+  `leaq 9(%rax,%rcx,2), %rdx`, $x+2y+9$,
+)
+
+==
+
+```c
+long t = 5 * x + 2 * y + 8 * z;
+```
+
+==
+
+#table(
+  columns: 3,
+  align: left,
+  table.header([*Instruction*], [*Destination*], [*Value*]),
+  `addq %rcx,(%rax)`, `0x100`, `0x100`,
+  `subq %rdx,8(%rax)`, `0x108`, `0xA8`,
+  `imulq $16,(%rax,%rdx,8)`, `0x118`, `0x110`,
+  `incq 16(%rax)`, `0x110`, `0x14`,
+  `decq %rcx`, `%rcx`, `0x0`,
+  `subq %rdx,%rax`, `%rax`, `0xFD`,
+)

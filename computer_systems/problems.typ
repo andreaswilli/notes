@@ -1663,3 +1663,52 @@ long t = 5 * x + 2 * y + 8 * z;
   `decq %rcx`, `%rcx`, `0x0`,
   `subq %rdx,%rax`, `%rax`, `0xFD`,
 )
+
+==
+
+#table(
+  columns: 2,
+  align: center + horizon,
+  table.header([C], [Assembly]),
+  `x <<= 4`, `salq $4, %rax`,
+  `x >>= n`, `sarq %cl, %rax`,
+)
+
+==
+
+```c
+long arith2(long x, long y, long z) {
+  long t1 = x | y;
+  long t2 = t1 >> 3;
+  long t3 = ~t2;
+  long t4 = z - t3;
+  return t4;
+}
+```
+
+==
+
+*A.* It sets the `rdx` register to all zeroes.
+
+*B.* `movq $0, %rdx` is a more straightforward way to express this.
+
+*C.* The `xor` instruction only takes 3 bytes to encode, while `mov` takes 7
+bytes. (Check using
+`echo 'movq $0, %rdx' | as -o /tmp/test.o | objdump -d /tmp/test.o`)
+
+==
+
+```asm
+void uremdiv(unsigned long x, unsigned long y,
+            unsigned long *qp, unsigned long *rp)
+x in %rdi, y in %rsi, qp in %rdx, rp in %rcx
+
+uremdiv:
+  movq %rdx, %r8      Copy qp
+  movq %rdi, %rax     Move x to lower 8 bytes of dividend
+  xorq %rdx, %rdx     Set upper 8 bytes of dividend to 0
+  divq %rsi           Divide by y (unsigned)
+  movq %rax, (%r8)    Store quotient at qp
+  movq %rdx, (%rcx)   Store remainder at rp
+  ret
+```

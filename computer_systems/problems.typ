@@ -1712,3 +1712,37 @@ uremdiv:
   movq %rdx, (%rcx)   Store remainder at rp
   ret
 ```
+
+==
+
+#table(
+  columns: 3,
+  align: start + horizon,
+  table.header([Part], `data_t`, `COMP`),
+  [*A*], `int`, `<`,
+  [*B*], `short`, `>=`,
+  [*C*], `unsigned char`, `<=`,
+  [*D*], [`(unsigned) long` / some pointer], `!=`,
+)
+
+==
+
+#table(
+  columns: 3,
+  align: start + horizon,
+  table.header([Part], `data_t`, `TEST`),
+  [*A*], `long`, `>=`,
+  [*B*], `(unsigned) short`, `==`,
+  [*C*], `unsigned char`, `>`,
+  [*D*], `int`, `<=`,
+)
+
+==
+
+*A.* `4003fe`
+
+*B.* `400425`
+
+*C.* Address of `ja` is `400543`, address of `pop` is `400545`.
+
+*D.* `400560`

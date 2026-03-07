@@ -1746,3 +1746,61 @@ uremdiv:
 *C.* Address of `ja` is `400543`, address of `pop` is `400545`.
 
 *D.* `400560`
+
+==
+
+*A.*
+
+```c
+void cond(long a, long *p) {
+  if (p == 0)
+    goto done;
+  if (*p >= a)
+    goto done;
+  *p = a;
+done:
+  return;
+}
+```
+
+*B.* The assembly code contains two conditional branches because the condition
+in C consists of two parts. If the first part fails, the second part will be
+skipped (since they are connected by `&&`).
+
+==
+
+*A.*
+
+```c
+long gotodiff_se(long x, long y) {
+  long result;
+  if (x < y)
+    goto x_lt_y;
+  ge_cnt++;
+  result = x - y;
+  return result;
+x_lt_y:
+  lt_cnt++;
+  result = y - x;
+  return result;
+}
+```
+
+*B.* They are mostly equivalent. However, the first form is more convenient if
+there is no else case.
+
+==
+
+```c
+long test(long x, long y, long z) {
+  long val = x + y + z;
+  if (x < -3) {
+    if (y < z)
+      val = x * y;
+    else
+      val = y * z;
+  } else if (x > 2)
+    val = x * z;
+  return val;
+}
+```

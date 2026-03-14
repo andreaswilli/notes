@@ -1804,3 +1804,49 @@ long test(long x, long y, long z) {
   return val;
 }
 ```
+
+==
+
+*A.*
+
+$
+  T_"MP" & = 2(T_"ran" - T_"OK") \
+  T_"MP" & = 2(31 - 16) = 30
+$
+
+*B.*
+$
+  T_"OK" + T_"MP" = 16 + 30 = 46
+$
+
+==
+
+*A.* `OP` is division
+
+*B.*
+```asm
+arith:
+  leaq    7(%rdi), %rax     store x + 7 in return register
+  testq   %rdi, %rdi        set condition codes based on x
+  cmovns  %rdi, %rax        set return value to x if x >= 0
+  sarq    $3, %rax          divide by 8 (arithmetic shift)
+  ret
+```
+
+For negative numbers we add a bias to round towards 0 instead of -inf. When dividing by $2^k$ the bias is $2^k - 1$.
+
+==
+
+```c
+long test(long x, long y) {
+  long val = 8*x;
+  if (y > 0) {
+    if (x < y)
+      val = y-x;
+    else
+      val = x&y;
+  } else if (y <= -2)
+    val = x+y;
+  return val;
+}
+```

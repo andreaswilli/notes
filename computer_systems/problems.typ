@@ -1833,7 +1833,8 @@ arith:
   ret
 ```
 
-For negative numbers we add a bias to round towards 0 instead of -inf. When dividing by $2^k$ the bias is $2^k - 1$.
+For negative numbers we add a bias to round towards 0 instead of -inf. When
+dividing by $2^k$ the bias is $2^k - 1$.
 
 ==
 
@@ -1848,5 +1849,180 @@ long test(long x, long y) {
   } else if (y <= -2)
     val = x+y;
   return val;
+}
+```
+
+==
+
+*A.* The maximum value of $n$ for which we can represent $n!$ with a 32-bit int
+is $12$.
+
+*B.* The maximum value of $n$ for which we can represent $n!$ with a 64-bit long
+is $20$.
+
+This can be verified with the following code:
+```c
+int main() {
+  long result = 1;
+  long prev_result = 1;
+  int factor = 1;
+
+  for (;;) {
+    result *= ++factor;
+    printf("%d) %ld\n", factor, result);
+
+    if (result / factor != prev_result) {
+      printf("Overflow detected at factor %d\n", factor);
+      break;
+    }
+    prev_result = result;
+  }
+}
+```
+
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([C Variable], [Register]),
+  `x`, [`%rdi` (initially) and `%rax`],
+  `y`, `%rcx`,
+  `n`, `%rdx`,
+)
+
+*B.* The pointer always points to `x` so `(*p)++` just increments `x`. This is
+then combined with `x += y` into a single `leaq` instruction.
+
+*C.*
+```asm
+dw_loop:
+  movq    %rdi, %rax            put x into the return register
+  movq    %rdi, %rcx
+  imulq   %rdi, %rcx            y = x*x
+  leaq    (%rdi,%rdi), %rdx     n = 2*x
+.L2
+  leaq    1(%rcx,%rax), %rax    x += y + 1
+  subq    $1, %rdx              n--
+  testq   %rdx, %rdx            test n
+  jg    .L2                     loop if n > 0
+  rep; ret                      return x
+```
+
+==
+
+```c
+long loop_while(long a, long b) {
+  long result = 1;
+  while (a < b) {
+    result = result * (a+b);
+    a = a + 1;
+  }
+  return result;
+}
+```
+
+==
+
+
+```c
+long loop_while2(long a, long b) {
+  long result = b;
+  while (b > 0) {
+    result = result * a;
+    b = b - a;
+  }
+  return result;
+}
+```
+
+==
+
+*A.* jump-to-middle translation was used for the loop
+
+*B.*
+```c
+long fun_a(unsigned long x) {
+  long val = 0;
+  while (x) {
+    val ^= x;
+    x >>= 1;
+  }
+  return val & 0x1;
+}
+```
+
+*C.* The function computes the parity of the number of on bits in `x`, returning
+$1$ if it's an odd number, returning $0$ otherwise.
+
+==
+
+```c
+long fact_for_while(long n) {
+  long result = 1;
+  if (n < 2)
+    goto done;
+  long i = 2;
+loop:
+  result *= i;
+  i++;
+  if (i <= n)
+    goto loop;
+done:
+  return result;
+}
+```
+
+==
+
+*A.*
+```c
+long fun_b(unsigned long x) {
+  long val = 0;
+  long i;
+  for (i = 64; i; i--) {
+    val *= 2;
+    val |= (x & 0x1);
+    x >>= 1;
+  }
+  return val;
+}
+```
+
+*B.* The compiler knows that the loop will always run exactly $64$ times, so the
+initial test and jump can be omitted.
+
+*C.* This funciton reverses the bit representation of `x`.
+
+==
+
+*A.* We would also skip incrementing $i$, resulting in an infinite loop.
+
+```c
+long sum = 0;
+long i = 0;
+
+while (i < 10) {
+  if (i & 1)
+    continue; /* causes infinite loop */
+  sum += i;
+  i++;
+}
+```
+
+*B.* We can fix it like this:
+
+```c
+long sum = 0;
+long i = 0;
+
+while (i < 10) {
+  if (i & 1)
+    goto end_loop;
+  sum += i;
+end_loop:
+  i++;
 }
 ```

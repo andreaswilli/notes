@@ -2026,3 +2026,35 @@ end_loop:
   i++;
 }
 ```
+
+==
+
+*A.* Case labels: $-1$, $0$, $1$, $2$, $4$, $5$, $7$
+
+*B.* $0$ and $7$ as well as $2$ and $4$ label the same cases.
+
+==
+
+```c
+void switcher(long a, long b, long c, long *dest) {
+  long val;
+  switch(a) {
+  case 5:
+    c = b ^ 15;
+    /* Fall through */
+  case 0:
+    val = c + 112;
+    break;
+  case 2:
+  case 7:
+    val = (b + c) << 2;
+    break;
+  case 4:
+    val = a;
+    break;
+  default:
+    val = b;
+  }
+  *dest = val;
+}
+```

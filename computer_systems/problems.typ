@@ -2058,3 +2058,137 @@ void switcher(long a, long b, long c, long *dest) {
   *dest = val;
 }
 ```
+
+==
+
+#[
+  #set text(size: 6pt)
+  #table(
+    columns: 9,
+    align: horizon,
+    table.header(
+      [*Label*],
+      [*PC*],
+      [*Instruction*],
+      `%rdi`,
+      `%rsi`,
+      `%rax`,
+      `%rsp`,
+      `*%rsp`,
+      [*Description*],
+    ),
+    [M1],
+    `0x400560`,
+    `callq`,
+    $10$,
+    $-$,
+    $-$,
+    `0x7fffffffe820`,
+    `-`,
+    [Call `first(10)`],
+
+    table.hline(),
+
+    [F1],
+    `0x400548`,
+    `lea`,
+    $10$,
+    $-$,
+    $-$,
+    `0x7fffffffe818`,
+    `0x400565`,
+    [Entry of `first`],
+
+    [F2],
+    `0x40054c`,
+    `sub`,
+    $10$,
+    $11$,
+    $-$,
+    `0x7fffffffe818`,
+    `0x400565`,
+    [Prepare argument for `last`],
+
+    [F3],
+    `0x400550`,
+    `callq`,
+    $9$,
+    $11$,
+    $-$,
+    `0x7fffffffe818`,
+    `0x400565`,
+    [Call `last(9, 11)`],
+
+    table.hline(),
+
+    [L1],
+    `0x400540`,
+    `mov`,
+    $9$,
+    $11$,
+    $-$,
+    `0x7fffffffe810`,
+    `0x400555`,
+    [Entry of `last`],
+
+    [L2],
+    `0x400543`,
+    `imul`,
+    $9$,
+    $11$,
+    $9$,
+    `0x7fffffffe810`,
+    `0x400555`,
+    [Calculate return value],
+
+    [L3],
+    `0x400547`,
+    `retq`,
+    $9$,
+    $11$,
+    $99$,
+    `0x7fffffffe810`,
+    `0x400555`,
+    [Return $99$ from `last`],
+
+    table.hline(),
+
+    [F4],
+    `0x400555`,
+    `repz retq`,
+    $9$,
+    $11$,
+    $99$,
+    `0x7fffffffe818`,
+    `0x400565`,
+    [Return $99$ from `first`],
+
+    table.hline(),
+
+    [M2],
+    `0x400565`,
+    `mov`,
+    $9$,
+    $11$,
+    $99$,
+    `0x7fffffffe820`,
+    `-`,
+    [Resume `main`],
+  )
+]
+
+==
+
+The params are (in order):
+
+#table(
+  columns: 3,
+  align: center + horizon,
+  table.header([*Param*], [*Type*], [*Register*]),
+  [a], `int`, `%edi`,
+  [b], `short`, `%si`,
+  [u], `long *`, `%rdx`,
+  [v], `char *`, `%rcx`,
+)
+
+It's also possible to swap `a` and `u` with `b` and `v`, respectively.

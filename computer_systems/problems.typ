@@ -2192,3 +2192,11 @@ The params are (in order):
 )
 
 It's also possible to swap `a` and `u` with `b` and `v`, respectively.
+
+==
+
+*A.* Local values `a0`-`a5` are stored in callee-saved registers.
+
+*B.* Local values `a6` and `a7` are stored on the stack.
+
+*C.* Not all local values are stored in callee-saved registers because there are only six of them (`%r12`-`%r15`, `%rbp` and `rbx`).

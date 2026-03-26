@@ -2199,4 +2199,70 @@ It's also possible to swap `a` and `u` with `b` and `v`, respectively.
 
 *B.* Local values `a6` and `a7` are stored on the stack.
 
-*C.* Not all local values are stored in callee-saved registers because there are only six of them (`%r12`-`%r15`, `%rbp` and `rbx`).
+*C.* Not all local values are stored in callee-saved registers because there are
+only six of them (`%r12`-`%r15`, `%rbp` and `rbx`).
+
+==
+
+*A.* The value of the parameter `x` is stored in callee-saved register `%rbx`.
+
+*B.*
+
+```c
+long rfun(unsigned long x) {
+  if (x == 0)
+    return 0;
+  unsigned long nx = x >> 2;
+  long rv = rfun(nx);
+  return x + rv;
+}
+```
+
+==
+
+#table(
+  columns: 5,
+  align: center + horizon,
+  table.header(
+    [*Array*],
+    [*Element size*],
+    [*Total size*],
+    [*Start address*],
+    [*Element $i$*],
+  ),
+  [S], $2$, $14$, $x_S$, $x_S+2i$,
+  [T], $8$, $24$, $x_T$, $x_T+8i$,
+  [U], $8$, $48$, $x_U$, $x_U+8i$,
+  [V], $4$, $32$, $x_V$, $x_V+4i$,
+  [W], $8$, $32$, $x_W$, $x_W+8i$,
+)
+
+==
+
+#table(
+  columns: 4,
+  align: left + horizon,
+  table.header([*Expression*], [*Type*], [*Value*], [*Assembly code*]),
+  `S+1`, `short *`, $x_S+2$, `leaq 2(%rdx), %rax`,
+  `S[3]`, `short`, $M[x_S+6]$, `movw 6(%rdx), %ax`,
+  `&S[i]`, `short *`, $x_S+2i$, `leaq (%rdx,%rcx,2), %rax`,
+  `S[4*i+1]`, `short`, $M[x_S+8i+2]$, `movw 2(%rdx,%rcx,8), %ax`,
+  `S+i-5`, `short *`, $x_S+2i-10$, `leaq -10(%rdx,%rcx,2), %rax`,
+)
+
+==
+
+```asm
+long sum_element(long i, long j)
+i in %rdi, j in %rsi
+sum_element:
+  leaq    0(,%rdi,8), %rdx        8*i
+  subq    %rdi, %rdx              7*i
+  addq    %rsi, %rdx              7*i+j
+  leaq    (%rsi,%rsi,4), %rax     5*j
+  addq    %rax, %rdi              i+5*j
+  moveq   Q(,%rdi,8), %rax        Q[i+5*j]
+  addq    P(,%rdx,9), %rax        Q[i+5*j] + P[7*i+j]
+```
+
+Based on the assembly code the values are $M=5$ and $N=7$.

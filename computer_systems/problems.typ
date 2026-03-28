@@ -2266,3 +2266,33 @@ sum_element:
 ```
 
 Based on the assembly code the values are $M=5$ and $N=7$.
+
+==
+
+The address of element $i,j$ in a nested array is
+
+$
+  "&A"[i][j] = x_A + L(C dot i+j)
+$
+
+where $L$ is the element size in bytes and $C$ is the number of columns.
+
+Applying this to our pointers:
+
+- `Aptr:` $"&A"[i][0] = x_A + 4(16i+0) = x_A + 64i$
+- `Bptr:` $"&B"[0][k] = x_B + 4(16 dot 0+k) = x_B + 4k$
+- `Bend:` $"&B"[16][k] = x_B + 4(16 dot 16+k) = x_B + 1024 + 4k$
+
+==
+
+```c
+void fix_set_diag_opt(fix_matrix A, int val) {
+  int *Aptr = &A[0][0];
+  long i = 0;
+  long iend = N(N+1);
+  do {
+    Aptr[i] = val;
+    i += (N+1); // advance by one row and one col
+  } while (i != iend);
+}
+```

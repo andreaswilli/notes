@@ -2296,3 +2296,96 @@ void fix_set_diag_opt(fix_matrix A, int val) {
   } while (i != iend);
 }
 ```
+
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: center + horizon,
+  table.header([*Field*], [*Offset*]),
+  `p`, $0$,
+  `s.x`, $8$,
+  `s.y`, $12$,
+  `next`, $16$,
+)
+
+*B.* In total the structure requires $24$ bytes.
+
+*C.*
+
+```c
+void sp_init(struct prob *sp) {
+  sp->s.x  = sp->s.y;
+  sp->p    = &(sp->s);
+  sp->next = sp;
+}
+```
+
+==
+
+*A.*
+
+```c
+long fun(struct ELE *ptr) {
+  long sum = 0;
+  while (ptr) {
+    sum += ptr->v;
+    ptr = ptr->p;
+  }
+  return sum;
+}
+```
+
+*B.* `ELE` implements a linked list and `fun` computes the sum of all elements.
+
+==
+
+#table(
+  columns: 3,
+  align: left,
+  table.header([_expr_], [_type_], [Code]),
+  `up->t1.u`,
+  `long`,
+  ```asm
+  movq (%rdi), %rax
+  movq %rax, (%rsi)
+  ```,
+  table.hline(),
+  `up->t1.v`,
+  `short`,
+  ```asm
+  movw 8(%rdi), %ax
+  movw %ax, (%rsi)
+  ```,
+  table.hline(),
+  `&up->t1.w`,
+  `char *`,
+  ```asm
+  leaq 10(%rdi), %rax
+  movq %rax, (%rsi)
+  ```,
+  table.hline(),
+  `up->t2.a`,
+  `int *`,
+  ```asm
+  movq %rdi, (%rsi)
+  ```,
+  table.hline(),
+  `up->t2.a[up->t1.u]`,
+  `int`,
+  ```asm
+  movq (%rdi), %rax
+  movl (%rdi,%rax,4) %eax
+  movl %eax, (%rsi)
+  ```,
+  table.hline(),
+  `*up->t2.p`,
+  `char`,
+  ```asm
+  movq 8(%rdi), %rax
+  movb (%rax), %al
+  movb %al, (%rsi)
+  ```,
+)

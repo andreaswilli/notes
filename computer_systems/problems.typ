@@ -2389,3 +2389,71 @@ long fun(struct ELE *ptr) {
   movb %al, (%rsi)
   ```,
 )
+
+==
+
+*A.*
+
+#table(
+  columns: 6,
+  align: center + horizon,
+  table.header([i], [c], [j], [d], [*Size*], [*Alignment*]),
+  $0$, $4$, $8$, $12$, $16$, $4$,
+)
+
+*B.*
+
+#table(
+  columns: 6,
+  align: center + horizon,
+  table.header([i], [c], [d], [j], [*Size*], [*Alignment*]),
+  $0$, $4$, $5$, $8$, $16$, $8$,
+)
+
+*C.*
+
+#table(
+  columns: 4,
+  align: center + horizon,
+  table.header([w], [c], [*Size*], [*Alignment*]),
+  $0$, $6$, $10$, $2$,
+)
+
+*D.*
+
+#table(
+  columns: 4,
+  align: center + horizon,
+  table.header([w], [c], [*Size*], [*Alignment*]),
+  $0$, $16$, $40$, $8$,
+)
+
+*E.*
+
+#table(
+  columns: 4,
+  align: center + horizon,
+  table.header([a], [t], [*Size*], [*Alignment*]),
+  $0$, $24$, $40$, $8$,
+)
+
+==
+
+*A. & B.*
+
+#table(
+  columns: 9,
+  align: center + horizon,
+  table.header([a], [b], [c], [d], [e], [f], [g], [h], [*Size*]),
+  $0$, $8$, $16$, $24$, $28$, $32$, $40$, $48$, $56$,
+)
+
+*C.* We can rearrange the fields like this to minimize wasted space:
+
+#table(
+  columns: 9,
+  align: center + horizon,
+  table.header([a], [b], [d], [f], [e], [c], [g], [h], [*Size*]),
+  $0$, $8$, $10$, $11$, $12$, $16$, $24$, $32$, $40$,
+)
+

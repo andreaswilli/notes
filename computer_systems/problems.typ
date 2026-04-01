@@ -2457,3 +2457,42 @@ long fun(struct ELE *ptr) {
   $0$, $8$, $10$, $11$, $12$, $16$, $24$, $32$, $40$,
 )
 
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Value*], [*Label*]),
+  `00 00 00 00 00 40 00 76`, [Return address],
+  `01 23 45 67 89 AB CD EF`, [Value of callee-saved register %rbx],
+  `                       `, [],
+  `                       `, [buf = %rsp],
+  `                       `, [],
+)
+
+*B.*
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Value*], [*Label*]),
+  `00 00 00 00 00 40 00 34`, [Return address],
+  `33 32 31 30 39 38 37 36`, [Value of callee-saved register %rbx],
+  `35 34 33 32 31 30 39 38`, [],
+  `37 36 35 34 33 32 31 30`, [buf = %rsp],
+  `                       `, [],
+)
+
+*C.* The program attempts to return to the address `0x400034`. The two low bytes
+were overwritten by `0x34` (last char from stdin) and `0x00` (terminating null
+character).
+
+*D.* The register %rbx will be corrupted after returning, since its saved value
+on the stack was overritten and it is callee-saved, so the callee is not allowed
+to change it.
+
+*E.* `strlen` returns the length without the null terminator, so `malloc`
+allocates one too few bytes. Also, `malloc` can return `NULL`, which is not safe
+to pass into `strcpy`.

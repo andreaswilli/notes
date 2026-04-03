@@ -2496,3 +2496,59 @@ to change it.
 *E.* `strlen` returns the length without the null terminator, so `malloc`
 allocates one too few bytes. Also, `malloc` can return `NULL`, which is not safe
 to pass into `strcpy`.
+
+==
+
+*A.* `0xd754` - `0xb754` = `0x2000` = $2 dot 16^3 = 2^13$.
+
+*B.* It would take about $2^13 / 2^7 = 2^6 = 64$ attempts.
+
+==
+
+*A.*
+
+Without protector:
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Name*], [*Position in stack frame*]),
+  `buf`, `(%rsp)`,
+  `v`, `24(%rsp)`,
+  [canary value], [-],
+)
+
+With protector:
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Name*], [*Position in stack frame*]),
+  `buf`, `16(%rsp)`,
+  `v`, `8(%rsp)`,
+  [canary value], `40(%rsp)`,
+)
+
+*B.* In the rearranged variant the canary value is immediately adjacent to
+`buf`, so `v` cannot be corrupted.
+
+==
+
+*A.* $s_2$ is calculated by subtracting $8n + 22$ rounded down to the closest
+multiple of $16$ from $s_1$. If $n$ is odd it will result in $s_1 - (8n + 8)$,
+otherwise $s_1 - (8n + 16)$.
+
+*B.* We take $s_2 + 7$ and round down to the closest multiple of $8$
+(alignment). This effectively rounds _up_ $s_2$ to the closest multiple of $8$.
+
+*C.*
+
+#table(
+  columns: 6,
+  table.header($n$, $s_1$, $s_2$, $p$, $e_1$, $e_2$),
+  $5$, $2065$, $2017$, $2024$, $1$, $7$,
+  $6$, $2064$, $2000$, $2000$, $16$, $0$,
+)
+
+*D.* $s_2$ is aligned to multiples of $16$, and $p$ is aligned to multiples of
+$8$.

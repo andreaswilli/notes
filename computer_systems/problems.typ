@@ -2552,3 +2552,33 @@ otherwise $s_1 - (8n + 16)$.
 
 *D.* $s_2$ is aligned to multiples of $16$, and $p$ is aligned to multiples of
 $8$.
+
+==
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Expression*], [*Mapping*]),
+  `val1`, `d`,
+  `val2`, `i`,
+  `val3`, `l`,
+  `val4`, `f`,
+)
+
+==
+
+#table(
+  columns: 3,
+  align: (center + horizon, center + horizon, left + horizon),
+  table.header([$T_x$], [$T_y$], [*Instruction(s)*]),
+  [long], [double], `vcvtsi2sdq %rdi, %xmm0, %xmm0`,
+  table.hline(),
+  [double], [int], `vcvttsd2si %xmm0, %eax`,
+  table.hline(),
+  [double], [float], `vunpcklpd %xmm0, %xmm0, %xmm0`,
+  [], [], `vcvtpd2ps %xmm0, %xmm0`,
+  table.hline(),
+  [long], [float], `vcvtsi2ssq %rdi, %xmm0, %xmm0`,
+  table.hline(),
+  [float], [long], `vcvttss2siq %xmm0, %rax`,
+)

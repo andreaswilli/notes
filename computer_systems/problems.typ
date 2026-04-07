@@ -2582,3 +2582,87 @@ $8$.
   table.hline(),
   [float], [long], `vcvttss2siq %xmm0, %rax`,
 )
+
+==
+
+*A.*
+
+```c
+double g1(double a, long b, float c, int d);
+```
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Argument*], [*Register*]),
+  [a], [%xmm0],
+  [b], [%rdi],
+  [c], [%xmm1],
+  [d], [%esi],
+)
+
+*B.*
+
+```c
+double g2(int a, double *b, float *c, long d);
+```
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Argument*], [*Register*]),
+  [a], [%edi],
+  [b], [%rsi],
+  [c], [%rdx],
+  [d], [%rcx],
+)
+
+*C.*
+
+```c
+double g3(double *a, double b, int c, float d);
+```
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Argument*], [*Register*]),
+  [a], [%rdi],
+  [b], [%xmm0],
+  [c], [%esi],
+  [d], [%xmm1],
+)
+
+*D.*
+
+```c
+double g4(float a, int *b, float c, double d);
+```
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Argument*], [*Register*]),
+  [a], [%xmm0],
+  [b], [%rdi],
+  [c], [%xmm1],
+  [d], [%xmm2],
+)
+
+==
+
+#table(
+  columns: 4,
+  align: center,
+  table.header([*arg1_t*], [*arg2_t*], [*arg3_t*], [*arg4_t*]),
+  [int], [float], [long], [double],
+  [int], [long], [float], [double],
+)
+
+==
+
+```c
+double funct2(double w, int x, float y, long z) {
+  return y*x - w/z;
+}
+```

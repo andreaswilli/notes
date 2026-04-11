@@ -2666,3 +2666,64 @@ double funct2(double w, int x, float y, long z) {
   return y*x - w/z;
 }
 ```
+
+==
+
+Low-order 4 bytes:
+
+```
+00 00 00 00
+```
+
+High-order 4 bytes:
+```
+40 40 00 00
+```
+
+Complete number in binary:
+```
+01000000 01000000 00000000 00000000 00000000 00000000 00000000 00000000
+seeeeeee eeeeffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff 
+```
+
+So the sign is positive.
+
+The exponent is $1028 - 1023 = 5$.
+
+The fraction is $1.0$ (with implied leading $1$).
+
+The value is thus $2^5 times 1.0 = 32.0$.
+
+==
+
+*A.*
+
+Constant: `0x7fffffffffffffff`
+
+Binary: `01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111`
+
+This bitmask applied with `&` calculates the absolute value of the `double`.
+
+*B.*
+
+This sets the register to all zeroes since `a ^ a = 0`.
+
+*C.*
+
+Constant: `0x8000000000000000`
+
+This bitmask applied with `^` negates the value of the `double`.
+
+==
+
+```c
+double funct3(int *ap, double b, long c, float *dp) {
+  int a = *ap;
+  float d = *dp;
+  if (a < b) {
+    return c*d;
+  } else {
+    return c + 2*d;
+  }
+}
+```

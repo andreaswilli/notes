@@ -2683,7 +2683,7 @@ High-order 4 bytes:
 Complete number in binary:
 ```
 01000000 01000000 00000000 00000000 00000000 00000000 00000000 00000000
-seeeeeee eeeeffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff 
+seeeeeee eeeeffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
 ```
 
 So the sign is positive.
@@ -2700,7 +2700,8 @@ The value is thus $2^5 times 1.0 = 32.0$.
 
 Constant: `0x7fffffffffffffff`
 
-Binary: `01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111`
+Binary:
+`01111111 11111111 11111111 11111111 11111111 11111111 11111111 11111111`
 
 This bitmask applied with `&` calculates the absolute value of the `double`.
 
@@ -2727,3 +2728,36 @@ double funct3(int *ap, double b, long c, float *dp) {
   }
 }
 ```
+
+==
+
+```c
+long decode2(long x, long y, long z) {
+  y -= z;
+  x *= y;
+  return ((y << 63) >> 63) ^ x;
+}
+```
+
+==
+
+```asm
+dest in %rdi, x in %rsi, y in %rdx
+store_prod:
+  movq    %rdx, %rax        y = yl
+  cqto                      %rdx:%rax = yh:yl
+  movq    %rsi, %rcx
+  sarq    $63, %rcx         xh = sign of x
+  imulq   %rax, %rcx        r = yl * xh
+  imulq   %rsi, %rdx        s = yh * xl
+  addq    %rdx, %rcx        r + s
+  mulq    %rsi              %rdx:%rax = xl * yl = t
+  addq    %rcx, %rdx        r + s + th
+  movq    %rax, (%rdi)      store pl in memory
+  movq    %rdx, 8(%rdi)     store ph in memory
+  ret
+```
+
+`r` and `s` are corrections for signed multiplication which we have to consider
+because `mulq` does unsigned multiplication (and only the the lower 64 bits (=
+size of factors) are equivalent between two's complement and unsigned).

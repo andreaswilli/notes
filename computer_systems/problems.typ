@@ -2761,3 +2761,48 @@ store_prod:
 `r` and `s` are corrections for signed multiplication which we have to consider
 because `mulq` does unsigned multiplication (and only the the lower 64 bits (=
 size of factors) are equivalent between two's complement and unsigned).
+
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: center,
+  table.header([*Value*], [*Register*]),
+  `x`, `%rdi`,
+  `n`, `%esi`,
+  `result`, `%rax`,
+  `mask`, `%rdx`,
+)
+
+*B.* The initial values of `result` and `mask` are $0$ and $1$, respectively.
+
+*C.* The test condition is `mask != 0`.
+
+*D.* `mask` is arithmetically shifted left by `n`.
+
+*E.* The result is OR'ed with `x & mask`.
+
+*F.*
+
+```c
+long loop(long x, int n) {
+  long result = 0;
+  long mask;
+  for (mask = 1; mask != 0; mask <<= n) {
+    result |= (x & mask);
+  }
+  return result;
+}
+```
+
+==
+
+```c
+long cread(long *xp) {
+  long zero = 0;
+  if (!xp) xp = &zero;
+  return *xp;
+}
+```

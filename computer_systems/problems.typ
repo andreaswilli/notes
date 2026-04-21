@@ -2865,3 +2865,54 @@ long switch_prob(long x, long n) {
   return result;
 }
 ```
+
+==
+
+*A.* Formula for location of array element `A[i][j][k]`:
+
+$
+  "&D[i][j][k]" = x_D + 8(i S T + j T + k)
+$
+
+where $R$, $S$ and $T$ are the sizes of the nested arrays: `long D[R][S][T]`.
+
+*B.*
+
+```asm
+long store_ele(long i, long j, long k, long *dest)
+i in %rdi, j in %rsi, k in %rdx, dest in %rcx
+store_ele:
+  leaq    (%rsi,%rsi,2), %rax     3*j
+  leaq    (%rsi,%rax,4), %rax     4(3*j)+j = 13*j
+  movq    %rdi, %rsi              j = i
+  salq    $6, %rsi                64*i
+  addq    %rsi, %rdi              65*i
+  addq    %rax, %rdi              13*j + 65*i
+  addq    %rdi, %rdx              13*j + 65*i + k
+  movq    A(,%rdx,8), %rax        read array element
+  movq    %rax, (%rcx)            store at dest
+  movl    $3640, %eax             return sizeof(A)
+  ret
+```
+
+The index is calculated as $5 dot 13 dot i + 13 dot j + k$ which suggests that
+$S=5$ and $T=13$.
+
+We also know that $8 R S T = 3640$, so $R = 3640/(8 dot 5 dot 13) = 7$.
+
+==
+
+*A.* The pointer to element `A[i][j]` is in `%rdx`.
+
+*B.* The pointer to element `A[j][i]` is in `%rax`.
+
+*C.* `%rax` is incremented by $120 = 15 dot 8$ every iteration, so each row must
+have $15$ elements, thus $M = 15$.
+
+==
+
+The address that we read each iteration (`%rcx`) is incremented by $8(4n+1)$ so
+`NC` must be defined as $4n+1$.
+
+The loop condition compares `i` (in register `%rdx`) with `NR(n)` (in register
+`%rdi`). Looking at `%rdi` we know that `NR(n)` must be $3n$.

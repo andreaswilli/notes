@@ -2916,3 +2916,41 @@ The address that we read each iteration (`%rcx`) is incremented by $8(4n+1)$ so
 
 The loop condition compares `i` (in register `%rdx`) with `NR(n)` (in register
 `%rdi`). Looking at `%rdi` we know that `NR(n)` must be $3n$.
+
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: center + horizon,
+  table.header([*Offset from %rsp*], [*Description*]),
+  $96$, [],
+  $88$, [],
+  $80$, `r.q`,
+  $72$, `r.u[1]`,
+  $64$, `r.u[0]`,
+  $56$, [],
+  $48$, [],
+  $40$, [],
+  $32$, [],
+  $24$, `z`,
+  $16$, `s.p`,
+  $8$, `s.a[1]`,
+  $0$, `s.a[0]`,
+)
+
+*B.* `eval` passes a pointer to the space on the stack allocated for `r` to
+`process`.
+
+*C.* Elements of `s` are accessed by calculating the address offsets for each
+element. It starts at `%rsp+8` because the return address is stored at `%rsp`.
+
+*D.* Values on the return structure are set based on the address passed in as
+`%rdi`.
+
+*E.* (see *A.*)
+
+*F.* Structure function agruments are passed as pointers on the stack. Space for
+a function return value that is a structure is allocated by the caller and a
+pointer to it is passed as a hidden argument.

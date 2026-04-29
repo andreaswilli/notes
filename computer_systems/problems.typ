@@ -2954,3 +2954,24 @@ element. It starts at `%rsp+8` because the return address is stored at `%rsp`.
 *F.* Structure function agruments are passed as pointers on the stack. Space for
 a function return value that is a structure is allocated by the caller and a
 pointer to it is passed as a hidden argument.
+
+==
+
+We see that to access `t` an offset of $8$ is used. `t` is of type `int` so it
+must be aligned to an offset divisible by $4$. This means $B$ must be between
+$5$ and $8$.
+
+Similarly, to access `u` an offset of $32$ is used. `s` starts at offset $12$.
+So `s` and possible padding take up $20$ bytes. `u` is of type `long` which
+means it must be aligned to an offset divisible by $8$. `s` has type `short` so
+each element takes up $2$ bytes. From this we conclude that $A$ must be between
+$7$ and $10$.
+
+From the offset used to access `y` we see that `x` plus possible padding takes
+up $184$ bytes. `y` has to be aligned to an offset divisible by $8$. `x` itself
+is of type `int` so each element uses $4$ bytes. This means the array itself
+must be either $184$ bytes long or $180$ bytes plus $4$ bytes of padding. Which
+means it has either $45$ or $46$ elements. The only possible way to get either
+of these by multiplying possible values for $A$ and $B$ is $9 dot 5 = 45$.
+
+So we can conclude that $A=9$ and $B=5$.

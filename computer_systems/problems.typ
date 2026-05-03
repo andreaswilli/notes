@@ -2975,3 +2975,30 @@ means it has either $45$ or $46$ elements. The only possible way to get either
 of these by multiplying possible values for $A$ and $B$ is $9 dot 5 = 45$.
 
 So we can conclude that $A=9$ and $B=5$.
+
+==
+
+```asm
+i in %rdi, bp in %rsi
+test:
+  mov     0x120(%rsi),%ecx        read last (offset 288)
+  add     (%rsi),%ecx             first + last
+  lea     (%rdi,%rdi,4),%rax      5*i
+  lea     (%rsi,%rax,8),%rax      8*5*i
+  mov     0x8(%rax),%rdx          read idx
+  movslq  %ecx,%rcx               extend to 64 bits
+  mov     %rcx,0x10(%rax,%rdx,8)
+  retq
+```
+
+*A.* The size of `a_struct` is $40$ bytes. Using the offset of `last` we have
+$"CNT" = (288-8)/40 = 7$.
+
+*B.*
+
+```c
+typedef struct {
+  long idx;
+  long x[4];
+} a_struct;
+```

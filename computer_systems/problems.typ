@@ -3002,3 +3002,76 @@ typedef struct {
   long x[4];
 } a_struct;
 ```
+
+==
+
+*A.*
+
+#table(
+  columns: 2,
+  align: center + horizon,
+  table.header([*Field*], [*Offset*]),
+  `e1.p`, $0$,
+  `e1.y`, $8$,
+  `e2.x`, $0$,
+  `e2.next`, $8$,
+)
+
+*B.* In total the structure requires $16$ bytes.
+
+*C.*
+
+```asm
+up in %rdi
+proc:
+  movq    8(%rdi), %rax     read e2.next (or e1.y)
+  movq    (%rax), %rdx      *e2.next
+  movq    (%rdx), %rdx      *(e2.next)->p
+  subq    8(%rax), %rdx     subtract e2.next->e1.y
+  movq    %rdx, (%rdi)      store in e2.x
+  ret
+```
+
+```c
+union ele {
+  struct {
+    long *p;
+    long y;
+  } e1;
+  struct {
+    long x;
+    union ele *next;
+  } e2;
+};
+
+void proc (union ele *up) {
+  up->e2.x = *(up->e2.next->e1.p) - up->e2.next->e1.y;
+}
+```
+
+==
+
+```c
+#include <stdio.h>
+#include <string.h>
+
+#define BUFSIZE 64
+
+void good_echo() {
+  char buf[BUFSIZE];
+  while (fgets(buf, BUFSIZE, stdin)) {
+    if (fputs(buf, stdout) == EOF)
+      return; // error while writing
+
+    int i;
+    for (i = 0; buf[i] && buf[i] != '\n'; i++)
+      ;
+    if (buf[i] == '\n')
+      return;
+
+    // or using standard library
+    // if (strchr(buf, '\n'))
+    //   return;
+  }
+}
+```

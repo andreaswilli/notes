@@ -3075,3 +3075,81 @@ void good_echo() {
   }
 }
 ```
+
+==
+
+```c
+long vframe(long n, long idx, long *q) {
+  long i;
+  long *p[n];
+  p[0] = &i;
+  for (i = 1; i < n; i++) {
+    p[i] = q;
+  }
+  return *p[idx];
+}
+```
+
+*A.* We calculate $8n + 30$ and then round down to the closest multiple of $16$.
+For even $n$ we get $8n + 16$ and for odd $n$ we get $8n + 24$. $s_2$ is
+calculated by subtracting this amount from $s_1$.
+
+*B.* $p$ is computed by rounding $s_2$ up to the closest multiple of $16$ (by
+adding $15$ and then rounding down).
+
+*C.* _skipped_
+
+*D.* _skipped_
+
+==
+
+```asm
+.globl find_range
+find_range:
+  vxorps %xmm1, %xmm1, %xmm1  # set %xmm1 = 0
+  vucomiss %xmm1, %xmm0
+  jp .OTHER
+  jb .NEG
+  ja .POS
+  movq $1, %rax
+  ret
+.NEG:
+  movq $0, %rax
+  ret
+.POS:
+  movq $2, %rax
+  ret
+.OTHER:
+  movq $3, %rax
+  ret
+```
+
+Test all possible inputs by calling from C:
+
+```c
+#include <stdint.h>
+#include <stdio.h>
+
+typedef enum { NEG, ZERO, POS, OTHER } range_t;
+
+extern range_t find_range(float x);
+
+long r[4];
+
+int main() {
+  uint32_t bits = 0;
+  while (1) {
+    float f = *((float *)&bits); // preserve bits instead of value
+    r[find_range(f)]++;
+    if (bits == UINT32_MAX)
+      break;
+    bits++;
+  }
+
+  printf("NEG  : %ld\n", r[0]);
+  printf("ZERO : %ld\n", r[1]);
+  printf("POS  : %ld\n", r[2]);
+  printf("OTHER: %ld\n", r[3]);
+  printf("TOTAL: %ld\n", r[0] + r[1] + r[2] + r[3]);
+}
+```

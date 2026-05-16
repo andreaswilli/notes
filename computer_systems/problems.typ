@@ -3153,3 +3153,30 @@ int main() {
   printf("TOTAL: %ld\n", r[0] + r[1] + r[2] + r[3]);
 }
 ```
+
+==
+
+```asm
+.globl find_range
+find_range:
+  vxorps %xmm1, %xmm1, %xmm1  # set %xmm1 = 0
+  vucomiss %xmm1, %xmm0
+  movq $1, %rax
+  movq $0, %rdi
+  cmovb %rdi, %rax
+  movq $2, %rdi
+  cmova %rdi, %rax
+  movq $3, %rdi
+  cmovp %rdi, %rax
+  ret
+```
+
+(use C code above for testing)
+
+==
+
+*A.* Complex arguments are passed in two registers, one containing the real and
+one containing the imaginary part.
+
+*B.* Similarly for return values: real part in `%xmm0`, imaginary part in
+`%xmm1`.

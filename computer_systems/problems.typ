@@ -3180,3 +3180,57 @@ one containing the imaginary part.
 
 *B.* Similarly for return values: real part in `%xmm0`, imaginary part in
 `%xmm1`.
+
+= Processor Architecture
+
+==
+
+#table(
+  columns: 2,
+  align: left,
+  table.header([*Instruction*], [*Encoding*]),
+  `irmovq $15,%rbx`, `30 f3 0f 00 00 00 00 00 00 00`,
+  `rrmovq %rbx,%rcx`, `20 31`,
+  `rmmovq %rcx,-3(%rbx)`, `40 13 fd ff ff ff ff ff ff ff`,
+  `addq   %rbx,%rcx`, `60 31`,
+  `jmp loop`, `70 0c 01 00 00 00 00 00 00`,
+)
+
+==
+
+#table(
+  columns: 2,
+  align: left,
+  table.header([*Byte Sequence*], [*Instruction Sequence*]),
+  [*A.*], [],
+  `0x100: 30f3fcffffffffffffff`, `  irmovq $-4,%rbx`,
+  `0x10a: 40630008000000000000`, `  rmmovq %rsi,2048(%rbx)`,
+  `0x114: 00`, `  halt`,
+  table.hline(),
+  [*B.*], [],
+  `0x200: a06f`, `  pushq %rsi`,
+  `0x202: 800c02000000000000`, `  call proc`,
+  `0x20b: 00`, `  halt`,
+  `0x20c:`, `proc:`,
+  `0x20c: 30f30a00000000000000`, `  irmovq $10,%rbx`,
+  `0x216: 90`, `  ret`,
+  table.hline(),
+  [*C.*], [],
+  `0x300: 50540700000000000000`, `  mrmovq 7(%rsp),%rbp`,
+  `0x30a: 10`, `  nop`,
+  `0x30b: f0`, [invalid instruction],
+  `0x30c: b01f`, `  popq %rcx`,
+  table.hline(),
+  [*D.*], [],
+  `0x400:`, `loop:`,
+  `0x400: 6113`, `  subq %rcx,%rbx`,
+  `0x402: 730004000000000000`, `  je loop`,
+  `0x40c: 00`, `  halt`,
+  table.hline(),
+  [*E.*], [],
+  `0x500: 6362`, `  xorq %rsi,%rdx`,
+  `0x502: a0f0`,
+  [`f` means "no register" but `pushq` requires one (but the second part must be
+    `f`)],
+  table.hline(),
+)

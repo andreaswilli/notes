@@ -3234,3 +3234,97 @@ one containing the imaginary part.
     `f`)],
   table.hline(),
 )
+
+==
+
+```asm
+long sum(long *start, long count)
+start in %rdi, count in %rsi
+sum:
+  xorq %rax,%rax        sum = 0
+  andq %rsi,%rsi        Set CC
+  jmp test              Goto test
+loop:
+  mrmovq (%rdi),%r10    Get *start
+  addq %r10,%rax        Add to sum
+  iaddq $8,%rdi         start++
+  iaddq $-1,%rsi        count-- and set CC
+test:
+  jne loop              Stop when 0
+  ret
+```
+
+==
+
+```asm
+long rsum(long *start, long count)
+start in %rdi, count in %rsi
+rsum:
+  irmovq $0,%rax        sum = 0
+  andq %rsi,%rsi        Set CC
+  jg rec                Stop if count <= 0
+  ret
+rec:
+  pushq %rbx            Save callee-saved register
+  mrmovq (%rdi),%rbx    Read *start
+  irmovq $1,%r8
+  subq %r8,%rsi         count--
+  irmovq $8,%r8
+  addq %r8,%rdi         start++
+  call rsum             Recurse
+  addq %rbx,%rax        sum += *start
+  popq %rbx             Restore callee-saved register
+  ret
+```
+
+==
+
+```asm
+long absSum(long *start, long count)
+start in %rdi, count in %rsi
+absSum:
+  irmovq $8,%r8         Constant 8
+  irmovq $1,%r9         Constant 1
+  xorq %rax,%rax        sum = 0
+  andq %rsi,%rsi        Set CC
+  jmp test              Goto test
+loop:
+  mrmovq (%rdi),%r10    Get *start
+  andq %r10,%r10        Set CC
+  jl sub
+add:
+  addq %r10,%rax        Add positive number to sum
+  jmp cont
+sub:
+  subq %r10,%rax        Subtract negative number from sum
+cont:
+  addq %r8,%rdi         start++
+  subq %r9,%rsi         count-- and set CC
+test:
+  jne loop              Stop when 0
+  ret
+```
+
+==
+
+```asm
+long absSum(long *start, long count)
+start in %rdi, count in %rsi
+absSum:
+  irmovq $8,%r8         Constant 8
+  irmovq $1,%r9         Constant 1
+  xorq %rax,%rax        sum = 0
+  andq %rsi,%rsi        Set CC
+  jmp test              Goto test
+loop:
+  mrmovq (%rdi),%r10    x = *start
+  xorq %r11,%r11        Set 0
+  subq %r10,%r11        -x
+  cmovg %r11,%r10       if -x > 0 then x = -x
+  addq %r10,%rax        Add to sum
+  addq %r8,%rdi         start++
+  subq %r9,%rsi         count-- and set CC
+test:
+  jne loop              Stop when 0
+  ret
+```

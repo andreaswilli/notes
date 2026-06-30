@@ -3328,3 +3328,92 @@ test:
   jne loop              Stop when 0
   ret
 ```
+
+==
+
+It implies that the register value is read before decrementing the stack
+pointer.
+
+==
+
+It implies that the value read from memory is written to `%rsp` instead of
+incrementing it. It is equivalent to:
+
+```asm
+mrmovq (%rsp),%rsp
+```
+
+==
+
+We can define `xor` like this:
+
+```
+bool xor = (a && !b) || (!a && b)
+```
+
+It relates to `eq` like this:
+
+```
+bool xor = !eq
+```
+
+==
+
+We can implement word-level equality using `xor` very similarly to the `==`
+implementation. We combine 64 `xor` circuits comparing each individual bit of
+`a` and `b`, combine all the outputs with `or`, and then negate the result.
+
+==
+
+```
+word Min3 = [
+  A <= B && A <= C : A;
+  A <= C           : B;
+  1                : C;
+]
+```
+
+Using `B <= C` as the second condition also works.
+
+==
+
+Circuit for computing the median of three numbers:
+
+```
+word Med3 = [
+  B <= A && A <= C : A;
+  C <= A && A <= B : A;
+  A <= B && B <= C : B;
+  C <= B && B <= A : B;
+  1                : C;
+]
+```
+
+==
+
+#table(
+  columns: 3,
+  align: left + horizon,
+  table.header([*Stage*], [*Generic*], [*Specific*]),
+  [], `irmovq V, rB`, `irmovq $128, %rsp`,
+  table.hline(),
+  [Fetch],
+  $"icode:ifun" <- "M"_1["PC"]$,
+  $"icode:ifun" <- "M"_1["0x016"] = 3:0$,
+  [], $"rA:rB" <- "M"_1["PC"+1]$, $"rA:rB" <- "M"_1["0x017"] = "f":4$,
+  [], $"valC" <- "M"_8["PC"+2]$, $"valC" <- "M"_8["0x018"] = 128$,
+  [], $"valP" <- "PC" + 10$, $"valP" <- "0x016"+10 = "0x020"$,
+  table.hline(),
+  [Decode], [-], [-],
+  table.hline(),
+  [Execute], $"valE" <- 0 + "valC"$, $"valE" <- 0+128 = 128$,
+  table.hline(),
+  [Memory], [-], [-],
+  table.hline(),
+  [Write back], $"R"["rB"] <- "valE"$, $"R"["%rsp"] <- 128$,
+  table.hline(),
+  [PC update], $"PC" <- "valP"$, $"PC" <- "0x020"$,
+)
+
+The instruction sets `%rsp` to $128$ and increments the program counter by $10$.
+

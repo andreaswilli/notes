@@ -3417,3 +3417,49 @@ word Med3 = [
 
 The instruction sets `%rsp` to $128$ and increments the program counter by $10$.
 
+==
+
+#table(
+  columns: 3,
+  align: left + horizon,
+  table.header([*Stage*], [*Generic*], [*Specific*]),
+  [], `popq rA`, `popq %rax`,
+  table.hline(),
+  [Fetch],
+  $"icode:ifun" <- "M"_1["PC"]$,
+  $"icode:ifun" <- "M"_1["0x02c"] = "b:0"$,
+  [], $"rA:rB" <- "M"_1["PC"+1]$, $"rA:rB" <- "M"_1["0x02d"] = "0:f"$,
+  [], $"valP" <- "PC"+2$, $"valP" <- "0x02e"$,
+  table.hline(),
+  [Decode], $"valA" <- "R"["%rsp"]$, $"valA" <- "R"["%rsp"] = 120$,
+  [], $"valB" <- "R"["%rsp"]$, $"valB" <- "R"["%rsp"] = 120$,
+  table.hline(),
+  [Execute], $"valE" <- "valB"+8$, $"valE" <- 120+8 = 128$,
+  table.hline(),
+  [Memory], $"valM" <- "M"_8["valA"]$, $"valM" <- "M"_8[120] = 9$,
+  table.hline(),
+  [Write back], $"R"["%rsp"] <- "valE"$, $"R"["%rsp"] <- 128$,
+  [], $"R"["rA"] <- "valM"$, $"R"["%rax"] <- 9$,
+  table.hline(),
+  [PC update], $"PC" <- "valP"$, $"PC" <- "0x02e"$,
+)
+
+The instruction sets `%rax` to $9$, `%rsp` to $128$ and increments the program
+counter by $2$.
+
+==
+
+Effect of `pushq %rsp`:
+
+- push the old stack pointer to the stack (using the new (decremented) pointer
+  as address)
+- decrement stack pointer by $8$
+- increment the PC by $2$
+
+This conforms to the desired behavior of Y86-64, since it pushes the old value
+to the stack.
+
+==
+
+`popq %rsp` has the effect of storing the value from the stack in `%rsp` (not
+the decremented stack pointer). This is the desired behavior for Y86-64.

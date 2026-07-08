@@ -3463,3 +3463,54 @@ to the stack.
 
 `popq %rsp` has the effect of storing the value from the stack in `%rsp` (not
 the decremented stack pointer). This is the desired behavior for Y86-64.
+
+==
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Stage*], `cmovXX rA, rB`),
+  [Fetch], $"icode:ifun" <- "M"_1["PC"]$,
+  [], $"rA:rB" <- "M"_1["PC"+1]$,
+  [], $"valP" <- "PC"+2$,
+  table.hline(),
+  [Decode], $"valA" <- "R"["rA"]$,
+  table.hline(),
+  [Execute], $"valE" <- 0+"valA"$,
+  [], $"Cnd" <- "Cond"("CC, ifun")$,
+  table.hline(),
+  [Memory], [-],
+  table.hline(),
+  [Write back], $"if"("Cnd") "R"["rB"] <- "valE"$,
+  table.hline(),
+  [PC update], $"PC" <- "valP"$,
+)
+
+==
+
+#table(
+  columns: 3,
+  align: left + horizon,
+  table.header([*Stage*], [*Generic*], [*Specific*]),
+  [], `call Dest`, `call 0x041`,
+  table.hline(),
+  [Fetch],
+  $"icode:ifun" <- "M"_1["PC"]$,
+  $"icode:ifun" <- "M"_1["0x037"] = "8:0"$,
+  [], $"valC" <- "M"_8["PC"+1]$, $"valC" <- "M"_8["0x038"] = "0x041"$,
+  [], $"valP" <- "PC"+9$, $"valP" <- "0x040"$,
+  table.hline(),
+  [Decode], $"valB" <- "R"["%rsp"]$, $"valB" <- "R"["%rsp"] = 128$,
+  table.hline(),
+  [Execute], $"valE" <- "valB"+(-8)$, $"valE" <- 128+(-8) = 120$,
+  table.hline(),
+  [Memory], $"M"_8["valE"] <- "valP"$, $"M"_8[120] <- "0x040"$,
+  table.hline(),
+  [Write back], $"R"["%rsp"] <- "valE"$, $"R"["%rsp"] <- 120$,
+  table.hline(),
+  [PC update], $"PC" <- "valC"$, $"PC" <- "0x041"$,
+)
+
+This instruction decreases the stack pointer by $8$, sets the PC to the
+destination address of the procedure to call and pushes the return address to
+the stack.

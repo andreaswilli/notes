@@ -3514,3 +3514,9 @@ the decremented stack pointer). This is the desired behavior for Y86-64.
 This instruction decreases the stack pointer by $8$, sets the PC to the
 destination address of the procedure to call and pushes the return address to
 the stack.
+
+==
+
+```
+bool need_calC = icode in { IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL };
+```

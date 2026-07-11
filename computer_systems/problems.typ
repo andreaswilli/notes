@@ -3520,3 +3520,27 @@ the stack.
 ```
 bool need_calC = icode in { IIRMOVQ, IRMMOVQ, IMRMOVQ, IJXX, ICALL };
 ```
+
+==
+
+```
+word srcB = [
+  icode in { IRMMOVQ, IMRMOVQ, IOPQ } : rB;
+  icode in { IPUSHQ, IPOPQ, ICALL, IRET } : RRSP;
+  1 : RNONE;
+]
+```
+
+==
+
+```
+word dstM = [
+  icode in { IMRMOVQ, IPOPQ } : rA;
+  1 : RNONE;
+]
+```
+
+==
+
+Port M should have priority over port E. This way the instruction `popq %rsp`
+will have the effect of writing the value read from memory to `%rsp`.

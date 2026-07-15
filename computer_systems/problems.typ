@@ -3544,3 +3544,49 @@ word dstM = [
 
 Port M should have priority over port E. This way the instruction `popq %rsp`
 will have the effect of writing the value read from memory to `%rsp`.
+
+==
+
+```
+word aluB = [
+  icode in { IOPQ, IRMMOVQ, IMRMOVQ, IPUSHQ, IPOPQ, ICALL, IRET } : valB;
+  icode in { IRRMOVQ, IIRMOVQ } : 0;
+];
+```
+
+==
+
+```
+word dstE = [
+  icode in { IRRMOVQ } && Cnd : rB;
+  icode in { IIRMOVQ, IOPQ } : rB;
+  icode in { IPUSHQ, IPOPQ, ICALL, IRET } : RRSP;
+  1 : RNONE;
+];
+```
+
+==
+
+```
+word mem_data = [
+  icode in { IRMMOVQ, IPUSHQ } : valA;
+  icode in { ICALL } : valP;
+];
+```
+
+==
+
+```
+bool mem_write = icode in { IRMMOVQ, IPUSHQ, ICALL };
+```
+
+==
+
+```
+word Stat = [
+  imem_error || dmem_error : SADR;
+  !instr_valid : SINS;
+  icode == IHALT : SHLT;
+  1 : SAOK;
+];
+```

@@ -3590,3 +3590,44 @@ word Stat = [
   1 : SAOK;
 ];
 ```
+
+==
+
+*A.* The blocks should be distributed as evenly as possible to the two stages.
+If we insert a register between $C$ and $D$, stage $1$ will take $170$ ps and
+stage $2$ will take $130$ ps. So the total cycle time is $170 + 20 = 190 "ps"$.
+This gives a throughput of:
+
+$
+  (1 "instruction")/(190 "ps") times (1000 "ps")/(1 "ns") approx 5.26 "GIPS"
+$
+
+Since it takes $2$ cycles for an instruction to complete the latency is
+$190 "ps" times 2 = 380 "ps"$.
+
+*B.* The blocks can be divided into $3$ stages like this:
+`[A, B] [C, D] [E, F]`. This gives a cycle time of $130$ ps. So the throughput
+is:
+
+$
+  (1 "instruction")/(130 "ps") times (1000 "ps")/(1 "ns") approx 7.69 "GIPS"
+$
+
+with a latency of $130 "ps" times 3 = 390 "ps"$.
+
+*C.* Dividing into $4$ stages like this: `[A] [B, C] [D] [E, F]` gives a cylce
+time of $110$ ps. So the throughput is $9.09$ GIPS with latency $440$ ps.
+
+*D.* With $5$ stages we can achieve the minimum cycle time (which leads to
+maximum throughput). Dividing stages like `[A] [B] [C] [D] [E, F]` gives a cycle
+time of $100$ ps. So the throughput is $10$ GIPS with latency $500$ ps.
+
+==
+
+*A.*
+
+Latency (ps): $20k + 300$
+
+Throughput (GIPS): $1000/(300/k+20)$
+
+*B.* The limit of the throughput is $lim_(k -> infinity) 1000/(300/k+20) = 50$

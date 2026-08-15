@@ -3631,3 +3631,49 @@ Latency (ps): $20k + 300$
 Throughput (GIPS): $1000/(300/k+20)$
 
 *B.* The limit of the throughput is $lim_(k -> infinity) 1000/(300/k+20) = 50$
+
+==
+
+```
+word f_stat = [
+  imem_error : SADR;
+  !instr_valid : SINS;
+  f_icode == IHALT : SHLT;
+  1 : SAOK;
+];
+```
+
+==
+
+```
+word d_dstE = [
+  D_icode in { IRRMOVQ } : D_rB;
+  D_icode in { IIRMOVQ, IOPQ } : D_rB;
+  D_icode in { IPUSHQ, IPOPQ, ICALL, IRET } : RRSP;
+  1 : RNONE;
+];
+```
+
+==
+
+It writes the address stored in `%rsp` (incremented stack pointer) to `%rax`.
+
+==
+
+We can use a similar test program as in the previous problem, only add two `nop`
+instructions to make sure the `popq` instruction is in the write-back stage
+while the `rrmovq` instruction is in the decode stage. Again, the incremented
+stack pointer will be written instead of the value read from memory.
+
+==
+
+```
+word d_valB = [
+  d_srcB == e_dstE : e_valE;
+  d_srcB == M_dstM : m_valM;
+  d_srcB == M_dstE : M_valE;
+  d_srcB == W_dstM : W_valM;
+  d_srcB == W_dstE : W_valE;
+  1 : d_rvalB;
+];
+```

@@ -3677,3 +3677,59 @@ word d_valB = [
   1 : d_rvalB;
 ];
 ```
+
+==
+
+Using `E_dstE` instead of `e_dstE` would not consider the condition codes, so a
+conditional move with a failed contition would be executed anyway.
+
+```asm
+irmovq $2, %rax
+irmovq $3, %rdx
+xorq %rcx, %rcx
+cmovqne %rdx, %rax    # failed condition, move should not be executed
+addq %rax, %rax       # should be 4, not 6
+```
+
+==
+
+```
+word m_stat = [
+  dmem_error : SADR;
+  1 : M_stat;
+];
+```
+
+==
+
+```asm
+  call proc
+  # should not reach this
+proc:
+  xorq %rcx, %rcx
+  jne target
+  irmovq $2, %rax
+  halt
+target:
+  ret
+```
+
+==
+
+```asm
+  irmovq mem, %rbx
+  mrmovq 0(%rbx), %rsp
+  ret
+  halt
+rtnpt:
+  irmovq $5, %rsi # ret should return here
+  halt
+
+.pos 0x40
+mem:
+  .quad stack # holds stack pointer
+
+.pos 0x50
+stack:
+  .quad rtnpt # holds return point
+```

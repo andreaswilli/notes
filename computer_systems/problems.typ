@@ -3320,7 +3320,7 @@ loop:
   mrmovq (%rdi),%r10    x = *start
   xorq %r11,%r11        Set 0
   subq %r10,%r11        -x
-  cmovg %r11,%r10       if -x > 0 then x = -x
+  cmovq %r11,%r10       if -x > 0 then x = -x
   addq %r10,%rax        Add to sum
   addq %r8,%rdi         start++
   subq %r9,%rsi         count-- and set CC
@@ -3733,3 +3733,61 @@ mem:
 stack:
   .quad rtnpt # holds return point
 ```
+
+==
+
+The decode stage is only stalled in case of a load/use hazard:
+
+```
+bool D_stall =
+  E_icode in { IMRMOVQ, IPOPQ } && E_dstE in { d_srcA, d_srcB };
+```
+
+==
+
+```
+bool E_bubble =
+  # load/use hazard
+  (E_icode in { IMRMOVQ, IPOPQ } && E_dstE in { d_srcA, d_srcB }) ||
+  # mispredicted branch
+  (E_icode == IJXX && !e_Cnd);
+```
+
+==
+
+```
+bool set_cc =
+  E_icode == IOPQ &&
+  !m_stat in { SADR, SINS, SHLT } &&
+  !W_stat in { SADR, SINS, SHLT };
+```
+
+==
+
+```
+bool M_bubble =
+  m_stat in { SADR, SINS, SHLT } ||
+  W_stat in { SADR, SINS, SHLT };
+```
+
+```
+bool W_stall =
+  W_state in { SADR, SINS, SHLT };
+```
+
+==
+
+Using the BTFNT branch prediction strategy with success rate of $65%$ leads to a
+misprediciton penalty of $0.2 times 0.35 times 2 = 0.14$ which means the CPI is
+$1.25$.
+
+==
+
+#table(
+  columns: 3,
+  align: left + horizon,
+  table.header([], [*cond. jump*], [*cond. move*]),
+  [*A.*], $(7+8)/2=7.5$, $(8+8)/2=8$,
+  [*B.*], $(2+0)/2=1$, $0$,
+  [*C.*], $7.5+1=8.5$, $8+0=8$,
+)

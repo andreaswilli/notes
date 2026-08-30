@@ -3791,3 +3791,25 @@ $1.25$.
   [*B.*], $(2+0)/2=1$, $0$,
   [*C.*], $7.5+1=8.5$, $8+0=8$,
 )
+
+==
+
+*A.* No. This will store the decremented stack pointer but it should be the
+original one.
+
+*B.*
+```asm
+movq REG, -8(%rsp)
+subq $8, %rsp
+```
+
+==
+
+*A.* No. This overwrites the stack pointer with the value read from the stack
+and then increments it by $8$.
+
+*B.*
+```asm
+addq $8, %rsp
+movq -8(%rsp), REG
+```

@@ -3813,3 +3813,91 @@ and then increments it by $8$.
 addq $8, %rsp
 movq -8(%rsp), REG
 ```
+
+==
+
+*A.*
+
+```c
+#include <stdio.h>
+
+void bubble_p(long *data, long count) {
+  long *i, *last;
+  for (last = data + (count - 1); last > data; last--) {
+    for (i = data; i < last; i++) {
+      if (*(i + 1) < *i) {
+        long t = *(i + 1);
+        *(i + 1) = *i;
+        *i = t;
+      }
+    }
+  }
+}
+
+int main() {
+  long arr[] = {10, 5, 7, 13, 32};
+  long count = sizeof(arr) / sizeof(arr[0]);
+
+  bubble_p(&arr[0], count);
+
+  for (int i = 0; i < count; i++)
+    printf("%ld, ", arr[i]);
+}
+```
+
+*B.*
+
+```asm
+init:
+  irmovq stack, %rsp # set up stack pointer
+  jmp main
+  .align 8
+array:
+  .quad 0xdddd
+  .quad 0xeeee
+  .quad 0xbbbb
+  .quad 0xaaaa
+  .quad 0xffff
+  .quad 0xcccc
+  .quad 0x0101 # this value should not change
+main:
+  irmovq array, %rdi
+  irmovq $6, %rsi
+  call bubble
+  halt
+# data in %rdi, count in %rsi
+bubble:
+  irmovq $8, %r11
+  rrmovq %rdi, %r9 # end pointer
+  addq %rsi, %rsi # 2*count
+  addq %rsi, %rsi # 4*count
+  addq %rsi, %rsi # 8*count
+  subq %r11, %rsi
+  addq %rsi, %r9
+outer:
+  rrmovq %rdi, %rcx
+  subq %r9, %rcx
+  je outer_end
+  rrmovq %rdi, %r8 # start pointer
+inner:
+  rrmovq %r8, %rcx
+  subq %r9, %rcx
+  je inner_end
+  mrmovq (%r8), %r12
+  mrmovq 8(%r8), %r13
+  rrmovq %r12, %r14
+  subq %r13, %r14
+  jle skip
+  rmmovq %r12, 8(%r8) # swap
+  rmmovq %r13, (%r8)
+skip:
+  addq %r11, %r8
+  jmp inner
+inner_end:
+  subq %r11, %r9
+  jmp outer
+outer_end:
+  ret
+  .pos 0x200
+stack:
+```

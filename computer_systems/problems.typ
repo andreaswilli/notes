@@ -13,13 +13,21 @@
   width: 100%,
   text(it),
 )
-#show raw: it => box(
-  fill: rgb("eee"),
-  inset: if it.block { 10pt } else { 4pt },
-  baseline: 4pt,
-  radius: 2pt,
-  math.mono(text(it)),
-)
+#show raw: it => if it.block {
+  block(
+    breakable: true,
+    fill: rgb("eee"),
+    inset: 10pt,
+    radius: 2pt,
+  )[#math.mono(text(it))]
+} else {
+  box(
+    fill: rgb("eee"),
+    inset: 4pt,
+    radius: 2pt,
+    math.mono(text(it)),
+  )
+}
 #set table(inset: (x: 10pt, y: 5pt), align: right, stroke: (x, y) => (
   left: if x == 0 { none } else { 1pt },
   bottom: if y == 0 { 1pt } else { none },

@@ -3909,3 +3909,121 @@ outer_end:
   .pos 0x200
 stack:
 ```
+
+==
+
+New inner loop where the swap uses no jumps and at most 3 conditional moves:
+
+```asm
+inner:
+  rrmovq %r8, %rcx
+  subq %r9, %rcx
+  je inner_end
+  mrmovq (%r8), %r12
+  mrmovq 8(%r8), %r13
+  rrmovq %r12, %r14
+  subq %r13, %r14
+  cmovg %r12, %r10 # swap
+  cmovg %r13, %r12
+  cmovg %r10, %r13
+  rmmovq %r12, (%r8)
+  rmmovq %r13, 8(%r8)
+  addq %r11, %r8
+  jmp inner
+```
+
+==
+
+New inner loop where the swap uses no jumps and only one conditional move:
+
+```asm
+inner:
+  rrmovq %r8, %rcx
+  subq %r9, %rcx
+  je inner_end
+  mrmovq (%r8), %r12  # a
+  mrmovq 8(%r8), %r13 # b
+  rrmovq %r12, %r14
+  subq %r13, %r14     # a-b
+  irmovq $0, %r10
+  cmovg %r14, %r10
+  subq %r10, %r12     # a-(a-b)=b
+  addq %r10, %r13     # b+(a-b)=a
+  rmmovq %r12, (%r8)
+  rmmovq %r13, 8(%r8)
+  addq %r11, %r8
+  jmp inner
+```
+
+==
+
+```asm
+init:
+  irmovq stack, %rsp # set up stack pointer
+  jmp main
+  .align 8
+jump_table:
+  .quad default  # start at index -1
+  .quad case0
+  .quad default
+  .quad case2
+  .quad case3
+  .quad default
+  .quad case2
+  .quad default
+array:
+  .quad 0
+  .quad 0
+  .quad 0
+  .quad 0
+  .quad 0
+  .quad 0
+  .quad 0
+  .quad 0
+main:
+  irmovq $-1, %r8
+  irmovq $1, %r10
+loop:
+  addq %r10, %r8
+  rrmovq %r8, %rdi
+  subq %r10, %rdi
+  call switchv
+  rrmovq %r8, %rdx
+  addq %rdx, %rdx
+  addq %rdx, %rdx
+  addq %rdx, %rdx
+  rmmovq %rax, array(%rdx)
+test:
+  irmovq $7, %r9
+  subq %r8, %r9
+  jg loop
+  halt
+# switchv(long idx)
+# idx in %rdi
+switchv:
+  xorq %rax, %rax
+  irmovq $1, %rdx
+  addq %rdi, %rdx
+  addq %rdx, %rdx
+  addq %rdx, %rdx
+  addq %rdx, %rdx
+  mrmovq jump_table(%rdx), %rdx
+  pushq %rdx
+  ret
+case0:
+  irmovq $0xaaa, %rax
+  jmp end
+case2:
+  irmovq $0xbbb, %rax
+  jmp end
+case3:
+  irmovq $0xccc, %rax
+  jmp end
+default:
+  irmovq $0xddd, %rax
+end:
+  ret
+
+  .pos 0x200
+stack:
+```

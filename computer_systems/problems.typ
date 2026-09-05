@@ -4027,3 +4027,31 @@ end:
   .pos 0x200
 stack:
 ```
+
+==
+
+#table(
+  columns: 2,
+  align: left + horizon,
+  table.header([*Stage*], [`iaddq V, rB`]),
+  [Fetch], $"icode:ifun" <- "M"_1["PC"]$,
+  [], $"rA:rB" <- "M"_1["PC"+1]$,
+  [], $"valC" <- "M"_8["PC"+2]$,
+  [], $"valP" <- "PC" + 10$,
+  table.hline(),
+  [Decode], $"valB" <- "R"["rB"]$,
+  table.hline(),
+  [Execute], $"valE" <- "valB" + "valC"$,
+  [], $"Set CC"$,
+  table.hline(),
+  [Memory], $$,
+  table.hline(),
+  [Write back], $"R"["rB"] <- "valE"$,
+  table.hline(),
+  [PC update], $"PC" <- "valP"$,
+)
+
+==
+
+`iaddq` implementation in SEQ:
+https://git.sddn.dev/andi/y86-64-sim/commit/5a242fb1ebaea925f07063e80b73dae203d48d34
